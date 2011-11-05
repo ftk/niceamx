@@ -8,3 +8,5 @@ CMakeFiles
 CMakeCache.txt
 cmake_install.cmake
 niceamx-test
+samp03svr*
+samp-server*
