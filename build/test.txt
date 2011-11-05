@@ -1,0 +1,9 @@
+project::	niceamx-test
+includes::	../ ../system
+defines::	_DEBUG OVERTIMER_ENABLE PRINT_OUTCOMING_NATIVES
+sources::	../api/*.cpp ../system/*.cpp ../tests/*.cpp ../util/*.cpp
+modules::	../modules/*.cpp
+flags::		-c -O0 -std=c++0x -ggdb3 -pedantic -fpermissive -pipe -Wall
+ldflags::	-ggdb3 -pipe
+objdir::	obj/test
+compiler::	g++

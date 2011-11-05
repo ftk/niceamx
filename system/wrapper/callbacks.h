@@ -1,0 +1,46 @@
+#include "box.hpp"
+
+#define OnGameModeInit on_game_mode_init
+#define OnGameModeExit on_game_mode_exit
+#define OnFilterScriptInit on_filter_script_init
+#define OnFilterScriptExit on_filter_script_exit
+#define OnPlayerConnect on_player_connect
+#define OnPlayerDisconnect on_player_disconnect
+#define OnPlayerSpawn on_player_spawn
+#define OnPlayerDeath on_player_death
+#define OnVehicleSpawn on_vehicle_spawn
+#define OnVehicleDeath on_vehicle_death
+#define OnPlayerText on_player_text
+#define OnPlayerCommandText on_player_command_text
+#define OnPlayerRequestClass on_player_request_class
+#define OnPlayerEnterVehicle on_player_enter_vehicle
+#define OnPlayerExitVehicle on_player_exit_vehicle
+#define OnPlayerStateChange on_player_state_change
+#define OnPlayerEnterCheckpoint on_player_enter_checkpoint
+#define OnPlayerLeaveCheckpoint on_player_leave_checkpoint
+#define OnPlayerEnterRaceCheckpoint on_player_enter_race_checkpoint
+#define OnPlayerLeaveRaceCheckpoint on_player_leave_race_checkpoint
+#define OnRconCommand on_rcon_command
+#define OnPlayerRequestSpawn on_player_request_spawn
+#define OnObjectMoved on_object_moved
+#define OnPlayerObjectMoved on_player_object_moved
+#define OnPlayerPickUpPickup on_player_pick_up_pickup
+#define OnVehicleMod on_vehicle_mod
+#define OnEnterExitModShop on_enter_exit_mod_shop
+#define OnVehiclePaintjob on_vehicle_paintjob
+#define OnVehicleRespray on_vehicle_respray
+#define OnVehicleDamageStatusUpdate on_vehicle_damage_status_update
+#define OnPlayerSelectedMenuRow on_player_selected_menu_row
+#define OnPlayerExitedMenu on_player_exited_menu
+#define OnPlayerInteriorChange on_player_interior_change
+#define OnPlayerKeyStateChange on_player_key_state_change
+#define OnRconLoginAttempt on_rcon_login_attempt
+#define OnPlayerUpdate on_player_update
+#define OnPlayerStreamIn on_player_stream_in
+#define OnPlayerStreamOut on_player_stream_out
+#define OnVehicleStreamIn on_vehicle_stream_in
+#define OnVehicleStreamOut on_vehicle_stream_out
+#define OnDialogResponse on_dialog_response
+#define OnPlayerClickPlayer on_player_click_player
+
+

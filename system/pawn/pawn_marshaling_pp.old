@@ -1,0 +1,61 @@
+#ifndef PAWN_MARSHALING_PARAMS_HPP
+#define PAWN_MARSHALING_PARAMS_HPP
+
+//#include "SDK/amx/amx.h"
+//#include <string>
+
+#include <boost/preprocessor.hpp>
+
+
+namespace pawn {
+//
+
+#define MAX_PARAMS 15
+
+#define TYPEDEF(z,n,_) \
+typedef marh_param_t<n, BOOST_PP_CAT(t, n)> BOOST_PP_CAT(BOOST_PP_CAT(param, n), _t); \
+BOOST_PP_CAT(BOOST_PP_CAT(param, n), _t) BOOST_PP_CAT(param, n);
+/* */
+
+#define TYPENAME_CONNECT(z,n,_) \
+BOOST_PP_COMMA_IF(n) \
+typename BOOST_PP_CAT(BOOST_PP_CAT(param, n), _t)::connect_type BOOST_PP_CAT(p, n) \
+/* */
+
+#define CONNECT(z,n,_) \
+BOOST_PP_CAT(param, n).connect(BOOST_PP_CAT(p, n)); \
+/* */
+
+#define CALL(z,n,a) \
+BOOST_PP_CAT(param, n).a(amx, params); \
+/* */
+
+#define TEMPLATE(n) template < BOOST_PP_ENUM_PARAMS(n, typename t) >
+
+#define MARH_PARAMS(z,n,_) \
+BOOST_PP_IF(n, TEMPLATE(n), BOOST_PP_EMPTY()) \
+struct BOOST_PP_CAT(BOOST_PP_CAT(marh_params_, n), _t) \
+{ \
+BOOST_PP_REPEAT(n, TYPEDEF, _) \
+enum { params_count = n }; \
+void connect(BOOST_PP_REPEAT(n, TYPENAME_CONNECT, _)) \
+{ \
+BOOST_PP_REPEAT(n, CONNECT, _) \
+} \
+void precall(AMX* amx, cell* params) \
+{ \
+BOOST_PP_REPEAT(n, CALL, precall) \
+} \
+void postcall(AMX* amx, cell* params) \
+{ \
+BOOST_PP_REPEAT(n, CALL, postcall) \
+} \
+}; \
+/* */
+
+
+BOOST_PP_REPEAT(MAX_PARAMS, MARH_PARAMS, _)
+
+}
+
+#endif
