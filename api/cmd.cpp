@@ -3,12 +3,13 @@
 #include "util/notify.h"
 
 #include <string>
-
 #include <cassert>
+
+#include <boost/tokenizer.hpp>
 
 namespace api {
 //
-
+/*
 static void split(util::strings& buffer, const std::string& raw, char separator = ' ')
 {
     std::size_t startpos = 0, endpos;
@@ -30,8 +31,8 @@ static void split(util::strings& buffer, const std::string& raw, char separator 
             buffer.push_back(raw.substr(startpos));
         }
     }
-}
-
+}*/
+/*
 commands * commands::instance = NULL;
 
 commands * commands::get_instance()
@@ -47,7 +48,7 @@ void commands::rm_instance()
     delete instance;
     instance = NULL;
   }
-}
+}*/
 
 bool commands::proccess_raw(int playerid, const std::string& rawstr)
 {
@@ -56,29 +57,32 @@ bool commands::proccess_raw(int playerid, const std::string& rawstr)
     return false;
   
   assert(rawstr.at(0) == '/');
-  
+  /*
   util::strings args;
   split(args, rawstr);
   assert(args.size() >= 1);
   
   std::string & name(args.at(0)); // name: "/name param param"
-  
+  */
+  boost::tokenizer<> tok(rawstr);
+  std::string name(*(tok.begin()));
   assert(name.at(0) == '/');
   name.erase(0, 1); // remove the '/'
   
   util::hash_t hash = util::hash(name);
   
+  
   //typedef cmds_t::const_iterator iterator1;
   for(auto it1 = cmds.cbegin(), en1 = cmds.cend(); it1 != en1; ++it1)
   {
-    // loop thru command names
+    // loop thru command names (aliases)
     //typedef detail::cmd_names::const_iterator iterator2;
     for(auto it2 = it1->names.cbegin(), en2 = it1->names.cend(); it2 != en2; ++it2)
     {
       if(hash == it2->hash)
       {
-	// we have found the command
-	return it1->invoke(playerid, args);
+        // we have found the command
+        return it1->invoke(playerid, rawstr);
       }
     }
   }

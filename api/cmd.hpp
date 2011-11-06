@@ -4,9 +4,10 @@
 #include "config.h"
 #include "util/utils.h"
 
-#include "util/strings.h"
+#include "util/singleton.hpp"
 
 #include <functional>
+#include <vector>
 
 namespace api {
 //
@@ -18,7 +19,7 @@ namespace detail
     util::hash_t hash;
     std::string name;
     
-    cmd_name(std::string s) : name(s)
+    cmd_name(const std::string& s) : name(s)
     {
       hash = util::hash(s);
     }
@@ -43,8 +44,8 @@ namespace detail
   
   struct command
   {
-    //typedef bool (* handler_t) (int, util::strings&);
-    typedef std::function<bool (int, util::strings&)> handler_t;
+    //typedef bool (* handler_t) (int, std::string&);
+    typedef std::function<bool (int, const std::string&)> handler_t;
     cmd_names names;
     
     handler_t handler;
@@ -67,10 +68,10 @@ namespace detail
       return(*this);
     }
     
-    bool invoke(int playerid, util::strings& args) const
+    bool invoke(int playerid, const std::string& cmd) const
     {
       if(handler != NULL)
-	return handler(playerid, args);
+        return handler(playerid, cmd);
       return false;
     }
   };
@@ -79,15 +80,9 @@ namespace detail
 
 
 
-class commands
+class commands : public util::singleton<commands>
 {
   // singleton
-private:
-  commands() {}
-  static commands * instance;
-public:
-  static commands * get_instance();
-  static void rm_instance();
   
 private:
   typedef std::vector<detail::command> cmds_t;
@@ -98,7 +93,7 @@ public:
   {
     cmds.push_back(cmd);
   }*/
-  inline void add(const detail::command& cmd)
+  inline void add(detail::command cmd)
   {
     cmds.push_back(cmd);
   }

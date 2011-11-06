@@ -12,7 +12,7 @@ extern void new_race();
 
 INIT
 {
-  REGISTER_COMMAND2(MAKE_COMMAND([](int playerid, util::strings& args) -> bool
+  REGISTER_COMMAND2(MAKE_COMMAND([](int playerid, const std::string&) -> bool
   {
     if(voted.find(playerid) != voted.end())
       return true;

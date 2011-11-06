@@ -95,23 +95,23 @@ static void on_player_text(int playerid, std::string& text)
       //printf("%c %d\n", tmp, tmp);
       if(islower_lat(tmp))
       {
-	tmp -= 'a';
-	tr = 0; // eng
+        tmp -= 'a';
+        tr = 0; // eng
       }
       else if(isupper_lat(tmp))
       {
-	tmp -= 'A';
-	tr = 1; // ENG
+        tmp -= 'A';
+        tr = 1; // ENG
       }
       else if(islower_cyr(tmp))
       {
-	tmp -= 'à';
-	tr = 2; // rus
+        tmp -= 'à';
+        tr = 2; // rus
       }
       else if(isupper_cyr(tmp))
       {
-	tmp -= 'À';
-	tr = 3; // RUS
+        tmp -= 'À';
+        tr = 3; // RUS
       }
       else // non-alpha
       {
@@ -136,14 +136,14 @@ static void on_player_text(int playerid, std::string& text)
       }
 
       if(tr == 0 || tr == 1)
-	text[i] = en_ru_tralphabet[tmp];
+        text[i] = en_ru_tralphabet[tmp];
       else if(tr == 2 || tr == 3)
-	text[i] = ru_en_tralphabet[tmp];
+        text[i] = ru_en_tralphabet[tmp];
 
       if(tr == 1)
-	text[i] = text[i] - 'a' + 'A';
+        text[i] = text[i] - 'a' + 'A';
       else if(tr == 3)
-	text[i] = text[i] - 'à' + 'À';
+        text[i] = text[i] - 'à' + 'À';
       //printf("- %d %c\n", tr, text[i]);
     }
     text.erase(len);

@@ -155,7 +155,7 @@ INIT
     r->proccess_cp(id);
   });
 
-  REGISTER_COMMAND("kill", [](int playerid, util::strings&) -> bool
+  REGISTER_COMMAND("kill", [](int playerid, const std::string&) -> bool
   {
     native::set_player_health(playerid, 0.f);
     return true;
