@@ -3,8 +3,8 @@
 
 #include "config.h"
 
-#ifndef CPP_0X
-#error this signal lib works only with c++0x on
+#ifdef BOOST_NO_VARIADIC_TEMPLATES 
+#error required variadic templates support
 #endif
 
 #include <list>
@@ -41,13 +41,13 @@ public:
   {
     return connect_back(f);
   }
-  bool remove(slot_t f)
+  inline bool remove(slot_t f)
   {
     slots.remove(f);
     return true;
   }
   
-  void invoke(Args... args)
+  inline void invoke(Args... args)
   {
     if(slots.empty())
       return;

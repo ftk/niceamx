@@ -12,7 +12,7 @@
 //#include "basic_signal.hpp"
 #include "util/singleton.hpp"
 
-#ifdef CPP_0X
+#ifndef BOOST_NO_VARIADIC_TEMPLATES 
 #include "signal.hpp"
 #else
 #include <boost/signals2.hpp>
@@ -26,7 +26,7 @@
 
 #include <string>
 
-#ifdef CPP_0X
+#ifndef BOOST_NO_VARIADIC_TEMPLATES 
 #define SIGNALS_SIGNAL_TYPE signals::signal
 #define SIGNALS_SIGNAL_WRAPPER(...) SIGNALS_SIGNAL_TYPE<  __VA_ARGS__ >
 #define SIGNALS_SIGNAL_SIMPLE_WRAPPER(...) signals::signal_simple < __VA_ARGS__ >
