@@ -8,6 +8,11 @@
 
 #include <functional>
 #include <vector>
+#include <string>
+#include <iterator>
+
+#include <boost/tokenizer.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace api {
 //
@@ -78,8 +83,6 @@ namespace detail
   
 }
 
-
-
 class commands : public util::singleton<commands>
 {
   // singleton
@@ -103,6 +106,22 @@ public:
 };
 
 
+class tokenizer : public boost::tokenizer<boost::char_separator<char> > 
+{
+public:
+  tokenizer(const std::string& s) : boost::tokenizer<boost::char_separator<char> >(s.begin(), s.end(), boost::char_separator<char>(" "))
+  {
+  }
+  
+  template <typename Target>
+  Target at(int pos)
+  {
+    auto it = begin();
+    std::advance(it, pos);
+    return boost::lexical_cast<Target>(*it);
+  }
+  
+};
 
 /*
 

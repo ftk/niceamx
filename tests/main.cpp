@@ -3,10 +3,12 @@
 #include "util/notify.h"
 #include "destruct.h"
 
+#include "api/cmd.hpp"
+
 #include <ctime>
 #include <cstdlib>
 #include <cassert>
-#include "util/strings.h"
+#include <boost/lexical_cast.hpp>
 
 int main()
 {
@@ -21,7 +23,7 @@ int main()
   assert(nullptr == 0);
   bool isend = false;
   NOTIFY("ggg");
-  REGISTER_TIMER(50, [](){ util::notify(util::convert_to_string(util::get_walltime())); } );
+  REGISTER_TIMER(50, [](){ util::notify(boost::lexical_cast<std::string>(util::get_walltime())); } );
   while(!isend)
   {
     util::sleep(5);
@@ -29,6 +31,9 @@ int main()
     
     isend = true;
   }
+  INVOKE_COMMANDS(0, "/kill");
+  INVOKE_COMMANDS(0, "/v 555");
+  INVOKE_COMMANDS(0, "/a");
   MAINBOX->plugin_unload();
   destruct_all();
   return 0;

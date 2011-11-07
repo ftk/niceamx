@@ -4,8 +4,10 @@
 
 #include <string>
 #include <cassert>
+#include <iterator>
 
 #include <boost/tokenizer.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace api {
 //
@@ -55,7 +57,6 @@ bool commands::proccess_raw(int playerid, const std::string& rawstr)
   // TODO: check if player is invalid
   if(rawstr.empty())
     return false;
-  
   assert(rawstr.at(0) == '/');
   /*
   util::strings args;
@@ -64,7 +65,7 @@ bool commands::proccess_raw(int playerid, const std::string& rawstr)
   
   std::string & name(args.at(0)); // name: "/name param param"
   */
-  boost::tokenizer<> tok(rawstr);
+  tokenizer tok(rawstr);
   std::string name(*(tok.begin()));
   assert(name.at(0) == '/');
   name.erase(0, 1); // remove the '/'
@@ -89,6 +90,16 @@ bool commands::proccess_raw(int playerid, const std::string& rawstr)
   
    return false; // no such command
 }
+
+/*
+template <typename Target>
+Target tokenizer::at(int pos)
+{
+  auto it = begin();
+  std::advance(it, pos);
+  return boost::lexical_cast<Target>(*it);
+}
+*/
 
 
 }
