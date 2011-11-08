@@ -5,7 +5,7 @@ sources::	../api/*.cpp ../system/*.cpp ../system/pawn/*.cpp ../system/SDK/*.cpp 
 modules::	../modules/*.cpp
 flags::		/c /nologo /W3 /WX- /O2 /Ob2 /Oi /Ot /Ox /GL /Gm- /EHsc /GS /Gy /Zc:wchar_t /Zc:forScope
 ldflags::	/nologo /link /OUT:"niceamx.dll" /DEF:win/plugin.def /INCREMENTAL:NO /NOLOGO /DLL /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /DYNAMICBASE /NXCOMPAT /MACHINE:X86
-objdir::	obj
+objdir::	obj/win
 objext::	obj
 compiler::	cl.exe
 msvc::		1

@@ -1,0 +1,10 @@
+project::   niceamx.dll
+includes::  ../ ../system $BOOST_ROOT
+defines::   NDEBUG
+sources::   ../api/*.cpp ../system/*.cpp ../system/pawn/*.cpp ../system/SDK/*.cpp ../util/*.cpp
+modules::   ../modules/*.cpp
+flags::     -c -m32 -O3 -std=c++0x -fvisibility=hidden -fvisibility-inlines-hidden -pipe -fpermissive
+ldflags::   -m32 -s -shared -pipe -static-libstdc++ -static-libgcc -Wl,--kill-at --def win/plugin.def
+objdir::    obj
+compiler::  g++
+pch::       ../api/parsers.hpp ../api/race_details.hpp ../system/signals.hpp ../system/samp.h ../system/pawn/natives.h

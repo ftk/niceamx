@@ -33,6 +33,23 @@
 #endif
 
 
+#if !defined HAVE_STDINT_H
+  // Attempt to detect stdint.h
+  #if (!defined __STDC__ && __STDC_VERSION__ >= 199901L)\
+    || (defined _MSC_VER_ && _MSC_VER >= 1600) \
+    || defined __GNUC__
+    #define HAVE_STDINT_H
+  #endif
+#endif
+
+#include <stddef.h> // Fix for undefined size_t
+
+#if !defined AMX_NODYNLOAD
+  #define AMX_NODYNLOAD
+#endif
+
+
+
 #if defined HAVE_STDINT_H
   #include <stdint.h>
 #else
@@ -57,13 +74,13 @@
       typedef unsigned short int  uint16_t;
       typedef int               int32_t;
       typedef unsigned int      uint32_t;
-      #if defined __WIN32__ || defined _WIN32 || defined WIN32
-        typedef __int64	          int64_t;
-        typedef unsigned __int64  uint64_t;
-        #define HAVE_I64
-      #elif defined __GNUC__
+      #if defined __GNUC__
         typedef long long         int64_t;
         typedef unsigned long long uint64_t;
+        #define HAVE_I64
+      #elif defined __WIN32__ || defined _WIN32 || defined WIN32
+        typedef __int64	          int64_t;
+        typedef unsigned __int64  uint64_t;
         #define HAVE_I64
       #endif
     #endif
