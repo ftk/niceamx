@@ -72,7 +72,7 @@ bool commands::proccess_raw(int playerid, const std::string& rawstr)
   
   util::hash_t hash = util::hash(name);
   
-  
+  // TODO: replace with std::(multi)map<hash, invoker> for faster search
   //typedef cmds_t::const_iterator iterator1;
   for(auto it1 = cmds.cbegin(), en1 = cmds.cend(); it1 != en1; ++it1)
   {
@@ -83,7 +83,7 @@ bool commands::proccess_raw(int playerid, const std::string& rawstr)
       if(hash == it2->hash)
       {
         // we have found the command
-        return it1->invoke(playerid, rawstr);
+        return it1->invoke(playerid, rawstr); // remove 'return' if we have >1 command handler
       }
     }
   }
