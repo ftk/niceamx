@@ -7,4 +7,4 @@ flags::		-c -m32 -O3 -std=c++0x -march=native -fvisibility=hidden -fvisibility-i
 ldflags::	-m32 -s -shared -pipe -static-libstdc++ -static-libgcc -Wl,--no-undefined
 objdir::	obj
 compiler::	g++
-pch::		../api/parsers.hpp ../api/race_details.hpp ../system/signals.hpp ../system/samp.h ../system/pawn/natives.h
+pch::		../system/config.h ../system/samp.h
