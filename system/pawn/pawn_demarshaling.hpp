@@ -13,55 +13,55 @@ namespace pawn {
     template<int param_id, typename T>
     class demarh_t
     {
-	T val;
+        T val;
     public:
-	demarh_t(AMX* amx, cell* params)
-	{
-	    assert(params[0] >= param_id * sizeof(cell));
-	    val = static_cast<T>(params[param_id + 1]);
-	}
-	T get()
-	{
-	    return val;
-	}
+        demarh_t(AMX* amx, cell* params)
+        {
+            assert(params[0] >= param_id * sizeof(cell));
+            val = static_cast<T>(params[param_id + 1]);
+        }
+        T get()
+        {
+            return val;
+        }
     };
 
     template<int param_id>
     class demarh_t<param_id, bool>
     {
-	bool val;
+        bool val;
     public:
-	demarh_t(AMX* amx, cell* params)
-	{
-	    assert(params[0] >= param_id * sizeof(cell));
-	    val = 0 != params[param_id + 1];
-	}
-	bool get()
-	{
-	    return val;
-	}
+        demarh_t(AMX* amx, cell* params)
+        {
+            assert(params[0] >= param_id * sizeof(cell));
+            val = 0 != params[param_id + 1];
+        }
+        bool get()
+        {
+            return val;
+        }
     };
 
     template<int param_id>
     class demarh_t<param_id, std::string>
     {
-	std::string val;
+        std::string val;
     public:
-	demarh_t(AMX* amx, cell* params)
-	{
-	    assert(params[0] >= param_id * sizeof(cell));
-	    char buff[129];
-	    cell* cstr;
+        demarh_t(AMX* amx, cell* params)
+        {
+            assert(params[0] >= param_id * sizeof(cell));
+            char buff[129];
+            cell* cstr;
 
-	    amx_GetAddr(amx, params[param_id + 1], &cstr);
-	    amx_GetString(buff, cstr, 0, sizeof(buff)/sizeof(buff[0]));
-	    val = std::string(buff);
-	    
-	}
-	std::string& get()
-	{
-	    return val;
-	}
+            amx_GetAddr(amx, params[param_id + 1], &cstr);
+            amx_GetString(buff, cstr, 0, sizeof(buff)/sizeof(buff[0]));
+            val = std::string(buff);
+            
+        }
+        std::string& get()
+        {
+            return val;
+        }
     };
 
 } // namespace pawn {
