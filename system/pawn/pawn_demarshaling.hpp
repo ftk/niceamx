@@ -17,7 +17,7 @@ namespace pawn {
     public:
         demarh_t(AMX* amx, cell* params)
         {
-            assert(params[0] >= param_id * sizeof(cell));
+            assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
             val = static_cast<T>(params[param_id + 1]);
         }
         T get()
@@ -33,7 +33,7 @@ namespace pawn {
     public:
         demarh_t(AMX* amx, cell* params)
         {
-            assert(params[0] >= param_id * sizeof(cell));
+            assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
             val = 0 != params[param_id + 1];
         }
         bool get()
@@ -49,7 +49,7 @@ namespace pawn {
     public:
         demarh_t(AMX* amx, cell* params)
         {
-            assert(params[0] >= param_id * sizeof(cell));
+            assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
             char buff[129];
             cell* cstr;
 
