@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-void destruct_all()
+DESTRUCTOR void destruct_all()
 {
   using namespace api;
   using namespace signals;

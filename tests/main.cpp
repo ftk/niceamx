@@ -35,6 +35,6 @@ int main()
   INVOKE_COMMANDS(0, "/v 555");
   INVOKE_COMMANDS(0, "/a");
   MAINBOX->plugin_unload();
-  destruct_all();
+  INVOKE_DESTRUCTOR();
   return 0;
 }

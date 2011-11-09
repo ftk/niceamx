@@ -52,7 +52,7 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload()
     MAINBOX->plugin_unload();
 
     //pawn::logprint("plugin unload");
-    destruct_all();
+    INVOKE_DESTRUCTOR();
     pawn::logprintf = 0;
 }
 
