@@ -38,8 +38,9 @@
 
 
 #ifdef __GNUC__ // supports __attribute__((constructor))
-#define HAS_CONSTRUCTOR
-#define CONSTRUCTOR __attribute__((constructor))
+// unsafe (?)
+//#define HAS_CONSTRUCTOR
+//#define CONSTRUCTOR __attribute__((constructor))
 #endif
 
 

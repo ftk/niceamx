@@ -75,8 +75,8 @@ INIT
   REGISTER_COMMAND("v", [](int id, const std::string& s) -> bool
   {
     float x, y, z;
-    native::get_player_pos(id, x, y, z);
-    native::create_vehicle(/*util::get_param<int>(s, 1)*/api::tokenizer(s).at<int>(1), x, y, z, 0, -1, -1, 60);
+    native::get_player_pos(id, x, y, z); // TODO: produces a lot of valgrind errors in test mode
+    native::create_vehicle(api::tokenizer(s).at<int>(1), x, y, z, 0, -1, -1, 60);
     return true;
   });
   //native::get_player_facing_angle(11);

@@ -12,6 +12,10 @@
 
 DESTRUCTOR void destruct_all()
 {
+//#ifndef NDEBUG
+  //std::cout << "Destructor called..." << std::endl;
+//#endif
+  
   using namespace api;
   using namespace signals;
 
