@@ -138,7 +138,7 @@ namespace native
     }
     float get_player_facing_angle (int player_id)
     {
-        float rz;
+        float rz(0.f);
         DEBUG_NATIVE(/*f*/get_player_facing_angle, /*p*/player_id SEPARATOR  rz);
         return rz;
     }
@@ -167,7 +167,7 @@ namespace native
     }
     float get_player_health (int player_id)
     {
-        float rezult;
+        float rezult(0.f);
         DEBUG_NATIVE(/*f*/get_player_health, /*p*/player_id SEPARATOR  rezult);
         return rezult;
     }
@@ -177,7 +177,7 @@ namespace native
     }
     float get_player_armour (int player_id)
     {
-        float rezult;
+        float rezult(0.f);
         DEBUG_NATIVE(/*f*/get_player_armour, /*p*/player_id SEPARATOR  rezult);
         return rezult;
     }
@@ -301,7 +301,7 @@ namespace native
     }
     std::string get_player_name (int player_id)
     {
-        std::string rezult;
+        std::string rezult = "";
         DEBUG_NATIVE(/*f*/get_player_name, /*p*/player_id SEPARATOR  rezult SEPARATOR  pawn::string_len::val);
         return rezult;
     }
@@ -1008,7 +1008,7 @@ namespace native
     }
     float get_vehicle_zangle (int vehicle_id)
     {
-        float rz;
+        float rz(0.f);
         DEBUG_NATIVE(/*f*/get_vehicle_zangle, /*p*/vehicle_id SEPARATOR  rz);
         return rz;
     }
@@ -1054,7 +1054,7 @@ namespace native
     }
     float get_vehicle_health (int vehicle_id)
     {
-        float health;
+        float health(0.f);
         DEBUG_NATIVE(/*f*/get_vehicle_health, /*p*/vehicle_id SEPARATOR  health);
         return health;
     }

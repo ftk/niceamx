@@ -36,6 +36,13 @@
 #define SIGNALS_SIGNAL_SIMPLE_WRAPPER(...) SIGNALS_SIGNAL_WRAPPER( __VA_ARGS__ )
 #endif
 
+
+#ifdef __GNUC__ // supports __attribute__((constructor))
+#define HAS_CONSTRUCTOR
+#define CONSTRUCTOR __attribute__((constructor))
+#endif
+
+
 namespace signals
 {
 
@@ -74,8 +81,9 @@ namespace signals
     #undef SIG
 
     public:
-      
+      #ifndef HAS_CONSTRUCTOR
       SIGNALS_SIGNAL_SIMPLE_WRAPPER() init_container;
+      #endif
       
     public:
       /*
@@ -92,20 +100,26 @@ namespace signals
 
 
 #define MAINBOX (signals::box_t::get_instance())
-#define INITBOX (&(MAINBOX->init_container))
 
 #define GET_CALLBACK(cb) (MAINBOX->cb) // returns signal object ( for internal use )
 
 // very simple signal library replacement
 #define INVOKE_CALLBACK(cb,...) GET_CALLBACK(cb)(__VA_ARGS__) //MAINBOX->cb(__VA_ARGS__)
-#define INVOKE_INIT() ((*INITBOX)())
 
+#ifdef HAS_CONSTRUCTOR
+#define INVOKE_INIT() (static_cast<void>(0)) // do nothing
+#define INITBOX 
+#else
+#define INVOKE_INIT() ((*INITBOX)())
+#define INITBOX (&(MAINBOX->init_container))
+#endif
 
 
 #define SIGNALS_LOCAL_FN static // do not export
 
+
 #define REGISTER_MODULE(f) \
-SIGNALS_LOCAL_FN bool BOOST_PP_CAT(_is_registered_, __LINE__) = (INITBOX->connect(f), true) \
+SIGNALS_LOCAL_FN const bool BOOST_PP_CAT(_is_registered_, __LINE__) = (INITBOX->connect(f), true) \
 /* */
 /*
  * Usage:
@@ -113,11 +127,18 @@ SIGNALS_LOCAL_FN bool BOOST_PP_CAT(_is_registered_, __LINE__) = (INITBOX->connec
  * * REGISTER_MODULE(&func);
  */
 
+#ifdef HAS_CONSTRUCTOR
+#define INIT \
+CONSTRUCTOR SIGNALS_LOCAL_FN void BOOST_PP_CAT(_init_func_, __LINE__)(); \
+CONSTRUCTOR SIGNALS_LOCAL_FN void BOOST_PP_CAT(_init_func_, __LINE__)() \
+/* */
+#else
 #define INIT \
 SIGNALS_LOCAL_FN void BOOST_PP_CAT(_init_func_, __LINE__)(); \
 REGISTER_MODULE(BOOST_PP_CAT(&_init_func_, __LINE__)); \
 SIGNALS_LOCAL_FN void BOOST_PP_CAT(_init_func_, __LINE__)() \
 /* */
+#endif
 /*
  * Usage: INIT { code(); }
  */
