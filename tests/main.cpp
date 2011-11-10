@@ -21,15 +21,24 @@ int main()
   MAINBOX->on_dialog_response(10, 1, 1, 0, "a");
   */
   assert(nullptr == 0);
-  bool isend = false;
+  volatile bool isend = false;
   NOTIFY("ggg");
-  REGISTER_TIMER(50, [](){ util::notify(boost::lexical_cast<std::string>(util::get_walltime())); } );
+  REGISTER_TIMER(100, [](){ util::notify(boost::lexical_cast<std::string>(util::get_walltime())); } );
+  
+  auto lambda = []() { util::notify("muhaha"); };
+  
+  typedef signals::timers_container_t::timer timer;
+  timer timer1 { 1000, lambda }; // c++11 syntax
+  timer timer2 = { 1001, []() {} };
+  
+  REGISTER_TIMER2(timer1);
+  REGISTER_TIMER2(timer2);
   while(!isend)
   {
     util::sleep(5);
     MAINBOX->timers.proccess(5);
     
-    isend = true;
+    //isend = true;
   }
   INVOKE_COMMANDS(0, "/kill");
   INVOKE_COMMANDS(0, "/v 555");

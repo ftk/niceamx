@@ -151,18 +151,6 @@ MAINBOX->cb.connect(fn) \
 #define REGISTER_CB(cb) REGISTER_CALLBACK(cb, &cb) // register callback with the same name
 
 
-/*
-//#define REGISTER_TIMER(ms,fn) \
-MAINBOX->BOOST_PP_CAT(timer, ms).connect(fn)
-*/
-
-#define MAKE_TIMER(ms,fn) signals::timers_container_t::timer(ms, fn) // calling constructor to make timer ( for internal use )
-
-#define REGISTER_TIMER2(obj) REGISTER_CALLBACK(timers, obj)
-#define REGISTER_TIMER(ms,fn) REGISTER_TIMER2(MAKE_TIMER(ms, fn))
-
-#define REMOVE_TIMER2(obj) MAINBOX->timers.remove(obj)
-#define REMOVE_TIMER(ms,fn) REMOVE_TIMER2(MAKE_TIMER(ms, fn))
 
 /*
 //#define _MAKE_CB(fnname,args,cb) \

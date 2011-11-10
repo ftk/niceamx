@@ -32,13 +32,15 @@ public:
         assert(timeout_ >= 0L);
       }
     private:
-      void invoke()
+      inline void invoke()
       {
         return func();
       }
 
+    public:
+      //bool operator==(const timers_container_t::timer& rhs) const;
+      
       friend class timers_container_t;
-      friend bool operator==(const timers_container_t::timer& l, const timers_container_t::timer& r);
     };
 
     typedef timer slot_t;
@@ -49,8 +51,7 @@ public:
 
     timers_container_t() {}
 
-    bool connect(slot_t);
-    bool remove(slot_t);
+    void connect(slot_t);
     void proccess(int elapsed);
 
     inline void operator () (int elapsed = 0)
@@ -60,11 +61,6 @@ public:
 
 };
 
-inline bool operator==(const timers_container_t::timer& l, const timers_container_t::timer& r)
-{
-  return(l.timeout == r.timeout && (l.func.target<void *>() == r.func.target<void *>()));
-  //return true;
-}
 
 
 class timer_stop // used as exception
@@ -72,5 +68,16 @@ class timer_stop // used as exception
 
 
 }
+
+/*
+//#define REGISTER_TIMER(ms,fn) \
+MAINBOX->BOOST_PP_CAT(timer, ms).connect(fn)
+*/
+
+#define MAKE_TIMER(ms,fn) signals::timers_container_t::timer(ms, fn) // calling constructor to make timer ( for internal use )
+
+#define REGISTER_TIMER2(obj) REGISTER_CALLBACK(timers, obj)
+#define REGISTER_TIMER(ms,fn) REGISTER_TIMER2(MAKE_TIMER(ms, fn))
+
 
 #endif
