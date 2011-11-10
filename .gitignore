@@ -12,3 +12,5 @@ samp03svr*
 samp-server*
 server_log.txt
 .dropbox
+callgrind.out.*
+gmon.out

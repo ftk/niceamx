@@ -3,7 +3,7 @@ includes::	../ ../system
 defines::	_DEBUG OVERTIMER_ENABLE PRINT_OUTCOMING_NATIVES TEST_MODE
 sources::	../api/*.cpp ../system/*.cpp ../tests/*.cpp ../util/*.cpp
 modules::	../modules/*.cpp
-flags::		-c -O0 -std=c++0x -ggdb3 -pedantic -fpermissive -pipe -Wall
-ldflags::	-ggdb3 -pipe
+flags::		-c -O0 -std=c++0x -ggdb3 -pedantic -fpermissive -pipe -Wall -pg
+ldflags::	-ggdb3 -pipe -pg -Wall
 objdir::	obj/test
 compiler::	g++
