@@ -4,20 +4,20 @@
 #include "util/point.hpp"
 
 #ifndef PI
-#define PI 3.141592
+#define PI 3.1415926535897932384626433
 #endif
 
 
 namespace util {
 
 //
-inline float rad_to_deg(float rad)
+inline double rad_to_deg(double rad)
 {
-  return float(rad * (180.f / PI));
+  return double(rad * (180.f / PI));
 }
-inline float deg_to_rad(float deg)
+inline double deg_to_rad(double deg)
 {
-  return float(deg * (PI / 180.f));
+  return double(deg * (PI / 180.f));
 }
 
 struct euler;
