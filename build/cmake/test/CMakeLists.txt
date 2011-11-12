@@ -1,25 +1,31 @@
-#project(niceamx-test)
-aux_source_directory(../../../api sources)
-aux_source_directory(../../../system sources)
-aux_source_directory(../../../util sources)
+project (niceamx-test CXX C)
 
-aux_source_directory(../../../tests sources)
+set (src_dir "${CMAKE_SOURCE_DIR}/../..")
+
+aux_source_directory(${src_dir}/api sources)
+aux_source_directory(${src_dir}/system sources)
+aux_source_directory(${src_dir}/util sources)
+
+aux_source_directory(${src_dir}/tests sources)
 
 include_directories (
-  ../../../
-  ../../../system/
+  ${src_dir}/
+  ${src_dir}/system/
 )
 
 if (CMAKE_COMPILER_IS_GNUCXX)
-  add_definitions(-std=c++0x -ggdb3 -O0)
+  set (CMAKE_CXX_FLAGS "-std=c++0x")
 endif ()
 
+if (WIN32)
+    add_definitions ("-DWIN32")
+endif (WIN32)
 
 find_package (Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 
-
 add_executable(niceamx-test ${sources})
-install (TARGETS niceamx-test DESTINATION build)
+
+install (TARGETS niceamx-test DESTINATION "${CMAKE_SOURCE_DIR}/../")
 
