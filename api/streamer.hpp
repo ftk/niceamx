@@ -56,7 +56,7 @@ protected:
 protected:
   
   
-  static bool is_valid_indexes(int x_idx, int y_idx)
+  static inline bool is_valid_indexes(int x_idx, int y_idx)
   {
     return
     (
@@ -66,7 +66,7 @@ protected:
     );
   }
   
-  static bool get_indexes(float x, float y, int& x_idx, int& y_idx)
+  static inline bool get_indexes(float x, float y, int& x_idx, int& y_idx)
   {
     x_idx = int(x / STREAMER_CELL_SIZE) - STREAMER_CELL_X_OFFSET;
     y_idx = int(y / STREAMER_CELL_SIZE) - STREAMER_CELL_Y_OFFSET;
@@ -79,10 +79,7 @@ protected:
 public:
   
   
-  inline bool insert(const object * o)
-  {
-    return insert(*o);
-  }
+
   inline bool insert(const object& o)
   {
     int x_idx, y_idx;
@@ -94,16 +91,14 @@ public:
     return false;
   }
   
-  inline bool stream(const basic_player * p)
-  {
-    return stream(*p);
-  }
+
   bool stream(const basic_player& p); // returns true if each object is properly streamed
 
   void hide_all(const basic_player& p);
   
+public:
+  struct exception {};
 };
-
 
 
 }

@@ -1,6 +1,8 @@
 #ifndef API_OBJECT_HPP
 #define API_OBJECT_HPP
 
+#include "config.h"
+
 #include "player.hpp"
 #include "util/point.hpp"
 #include "util/rotation.hpp"
@@ -18,8 +20,8 @@ public:
   basic_object() {}
   virtual ~basic_object() {}
   
-  virtual bool show(basic_player *) = 0;
-  virtual bool hide(basic_player *) = 0;
+  virtual bool show(int playerid) = 0;
+  virtual bool hide(int playerid) = 0;
   
 };
 
@@ -92,25 +94,11 @@ public:
   }
     
   //
-  bool show(basic_player * pl)
-  {
-    return show(**pl);
-  }
-  bool show(const basic_player& pl)
-  {
-    return show(*pl);
-  }
+
+
   bool show(int basic_player);
-  
-  
-  bool hide(basic_player * pl)
-  {
-    return hide(**pl);
-  }
-  bool hide(const basic_player& pl)
-  {
-    return hide(*pl);
-  }
+
+
   bool hide(int playerid);
 
 

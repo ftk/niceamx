@@ -139,11 +139,11 @@ bool streamer::stream(const basic_player& p)
     std::for_each(objectszone, end, [&p, this](objects_t * zone)
     {
       if(zone)
-	if(!stream_objects(p, *zone))
-	  throw(0);
+        if(!stream_objects(p, *zone))
+          throw(exception());
     });
   }
-  catch(int)
+  catch(exception)
   {
     return false;
   }
@@ -159,7 +159,7 @@ void streamer::hide_all(const basic_player& p)
       objects_t * current = &objects[x][y];
       std::for_each(current->begin(), current->end(), [&p](object& obj)
       {
-	obj.hide(p);
+        obj.hide(p);
       });
     }
   }
@@ -180,10 +180,9 @@ bool object::show(int playerid)
 
 bool object::hide(int playerid)
 {
-  if(is_object_streamed(playerid))
+  pobjects_t::iterator it = pobjects.find(playerid);
+  if(it != pobjects.end())
   {
-    pobjects_t::iterator it = pobjects.find(playerid);
-    assert(it != pobjects.end());
     native::destroy_player_object(playerid, it->second);
     pobjects.erase(it);
   }
