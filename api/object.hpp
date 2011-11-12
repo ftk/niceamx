@@ -3,7 +3,6 @@
 
 #include "config.h"
 
-#include "player.hpp"
 #include "util/point.hpp"
 #include "util/rotation.hpp"
 
