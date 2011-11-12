@@ -61,7 +61,7 @@ public:
     for(auto it = candidates.cbegin(), en = candidates.cend(); it != en; ++it)
     {
       if(it->second > highest->second)
-	highest = it;
+        highest = it;
     }
     if(!highest->second)
       return get_random();
@@ -100,7 +100,7 @@ public:
     for(auto it = candidates.cbegin(), en = candidates.cend(); it != en; ++it)
     {
       if(it != candidates.cbegin())
-	result += static_cast<char>(lim);
+        result += static_cast<char>(lim);
       result += it->first;
     }
     return result;

@@ -46,13 +46,13 @@ public:
     {
       if(check_active(it, wt))
       {
-	fn(it->first);
+        fn(it->first);
       }
       else
       {
-	en = ptime.end();
-	if(it == en)
-	  return;
+        en = ptime.end();
+        if(it == en)
+          return;
       }
     }
   }

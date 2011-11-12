@@ -10,6 +10,7 @@
 #include "counter.hpp"
 #include "funcs.h"
 #include "cmd.hpp"
+#include "parsers.hpp"
 
 #include "util/point.hpp"
 #include "util/notify.h"
@@ -46,8 +47,8 @@ void streamer::rm_instance()
 {
     if(instance != NULL)
     {
-	delete instance;
-	instance = NULL;
+      delete instance;
+      instance = NULL;
     }
 }*/
 
@@ -246,8 +247,8 @@ void players::rm_instance()
 {
     if(instance != NULL)
     {
-	delete instance;
-	instance = NULL;
+      delete instance;
+      instance = NULL;
     }
 }*/
 
@@ -265,8 +266,8 @@ void dialogs::rm_instance()
 {
     if(instance != NULL)
     {
-	delete instance;
-	instance = NULL;
+      delete instance;
+      instance = NULL;
     }
 }*/
 

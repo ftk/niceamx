@@ -38,8 +38,8 @@ namespace detail
       assert(current_cp != NULL);
       if(current_cp->next != NULL)
       {
-	current_cp = current_cp->next;
-	return true;
+        current_cp = current_cp->next;
+        return true;
       }
       return false;
     }
@@ -60,14 +60,14 @@ namespace detail
     {
       if(current_cp == NULL)
       {
-	current_cp = new checkpoint(pos);
-	root_cp = current_cp;
+        current_cp = new checkpoint(pos);
+        root_cp = current_cp;
       }
       else
       {
-	assert(current_cp->next == NULL);
-	current_cp->next = new checkpoint(pos);
-	current_cp = current_cp->next;
+        assert(current_cp->next == NULL);
+        current_cp->next = new checkpoint(pos);
+        current_cp = current_cp->next;
       }
     }
 
@@ -80,9 +80,9 @@ namespace detail
     {
       if(root != NULL)
       {
-	delete_checkpoints(root->next);
-	root->next = NULL;
-	delete root;
+        delete_checkpoints(root->next);
+        root->next = NULL;
+        delete root;
       }
     }
     void destruct()
@@ -96,11 +96,11 @@ namespace detail
     {
       while(!s.eof())
       {
-	util::point3d pos;
-	s >> pos.x >> pos.y >> pos.z;
-	if(pos.x != 0.f && pos.y != 0.f && pos.z != 0.f)
-	  (*this)(pos);
-	//std::cout << pos.x << ' ' << pos.y << ' ' << pos.z << '\n';
+        util::point3d pos;
+        s >> pos.x >> pos.y >> pos.z;
+        if(pos.x != 0.f && pos.y != 0.f && pos.z != 0.f)
+          (*this)(pos);
+        //std::cout << pos.x << ' ' << pos.y << ' ' << pos.z << '\n';
       }
     }
     
@@ -109,9 +109,9 @@ namespace detail
       checkpoint * cp = root_cp;
       while(cp)
       {
-	util::point3d& pos = cp->pos;
-	s << pos.x << ' ' << pos.y << ' ' << pos.z << '\n';
-	cp = cp->next;
+        util::point3d& pos = cp->pos;
+        s << pos.x << ' ' << pos.y << ' ' << pos.z << '\n';
+        cp = cp->next;
       }
     }
   };
@@ -217,7 +217,7 @@ public:
     {
       finished++;
       if(finish_fn != NULL)
-	finish_fn(playerid, finished);
+        finish_fn(playerid, finished);
       part(playerid);
     }
   }

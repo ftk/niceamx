@@ -11,6 +11,8 @@
 #include <string>
 #include <istream>
 
+#include <functional>
+
 
 #include "object.hpp"
 
@@ -64,12 +66,12 @@ public:
       //int lod; // unused
       
       node() : modelid(0), //modelname(),
-	  interior(0), pos(), rot()/*, lod(-1)*/ {}
+        interior(0), pos(), rot()/*, lod(-1)*/ {}
 
-	  object to_object()
+      object to_object()
       {
-		util::euler ang = rot.to_euler();
-		return object(modelid, pos, ang, interior);
+        util::euler ang = rot.to_euler();
+        return object(modelid, pos, ang, interior);
       }
       
     };
@@ -77,38 +79,38 @@ public:
     template <typename Iterator>
     static bool parse(Iterator first, Iterator last, node& obj)
     {
-	namespace qi = boost::spirit::qi;
+        namespace qi = boost::spirit::qi;
 
         using qi::float_;
         using qi::int_;
         using boost::spirit::ascii::char_;
         using qi::_1;
-	
+
         using boost::phoenix::ref;
-	
-	
+
         bool r = PARSE_PHRASE
-            //  Begin grammar
-            (
-	      int_[ref(obj.modelid) = _1] >> ',' >>
-	      qi::lexeme[+(char_ - ',')] >> ',' >> // unused
-	      int_[ref(obj.interior) = _1] >> ',' >>
-	      float_[ref(obj.pos.x) = _1] >> ',' >>
-	      float_[ref(obj.pos.y) = _1] >> ',' >>
-	      float_[ref(obj.pos.z) = _1] >> ',' >>
-	      float_[ref(obj.rot->x) = _1] >> ',' >>
-	      float_[ref(obj.rot->y) = _1] >> ',' >>
-	      float_[ref(obj.rot->z) = _1] >> ',' >>
-	      float_[ref(obj.rot->w) = _1] >> ','
-	      //>> double_[ref(lod) = _1] // wtf
-            );
-            //  End grammar
-	
+        //  Begin grammar
+        (
+          int_[ref(obj.modelid) = _1] >> ',' >>
+          qi::lexeme[+(char_ - ',')] >> ',' >> // unused
+          int_[ref(obj.interior) = _1] >> ',' >>
+          float_[ref(obj.pos.x) = _1] >> ',' >>
+          float_[ref(obj.pos.y) = _1] >> ',' >>
+          float_[ref(obj.pos.z) = _1] >> ',' >>
+          float_[ref(obj.rot->x) = _1] >> ',' >>
+          float_[ref(obj.rot->y) = _1] >> ',' >>
+          float_[ref(obj.rot->z) = _1] >> ',' >>
+          float_[ref(obj.rot->w) = _1] >> ','
+          //>> double_[ref(lod) = _1] // wtf
+        );
+        //  End grammar
+
         return r;
     }
     
 private:
-    typedef bool (*func_t)(node &);
+    //typedef bool (*func_t)(node &);
+    typedef std::function<bool (node&)> func_t;
     
 public:
     static bool load(std::istream& s, func_t fn)
@@ -117,26 +119,26 @@ public:
       bool inst = false;
       while(getline(s, buf))
       {
-	// !!!: works only with UNIX line ends ( \n )
-	if(buf == "inst")
-	{
-	  inst = true;
-	  continue;
-	}
-	else if(buf == "end")
-	{
-	  inst = false;
-	  continue;
-	}
-	if(inst)
-	{
-	  node item;
-	  if(parse(buf.begin(), buf.end(), item))
-	  {
-	    if(!fn(item))
-	      return false;
-	  }
-	}
+        // TODO: fix: works only with UNIX line endings ( LF )
+        if(buf == "inst")
+        {
+          inst = true;
+          continue;
+        }
+        else if(buf == "end")
+        {
+          inst = false;
+          continue;
+        }
+        if(inst)
+        {
+          node item;
+          if(parse(buf.begin(), buf.end(), item))
+          {
+            if(!fn(item))
+              return false;
+          }
+        }
       }
       return true;
     }
@@ -159,8 +161,7 @@ public:
       util::point3d pos;
       util::euler rot;
       
-      node() : modelid(0),
-	  pos(), rot() {}
+      node() : modelid(0), pos(), rot() {}
 
       object to_object()
       {
@@ -171,35 +172,35 @@ public:
     template <typename Iterator>
     static bool parse(Iterator first, Iterator last, node& obj)
     {
-	namespace qi = boost::spirit::qi;
+        namespace qi = boost::spirit::qi;
 
         using qi::float_;
         using qi::int_;
         using boost::spirit::ascii::char_;
         using qi::_1;
         using boost::phoenix::ref;
-	
+
         bool r = PARSE_PHRASE
 
-            //  Begin grammar
-            (
-	      int_[ref(obj.modelid) = _1] >> ',' >>
-	      float_[ref(obj.pos.x) = _1] >> ',' >>
-	      float_[ref(obj.pos.y) = _1] >> ',' >>
-	      float_[ref(obj.pos.z) = _1] >> ',' >>
-	      float_[ref(obj.rot->x) = _1] >> ',' >>
-	      float_[ref(obj.rot->y) = _1] >> ',' >>
-	      float_[ref(obj.rot->z) = _1] >> ';'
-	      //double_[ref(lod) = _1]
-            );
-            //  End grammar
+        //  Begin grammar
+        (
+          int_[ref(obj.modelid) = _1] >> ',' >>
+          float_[ref(obj.pos.x) = _1] >> ',' >>
+          float_[ref(obj.pos.y) = _1] >> ',' >>
+          float_[ref(obj.pos.z) = _1] >> ',' >>
+          float_[ref(obj.rot->x) = _1] >> ',' >>
+          float_[ref(obj.rot->y) = _1] >> ',' >>
+          float_[ref(obj.rot->z) = _1] >> ';'
+          //double_[ref(lod) = _1]
+        );
+        //  End grammar
 
-	
         return r;
     }
 
 private:
-    typedef bool (*func_t)(node &);
+    //typedef bool (*func_t)(node &);
+    typedef std::function<bool (node&)> func_t;
     
 public:
     static bool load(std::istream& s, func_t fn)
@@ -207,12 +208,12 @@ public:
       std::string buf;
       while(getline(s, buf))
       {
-	node item;
-	if(parse(buf.begin(), buf.end(), item))
-	{
-	  if(!fn(item))
-	    return false;
-	}
+        node item;
+        if(parse(buf.begin(), buf.end(), item))
+        {
+          if(!fn(item))
+            return false;
+        }
       }
       
       return true;
