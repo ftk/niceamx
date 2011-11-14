@@ -1,0 +1,1 @@
+Some code stolen from https://gta-paradise-sa.googlecode.com/svn/trunk/src/cplusplus/freezone-samp/src/core/samp/
