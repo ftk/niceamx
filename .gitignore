@@ -9,8 +9,9 @@ CMakeCache.txt
 cmake_install.cmake
 niceamx-test
 samp03svr*
-samp-server*
+samp-*.exe
 server_log.txt
 .dropbox
 callgrind.out.*
 gmon.out
+CPack*.cmake
