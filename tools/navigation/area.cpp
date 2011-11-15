@@ -17,6 +17,7 @@ void area::init(const char * filename)
   // check
   assert(hdr.nodes == hdr.vehicle_nodes + hdr.ped_nodes);
   assert(hdr.nodes > 0);
+  assert(hdr.links > 0);
   
   // fill
 #define FILL(type, var, count, stream) var = new type [ count ] ; res = fread( var, sizeof ( type ), count, stream ) ; assert ( res == count ) ;
@@ -53,11 +54,12 @@ void area::init(const char * filename)
   {
     assert(ped_nodes[i].node == i + hdr.vehicle_nodes);
   }
+  /*
   for(size_t i = 0; i < hdr.links; i++)
   {
-    printf("%d %d\n", links[i].node, i);
-    assert(links[i].node == i);
-  }
+    //printf("%d %d %d\n", links[i].area, links[i].node, i);
+    //assert(links[i].node == i);
+  }*/
   
   // done
   fclose(fp);
@@ -81,10 +83,12 @@ void areas::init(const char * path)
     {
       assert(a[i].ped_nodes[j].area == i);
     }
+    /*
     for(size_t j = 0; j < a[i].hdr.links; j++)
     {
       assert(a[i].links[j].area == i);
     }
+    */
 
   }
 }
