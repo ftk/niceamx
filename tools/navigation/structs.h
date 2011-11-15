@@ -24,14 +24,14 @@ BOOST_STATIC_ASSERT(sizeof(header) == 20);
 #pragma pack(1)
 struct path_node
 {
-  uint32_t mem; // unused
   uint32_t unused1; // unused
+  uint32_t unused2; // unused
   
   int16_t x;
   int16_t y;
   int16_t z;
   
-  int16_t unused2; // unused
+  int16_t unused3; // unused
   
   uint16_t link;
   uint16_t area;
@@ -43,9 +43,9 @@ struct path_node
   struct flags_t // bitfield, uint32_t
   {
     unsigned links : 4; // links from (node::link) to (node::link + node::flags::links)
-    unsigned traffic : 2;
-    
-    unsigned : 23; // unused
+    unsigned traffic : 2; // unused
+    // TODO: add more flags
+    unsigned : 24; // unused
   } flags;
   BOOST_STATIC_ASSERT(sizeof(flags_t) == 4);
 };

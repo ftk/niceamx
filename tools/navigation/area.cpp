@@ -44,7 +44,56 @@ void area::init(const char * filename)
   FILL(link_len, link_lens, hdr.links, fp)
   
 #undef FILL
+  // check
+  for(size_t i = 0; i < hdr.vehicle_nodes; i++)
+  {
+    assert(vehicle_nodes[i].node == i);
+  }
+  for(size_t i = 0; i < hdr.ped_nodes; i++)
+  {
+    assert(ped_nodes[i].node == i + hdr.vehicle_nodes);
+  }
+  for(size_t i = 0; i < hdr.links; i++)
+  {
+    printf("%d %d\n", links[i].node, i);
+    assert(links[i].node == i);
+  }
+  
   // done
   fclose(fp);
   initialized = true;
 }
+
+
+void areas::init(const char * path)
+{
+  for(size_t i = 0; i < MAX_AREAS; i++)
+  {
+    char file[100];
+    sprintf(file, "%s/NODES%d.dat", path, i);
+    a[i].init(file);
+    // check
+    for(size_t j = 0; j < a[i].hdr.vehicle_nodes; j++)
+    {
+      assert(a[i].vehicle_nodes[j].area == i);
+    }
+    for(size_t j = 0; j < a[i].hdr.ped_nodes; j++)
+    {
+      assert(a[i].ped_nodes[j].area == i);
+    }
+    for(size_t j = 0; j < a[i].hdr.links; j++)
+    {
+      assert(a[i].links[j].area == i);
+    }
+
+  }
+}
+
+void get_position(path_node node, double& x, double& y, double& z)
+{
+  // divide by 8
+  x = static_cast<double>(node.x) / 8.0;
+  y = static_cast<double>(node.y) / 8.0;
+  z = static_cast<double>(node.z) / 8.0;
+}
+

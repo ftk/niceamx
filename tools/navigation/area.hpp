@@ -1,15 +1,16 @@
 #ifndef AREA_HPP
 #define AREA_HPP
 
-#define MAX_AREAS 64
+#define MAX_AREAS 64 // 8x8 squares
 
 
 #include "structs.h"
 
+void get_position(path_node node, double& x, double& y, double& z);
+
 class area // holds one area (one NODES*.dat file)
 {
-private:
-  
+public:
   header hdr;
 
   path_node * vehicle_nodes;
@@ -21,6 +22,7 @@ private:
   navi_link * navi_links; // unused
   link_len * link_lens;
   
+private:  
   bool initialized;
 public:
   area() : initialized(false) {}
@@ -44,6 +46,18 @@ public:
       delete [] link_lens;
     }
   }
+  
+};
+
+class areas
+{
+private:
+  area a[MAX_AREAS];
+  
+public:
+  void init(const char * path);
+  
+  
 };
 
 
