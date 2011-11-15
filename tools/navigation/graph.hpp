@@ -56,7 +56,25 @@ public:
   
   vertex find_nearest(double x, double y, double z)
   {
+    double min_dist = 1000000.0;
+    vertex res;
     
+    for(auto it = G.list.begin(); it != G.list.end(); ++it)
+    {
+      double x1 = it->first.x - x;
+      double y1 = it->first.y - y;
+      double z1 = it->first.z - z;
+      
+      double dist = x1 * x1 + y1 * y1 + z1 * z1;
+      if(dist < min_dist)
+      {
+        min_dist = dist;
+        res = it->first;
+      }
+    }
+    
+    assert(res != vertex());
+    return res;
   }
   
   
@@ -85,15 +103,18 @@ public:
     }
     dist[s] = 0;
     
-    for(auto it = G.list.begin(); it != G.list.end(); ++it)
+    for(int i = 0; i < G.list.size(); i++)
     {
-      for(auto it2 : it->second)
+      for(auto it = G.list.begin(); it != G.list.end(); ++it)
       {
-        vertex v = it->first, u = it2.tail;
-        if(dist[v] >= dist[u] + it2.weight)
+        for(auto it2 : it->second)
         {
-          dist[v] = dist[u] + it2.weight;
-          previous[v] = u;
+          vertex v = it->first, u = it2.tail;
+          if(dist[v] >= dist[u] + it2.weight)
+          {
+            dist[v] = dist[u] + it2.weight;
+            previous[v] = u;
+          }
         }
       }
     }
