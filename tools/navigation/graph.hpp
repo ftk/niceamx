@@ -10,6 +10,7 @@
 #include <queue>
 
 #include "progress.hpp"
+#include <cstdio>
 
 struct vertex
 {
@@ -98,6 +99,7 @@ public:
   
   void calculate(vertex s)
   {
+    printf("calculating paths for %u nodes", G.list.size());
     for(auto it = G.list.begin(); it != G.list.end(); ++it)
     //for(auto it : G.list)
     {
@@ -114,9 +116,10 @@ public:
       for(auto it = G.list.begin(); it != G.list.end(); ++it)
       {
         timer += 1;
+        const vertex& v = it->first;
         for(auto it2 : it->second)
         {
-          vertex v = it->first, u = it2.tail;
+          const vertex& u = it2.tail;
           if(dist[v] >= dist[u] + it2.weight)
           {
             dist[v] = dist[u] + it2.weight;
