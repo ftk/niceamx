@@ -69,6 +69,7 @@ void area::init(const char * filename)
 
 void areas::init(const char * path)
 {
+  size_t nodes = 0, links = 0;
   for(size_t i = 0; i < MAX_AREAS; i++)
   {
     char file[100];
@@ -89,7 +90,47 @@ void areas::init(const char * path)
       assert(a[i].links[j].area == i);
     }
     */
+    nodes += a[i].hdr.nodes;
+    links += a[i].hdr.links;
+  }
 
+  printf("%d nodes and %d links loaded.\n", nodes, links);
+}
+
+static int hash(path_node node)
+{
+  return node.z + (node.x << 8) + (node.y << 16);
+}
+
+static vertex node_to_vertex(path_node node)
+{
+  vertex v;
+  v.id = hash(node);
+  get_position(node, v.x, v.y, v.z);
+  return v;
+}
+
+// TODO: add ped graph
+void areas::to_graph(graph& vehicle_map)
+{
+  for(size_t i = 0; i < MAX_AREAS; i++)
+  {
+    const size_t nodes = a[i].hdr.vehicle_nodes;
+    for(size_t j = 0; j < nodes; j++)
+    {
+      const path_node node = a[i].vehicle_nodes[j];
+      vertex v = node_to_vertex(node);
+      for(size_t k = node.link; k < (node.link + node.flags.links); k++)
+      {
+        assert(k < a[i].hdr.links);
+        const path_link link = a[i].links[k];
+        const int len = a[i].link_lens[k].length;
+        assert(link.area < MAX_AREAS);
+        assert(link.node < a[link.area].hdr.vehicle_nodes);
+        const path_node adj_node = a[link.area].vehicle_nodes[link.node];
+        vehicle_map.add_adjacent_edge(v, adjacent_edge(node_to_vertex(adj_node), len));
+      }
+    }
   }
 }
 

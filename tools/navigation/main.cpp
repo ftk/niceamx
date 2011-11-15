@@ -3,6 +3,9 @@
 
 int main()
 {
-  area a21("NODES21.dat");
+  areas ars;
+  ars.init("paths");
+  graph g;
+  ars.to_graph(g);
   return 0;
 }

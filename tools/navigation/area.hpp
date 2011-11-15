@@ -5,6 +5,7 @@
 
 
 #include "structs.h"
+#include "graph.hpp"
 
 void get_position(path_node node, double& x, double& y, double& z);
 
@@ -57,7 +58,7 @@ private:
 public:
   void init(const char * path);
   
-  
+  void to_graph(graph& vehicle_map);
 };
 
 
