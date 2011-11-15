@@ -26,6 +26,12 @@ int main()
   std::cout << y.x << ' ' << y.y << ' ' << y.z << std::endl;
   path.calculate(t);
   std::cout << path.distance(y) << std::endl;
+  std::vector<vertex> p;
+  path.shortest_path(p, y);
+  for(vertex it : p)
+  {
+    std::cout << it.x << ' ' << it.y << ' ' << it.z << std::endl;
+  }
   
   return 0;
 }
