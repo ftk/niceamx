@@ -1,5 +1,14 @@
+
+#include "progress.hpp"
+
+
+
 #include "structs.h"
 #include "area.hpp"
+#include "graph.hpp"
+
+
+#include <iostream>
 
 int main()
 {
@@ -8,8 +17,11 @@ int main()
   graph g;
   ars.to_graph(g);
   
-  forbellman path(g);
-  
+  fordbellman path(g);
+  auto t = g.find_nearest(-200., -200., 0.);
+  path.calculate(t);
+  auto y = g.find_nearest(200., 200., 0.);
+  std::cout << path.distance(y) << std::endl;
   
   return 0;
 }

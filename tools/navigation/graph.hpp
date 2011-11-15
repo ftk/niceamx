@@ -1,12 +1,15 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
+#include <cassert>
+
 #include <map>
 #include <list>
 
 #include <vector>
 #include <queue>
 
+#include "progress.hpp"
 
 struct vertex
 {
@@ -59,7 +62,7 @@ public:
     double min_dist = 1000000.0;
     vertex res;
     
-    for(auto it = G.list.begin(); it != G.list.end(); ++it)
+    for(auto it = list.begin(); it != list.end(); ++it)
     {
       double x1 = it->first.x - x;
       double y1 = it->first.y - y;
@@ -103,10 +106,14 @@ public:
     }
     dist[s] = 0;
     
-    for(int i = 0; i < G.list.size(); i++)
+    progress::progress_display timer(G.list.size() * G.list.size());
+    bool changed;
+    for(size_t i = 0; i < G.list.size(); i++)
     {
+      changed = false;
       for(auto it = G.list.begin(); it != G.list.end(); ++it)
       {
+        timer += 1;
         for(auto it2 : it->second)
         {
           vertex v = it->first, u = it2.tail;
@@ -114,9 +121,12 @@ public:
           {
             dist[v] = dist[u] + it2.weight;
             previous[v] = u;
+            changed = true;
           }
         }
       }
+      if(!changed)
+        break;
     }
     
   }
