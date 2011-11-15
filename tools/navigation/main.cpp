@@ -7,5 +7,9 @@ int main()
   ars.init("paths");
   graph g;
   ars.to_graph(g);
+  
+  forbellman path(g);
+  
+  
   return 0;
 }

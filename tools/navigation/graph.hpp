@@ -4,6 +4,10 @@
 #include <map>
 #include <list>
 
+#include <vector>
+#include <queue>
+
+
 struct vertex
 {
   double x, y, z;
@@ -20,6 +24,11 @@ struct vertex
   {
     return id < rhs.id;
   }
+  
+  operator int()
+  {
+    return id;
+  }
 };
 
 struct adjacent_edge
@@ -31,6 +40,8 @@ struct adjacent_edge
   adjacent_edge(vertex a, int b) : tail(a), weight(b) {}
 };
 
+class fordbellman;
+
 class graph
 {
 private:
@@ -41,6 +52,71 @@ public:
   {
     list[head].push_back(e);
   }
+  
+  
+  vertex find_nearest(double x, double y, double z)
+  {
+    
+  }
+  
+  
+  friend class fordbellman;
 };
+
+
+class fordbellman
+{
+private:
+  graph& G;
+  std::map<vertex, size_t> dist;
+  std::map<vertex, vertex> previous;
+public:
+  fordbellman(graph& g_) : G(g_) {}
+  
+  
+  
+  void calculate(vertex s)
+  {
+    for(auto it = G.list.begin(); it != G.list.end(); ++it)
+    //for(auto it : G.list)
+    {
+      dist[it->first] = 1000000;
+      previous[it->first] = vertex();
+    }
+    dist[s] = 0;
+    
+    for(auto it = G.list.begin(); it != G.list.end(); ++it)
+    {
+      for(auto it2 : it->second)
+      {
+        vertex v = it->first, u = it2.tail;
+        if(dist[v] >= dist[u] + it2.weight)
+        {
+          dist[v] = dist[u] + it2.weight;
+          previous[v] = u;
+        }
+      }
+    }
+    
+  }
+  
+  void shortest_path(std::vector<vertex>& path, vertex dest)
+  {
+    std::deque<vertex> S;
+    vertex u = dest;
+    while(previous[u] != vertex())
+    {
+      S.push_front(u);
+      u = previous[u];
+    }
+    path.assign(S.begin(), S.end());
+  }
+  
+  size_t distance(vertex dest)
+  {
+    return dist[dest];
+  }
+};
+
 
 #endif

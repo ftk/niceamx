@@ -120,6 +120,7 @@ void areas::to_graph(graph& vehicle_map)
     {
       const path_node node = a[i].vehicle_nodes[j];
       vertex v = node_to_vertex(node);
+      assert(node.flags.links > 0 && "dead end!");
       for(size_t k = node.link; k < (node.link + node.flags.links); k++)
       {
         assert(k < a[i].hdr.links);
