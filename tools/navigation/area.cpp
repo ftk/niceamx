@@ -1,5 +1,7 @@
 #include "area.hpp"
 #include "structs.h"
+#include "progress.hpp"
+
 #include <cstdio>
 #include <cassert>
 
@@ -111,16 +113,18 @@ static vertex node_to_vertex(path_node node)
 }
 
 // TODO: add ped graph
-void areas::to_graph(graph& vehicle_map)
+void areas::to_graph(graph& vehicle_map,  int type)
 {
+  puts("processing...");
+  progress::progress_display timer(MAX_AREAS);
   for(size_t i = 0; i < MAX_AREAS; i++)
   {
     const size_t nodes = a[i].hdr.vehicle_nodes;
     for(size_t j = 0; j < nodes; j++)
     {
       const path_node node = a[i].vehicle_nodes[j];
-      if(node.type != 1)
-        continue; //boat
+      if(node.type != type)
+        continue;
       vertex v = node_to_vertex(node);
       assert(node.flags.links > 0 && "dead end!");
       for(size_t k = node.link; k < (node.link + node.flags.links); k++)
@@ -134,6 +138,8 @@ void areas::to_graph(graph& vehicle_map)
         vehicle_map.add_adjacent_edge(v, adjacent_edge(node_to_vertex(adj_node), len));
       }
     }
+    
+    timer += 1;
   }
 }
 

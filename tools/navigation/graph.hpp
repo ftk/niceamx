@@ -146,7 +146,7 @@ public:
   
   vertex find_nearest(double x, double y, double z)
   {
-    double min_dist = 1000000.0;
+    double min_dist = 36000000.0;
     vertex res;
     
     for(vertex& v : V)
@@ -163,7 +163,7 @@ public:
       }
     }
     
-    assert(res != vertex());
+    assert(res != vertex() && "couldnt find the nearest point");
     return res;
   }
   
@@ -257,7 +257,7 @@ public:
           break;
         }
       }
-      assert(v != vertex());
+      assert(v != vertex() && "not-connected graph?");
       
       S.push_front(v);
       u = previous[u];

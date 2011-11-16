@@ -58,7 +58,17 @@ private:
 public:
   void init(const char * path);
   
-  void to_graph(graph& vehicle_map);
+  enum vehicle_path_type
+  {
+    car = 1,
+    boat = 2,
+    special1 = 3,
+    special2 = 4,
+    special3 = 5,
+    special4 = 6
+  };
+  
+  void to_graph(graph& vehicle_map, int type = 1);
 };
 
 
