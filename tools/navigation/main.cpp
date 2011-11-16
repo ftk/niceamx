@@ -29,7 +29,7 @@ void write_coords(std::ostream& s, double x, double y, double z)
   s << z << std::endl;
 }
 
-void write_path(std::ostream& s, const std::vector<vertex>& path)
+void write_path(std::ostream& s, const path_t& path)
 {
   for(vertex i : path)
     write_coords(s, i.x, i.y, i.z);
@@ -49,6 +49,7 @@ int main(int argc, const char * argv[])
       ars.init("paths");
     ars.to_graph(g, type);
   }
+  std::cout << g.v_size() << " nodes and " << g.e_size() << " edges parsed" << std::endl;
   
   fordbellman path(g);
   /*
@@ -80,7 +81,7 @@ int main(int argc, const char * argv[])
   path.calculate(source);
   std::cout << "distance: " << path.distance(target) << std::endl;
   
-  std::vector<vertex> min_path;
+  path_t min_path;
   path.shortest_path(min_path, target);
   std::cout << "edges: " << min_path.size() << std::endl;
   write_path(out, min_path);

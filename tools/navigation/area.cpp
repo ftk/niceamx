@@ -119,10 +119,9 @@ void areas::to_graph(graph& vehicle_map,  int type)
   progress::progress_display timer(MAX_AREAS);
   for(size_t i = 0; i < MAX_AREAS; i++)
   {
-    const size_t nodes = a[i].hdr.vehicle_nodes;
-    for(size_t j = 0; j < nodes; j++)
+    for(size_t j = 0; j < a[i].hdr.vehicle_nodes; j++)
     {
-      const path_node node = a[i].vehicle_nodes[j];
+      const path_node& node = a[i].vehicle_nodes[j];
       if(node.type != type)
         continue;
       vertex v = node_to_vertex(node);

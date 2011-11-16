@@ -6,8 +6,6 @@
 #include <map>
 #include <list>
 
-#include <vector>
-#include <queue>
 #include <algorithm>
 
 #include "progress.hpp"
@@ -68,13 +66,14 @@ private:
 public:
   void add_adjacent_edge(vertex head, adjacent_edge e)
   {
+    add_vertex(head);
+    add_vertex(e.tail);
     add_edge({head, e.tail, e.weight});
-    assert(find_vertex(head));
-    assert(find_vertex(e.tail));
     
     list[head].push_back(e);
   }
   
+private:
   bool find_vertex(vertex& dst)
   {
     auto it = std::find(V.begin(), V.end(), dst);
@@ -95,8 +94,6 @@ public:
   
   void add_edge(edge e)
   {
-    add_vertex(e.head);
-    add_vertex(e.tail);
     
     E.push_back(e);
   }
@@ -143,11 +140,13 @@ public:
     
   }*/
   
-  
+public:
   vertex find_nearest(double x, double y, double z)
   {
     double min_dist = 36000000.0;
     vertex res;
+    
+    assert(!V.empty());
     
     for(vertex& v : V)
     {
@@ -167,10 +166,19 @@ public:
     return res;
   }
   
+  size_t v_size() const
+  {
+    return V.size();
+  }
+  size_t e_size() const
+  {
+    return E.size();
+  }
   
   friend class fordbellman;
 };
 
+typedef std::list<vertex> path_t;
 
 class fordbellman
 {
@@ -187,16 +195,13 @@ public:
   void calculate(vertex s)
   {
     size_t size = G.V.size();
-    printf("calculating paths for %d/%d nodes\n", size, G.list.size());
     //for(auto it = G.list.begin(); it != G.list.end(); ++it)
     //for(auto it : G.list)
     dist.reserve(size);
     previous.reserve(size);
     for(size_t i = 0; i < size; i++)
     {
-      //dist[it->first] = 1000000;
       dist.push_back(1000000);
-      //previous[it->first] = vertex();
       previous.push_back(-1);
     }
     assert(G.find_vertex(s));
@@ -213,7 +218,7 @@ public:
       {
         int v = e.head.id;
         int u = e.tail.id;
-        size_t tmp = dist[u] + e.weight;
+        register size_t tmp = dist[u] + e.weight;
         if(dist[v] >= tmp)
         {
           dist[v] = tmp;
@@ -221,30 +226,15 @@ public:
           changed = true;
         }
       }
-      /*
-      for(auto it = G.list.begin(); it != G.list.end(); ++it)
-      {
-        const vertex& v = it->first;
-        for(auto it2 : it->second)
-        {
-          const vertex& u = it2.tail;
-          if(dist[v] >= dist[u] + it2.weight)
-          {
-            dist[v] = dist[u] + it2.weight;
-            previous[v] = u;
-            changed = true;
-          }
-        }
-      }*/
+
       if(!changed)
         break;
     }
     
   }
   
-  void shortest_path(std::vector<vertex>& path, vertex dest)
+  void shortest_path(path_t& path, vertex dest)
   {
-    std::deque<vertex> S;
     int u = dest;
     while(previous[u] != -1)
     {
@@ -259,10 +249,9 @@ public:
       }
       assert(v != vertex() && "not-connected graph?");
       
-      S.push_front(v);
+      path.push_front(v);
       u = previous[u];
     }
-    path.assign(S.begin(), S.end());
   }
   
   size_t distance(vertex dest)
