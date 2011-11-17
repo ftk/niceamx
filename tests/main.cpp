@@ -38,10 +38,11 @@ int main()
     util::sleep(5);
     MAINBOX->timers.proccess(5);
     
-    //isend = true;
+    isend = true;
   }
   INVOKE_COMMANDS(0, "/kill");
   INVOKE_COMMANDS(0, "/v 555");
+  INVOKE_COMMANDS(0, "/v 555A");
   INVOKE_COMMANDS(0, "/a");
   MAINBOX->plugin_unload();
   INVOKE_DESTRUCTOR();

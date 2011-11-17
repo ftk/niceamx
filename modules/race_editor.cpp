@@ -11,8 +11,7 @@
 
 using namespace api;
 
-detail::race_loader * r;
-race_details * r_d;
+static detail::race_loader r;
 
 static int step_ = 0;
 
@@ -30,22 +29,21 @@ bool make_cp(int id, const std::string&)
     details << x << ' ' << y << ' ' << z << ' ' << a << '\n';
   else
   {
-    (*r)({x, y, z});
+    r({x, y, z});
   }
   if(step_ == 3)
   {
-    r_d->import_stream(details);
+    race_details r_d;
+    r_d.import_stream(details);
     std::ofstream file("race_d.txt");
-    r_d->export_stream(file);
+    r_d.export_stream(file);
   }
   return true;
 }
 
 void setup()
 {
-  r = new detail::race_loader;
   std::cout << "2" << std::endl;
-  r_d = new race_details;
   std::cout << "3" << std::endl;
   details << "400\n";
   std::cout << "4" << std::endl;
@@ -59,12 +57,10 @@ INIT
     return true;
   });
   REGISTER_COMMAND("cp", &make_cp);
-  REGISTER_COMMAND("stop", [&r, &r_d, &details](int, const std::string&) -> bool
+  REGISTER_COMMAND("stop", [&r](int, const std::string&) -> bool
   {
     std::ofstream file("race.txt");
-    r->export_stream(file);
-    delete r;
-    delete r_d;
+    r.export_stream(file);
     return true;
   });
   REGISTER_COMMAND("a", [](int id, const std::string&) -> bool
@@ -74,9 +70,16 @@ INIT
   });
   REGISTER_COMMAND("v", [](int id, const std::string& s) -> bool
   {
-    float x, y, z;
+    float x = 0.f, y = 0.f, z = 0.f;
     native::get_player_pos(id, x, y, z); // TODO: produces a lot of valgrind errors in test mode
-    native::create_vehicle(api::tokenizer(s).at<int>(1), x, y, z, 0, -1, -1, 60);
+    try
+    {
+      native::create_vehicle(api::tokenizer(s).at<int>(1), x, y, z, 0, -1, -1, 60);
+    }
+    catch(boost::bad_lexical_cast& e)
+    {
+      // wrong argument supplied
+    }
     return true;
   });
   //native::get_player_facing_angle(11);

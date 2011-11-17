@@ -3,7 +3,7 @@ includes::	../ ../system
 defines::	_DEBUG OVERTIMER_ENABLE PRINT_OUTCOMING_NATIVES
 sources::	../api/*.cpp ../system/*.cpp ../system/pawn/*.cpp ../system/SDK/*.cpp ../util/*.cpp
 modules::	../modules/*.cpp
-flags::		-c -m32 -O0 -std=c++0x -ggdb3 -pedantic -fpermissive -pipe -fPIC -Wall
+flags::		-c -m32 -O0 -std=c++0x -ggdb3 -pedantic -fpermissive -fno-strict-aliasing -pipe -fPIC -Wall
 ldflags::	-m32 -ggdb3 -pipe -shared -static-libstdc++ -static-libgcc -Wl,--no-undefined
 objdir::	obj/debug
 compiler::	g++
