@@ -351,11 +351,10 @@ namespace native
     void natives_init(AMX* amx) 
     {
 
-	typedef pawn::marh_collection_t::marhs_t::iterator iterator;
-	for(iterator it = marhs.marhs.begin(), en = marhs.marhs.end(); it != en; ++it)
+        typedef pawn::marh_collection_t::marhs_t::iterator iterator;
+        for(iterator it = marhs.marhs.begin(), en = marhs.marhs.end(); it != en; ++it)
         {
-            bool rezult = (*it)->init(amx);
-            assert(rezult && "Ќе удалось инициализировать натив. ¬озможно его нужно прописать в sys_all_call() в игровом режиме");
+            assert((*it)->init(amx) && "Ќе удалось инициализировать натив. ¬озможно его нужно прописать в sys_all_call() в игровом режиме");
         }
     }
 

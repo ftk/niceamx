@@ -186,7 +186,7 @@ link_obj()
 # move_obj
 move_obj()
 {
-  cmdline="mv -f *.${OBJEXT} ${OBJDIR}/ 2> /dev/null"
+  cmdline="mv -f *.${OBJEXT} ${OBJDIR}/"
   if [ $SHOW_ONLY -eq 0 ]
   then
     $cmdline
