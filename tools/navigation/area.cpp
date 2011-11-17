@@ -18,8 +18,8 @@ void area::init(const char * filename)
   assert(res == 1);
   // check
   assert(hdr.nodes == hdr.vehicle_nodes + hdr.ped_nodes);
-  assert(hdr.nodes > 0);
-  assert(hdr.links > 0);
+  assert(hdr.nodes >= 0);
+  assert(hdr.links >= 0);
   
   // fill
 #define FILL(type, var, count, stream) var = new type [ count ] ; res = fread( var, sizeof ( type ), count, stream ) ; assert ( res == count ) ;

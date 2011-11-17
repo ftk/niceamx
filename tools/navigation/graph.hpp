@@ -256,6 +256,7 @@ public:
   
   size_t distance(vertex dest)
   {
+    assert(dist[dest] != 1000000 && "no path");
     return dist[dest];
   }
 };
