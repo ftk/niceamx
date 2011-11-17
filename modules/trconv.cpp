@@ -1,52 +1,54 @@
 #include "samp.h"
 
-#include <cstdio>
+//#include <cstdio>
+
+// rescued from lsfr
 
 static const char en_ru_transform[][2] =
 {
-	/*
-	{ 'é', 'q' },
-	{ 'ö', 'w' },
-	{ 'ó', 'e' },
-	{ 'ê', 'r' },
-	{ 'å', 't' },
-	{ 'í', 'y' },
-	{ 'ã', 'u' },
-	{ 'ø', 'i' },
-	{ 'ù', 'o' },
-	{ 'ç', 'p' },
-	{ 'ô', 'a' },
-	{ 'û', 's' },
-	{ 'â', 'd' },
-	{ 'à', 'f' },
-	{ 'ï', 'g' },
-	{ 'ð', 'h' },
-	{ 'î', 'j' },
-	{ 'ë', 'k' },
-	{ 'ä', 'l' },
-	{ 'ÿ', 'z' },
-	{ '÷', 'x' },
-	{ 'ñ', 'c' },
-	{ 'ì', 'v' },
-	{ 'è', 'b' },
-	{ 'ò', 'n' },
-	{ 'ü', 'm' },
-	*/
-	{ '¸', '`' },
-        { '?', ',' },
-        { '/', '.' },
-	{ 'õ', '[' },
-	{ 'ú', ']' },
-	{ 'æ', ';' },
-	{ 'ý', '\''},
+    /*
+    { 'é', 'q' },
+    { 'ö', 'w' },
+    { 'ó', 'e' },
+    { 'ê', 'r' },
+    { 'å', 't' },
+    { 'í', 'y' },
+    { 'ã', 'u' },
+    { 'ø', 'i' },
+    { 'ù', 'o' },
+    { 'ç', 'p' },
+    { 'ô', 'a' },
+    { 'û', 's' },
+    { 'â', 'd' },
+    { 'à', 'f' },
+    { 'ï', 'g' },
+    { 'ð', 'h' },
+    { 'î', 'j' },
+    { 'ë', 'k' },
+    { 'ä', 'l' },
+    { 'ÿ', 'z' },
+    { '÷', 'x' },
+    { 'ñ', 'c' },
+    { 'ì', 'v' },
+    { 'è', 'b' },
+    { 'ò', 'n' },
+    { 'ü', 'm' },
+    */
+    { '¸', '`' },
+    { '?', ',' },
+    { '/', '.' },
+    { 'õ', '[' },
+    { 'ú', ']' },
+    { 'æ', ';' },
+    { 'ý', '\''},
 
-	{ '.', '/' },
-	{ '\"','@' },
-	{ '?', '&' },
-	{ ',', '?' },
-	//{ '¹', '#' },
-	{ '$', ';' },
-	{ ':', '^' }
+    { '.', '/' },
+    { '\"','@' },
+    { '?', '&' },
+    { ',', '?' },
+    //{ '¹', '#' },
+    { '$', ';' },
+    { ':', '^' }
 };
 
 
@@ -86,7 +88,7 @@ static void on_player_text(int playerid, std::string& text)
   int len = text.size();
   //printf("%d\n", len);
   if(len>3 && ((text[len-1]=='$' && text[len-2] == '^') ||
-	  (text[len-2]== ':' && text[len-1] == ';' && isletter_cyr(text[len-3]))))
+    (text[len-2]== ':' && text[len-1] == ';' && isletter_cyr(text[len-3]))))
   {
     len -= 2; // ^$
     for(int i = 0, tr = 2; i < len; i++)
@@ -115,24 +117,24 @@ static void on_player_text(int playerid, std::string& text)
       }
       else // non-alpha
       {
-	for(unsigned int j=0; j<sizeof(en_ru_transform); j++)
-	{
-	  if((tr == 2 || tr == 3) && text[i] == en_ru_transform[j][0])
-	  {
-	    text[i] = en_ru_transform[j][1];
-	    break;
-	  }
-	  else if(text[i] == en_ru_transform[j][1])
-	  {
-	    text[i] = tmp = en_ru_transform[j][0];
-	    if(tr == 1)
-		    text[i] = tmp != '¸' ? toupper_cyr(tmp) : '¨';
-	    else if(tr == 3)
-		    text[i] = toupper_lat(tmp);
-	    break;
-	  }
-	}
-	continue;
+        for(unsigned int j=0; j<sizeof(en_ru_transform); j++)
+        {
+          if((tr == 2 || tr == 3) && text[i] == en_ru_transform[j][0])
+          {
+            text[i] = en_ru_transform[j][1];
+            break;
+          }
+          else if(text[i] == en_ru_transform[j][1])
+          {
+            text[i] = tmp = en_ru_transform[j][0];
+            if(tr == 1)
+                text[i] = tmp != '¸' ? toupper_cyr(tmp) : '¨';
+            else if(tr == 3)
+                text[i] = toupper_lat(tmp);
+            break;
+          }
+        }
+        continue;
       }
 
       if(tr == 0 || tr == 1)
