@@ -20,7 +20,7 @@
 
 #define START() MAKE_OVERTIMER(MAX_CB_EXEC_TIME)
 
-#define CALL(sig,...) /*return (cell)*/ MAINBOX->sig(__VA_ARGS__); return 0
+#define CALL(sig,...) /*return (cell)*/ MAINBOX->sig(__VA_ARGS__); return 1
 #define CALL_R(sig,...) MAINBOX->sig(__VA_ARGS__)
 
 

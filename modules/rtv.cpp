@@ -23,7 +23,11 @@ INIT
     if((int)voted.size() >= needto)
     {
       msg << "Смена гонки на случайную." << std::endl;
-      new_race();
+      try
+      {
+        new_race();
+      }
+      catch(...) {}
       voted.clear();
     }
     return true;
