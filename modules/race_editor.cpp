@@ -9,11 +9,15 @@
 #include <boost/format.hpp>
 //#include "util/strings.h"
 
+#define FORMAT(arg) (boost::str(boost::format arg))
+
+namespace {
+
 using namespace api;
 
-static detail::race_loader r;
+detail::race_loader r;
 
-static int step_ = 0;
+int step_ = 0;
 
 std::stringstream details(std::stringstream::in | std::stringstream::out);
 
@@ -24,7 +28,7 @@ bool make_cp(int id, const std::string&)
   
   native::get_player_pos(id, x, y, z);
   a = native::get_player_facing_angle(id);
-  native::send_client_message(id, 0xffffffff, boost::str(boost::format("x: %1% y: %2% z: %3% a: %4%") % x % y % z % a));
+  native::send_client_message(id, 0xffffffff, FORMAT(("x: %1% y: %2% z: %3% a: %4%") % x % y % z % a));
   if(step_ == 1 || step_ == 2)
     details << x << ' ' << y << ' ' << z << ' ' << a << '\n';
   else
@@ -43,10 +47,7 @@ bool make_cp(int id, const std::string&)
 
 void setup()
 {
-  std::cout << "2" << std::endl;
-  std::cout << "3" << std::endl;
   details << "400\n";
-  std::cout << "4" << std::endl;
 }
 
 INIT
@@ -85,4 +86,4 @@ INIT
   //native::get_player_facing_angle(11);
 }
 
-
+}
