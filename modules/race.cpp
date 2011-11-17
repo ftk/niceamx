@@ -47,6 +47,19 @@ void connect_to_race(int playerid)
   //return false;
 }
 
+void show_vote(int id)
+{
+  SHOW_DIALOG(api::dialog_list, ([id](int, bool succ, int item)
+  {
+    if(succ)
+    {
+      vote.vote_up(item);
+      api::message msg;
+      *msg << native::get_player_name(id) << " проголосовал за " << vote.get(item) << std::endl;
+    }
+  }), id, "Голосование", vote.join('\n'), "Выбрать", "Отмена");
+}
+
 std::string racefile = "Tampa";
 
 void load_race()
@@ -111,14 +124,8 @@ void new_race()
       *msg << "Смена гонки через 30 секунд" << std::endl;
       REGISTER_TIMER(30 * 1000, &new_race);
     }
-    SHOW_DIALOG(api::dialog_list, ([id, &msg](int, bool succ, int item)
-    {
-      if(succ)
-      {
-        vote.vote_up(item);
-        *msg << native::get_player_name(id) << " проголосовал за " << vote.get(item) << std::endl;
-      }
-    }), id, "Голосование", vote.join('\n'), "Выбрать", "Отмена");
+    
+    show_vote(id);
   });
   throw signals::timer_stop();
 }

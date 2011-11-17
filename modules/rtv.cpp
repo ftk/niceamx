@@ -10,6 +10,8 @@ std::set<int> voted;
 extern void new_race();
 
 
+extern void show_vote(int id);
+
 INIT
 {
   REGISTER_COMMAND2(MAKE_COMMAND([](int playerid, const std::string&) -> bool
@@ -22,12 +24,15 @@ INIT
     msg << native::get_player_name(playerid) << " голосует за смену карты (/rtv). " << voted.size() << " голосов из " << needto << std::endl;
     if((int)voted.size() >= needto)
     {
-      msg << "Смена гонки на случайную." << std::endl;
-      try
+      msg << "Смена гонки через 20 секунд." << std::endl;
+      
+      PLAYERBOX->for_each([](int id)
       {
-        new_race();
-      }
-      catch(...) {}
+        show_vote(id);
+      });
+      
+      REGISTER_TIMER(20 * 1000, &new_race);
+      
       voted.clear();
     }
     return true;
