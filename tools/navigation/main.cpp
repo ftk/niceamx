@@ -16,11 +16,15 @@
 
 #include <fstream>
 
-void read_coords(std::istream& s, double& x, double& y, double& z)
+#include <list>
+
+bool read_coords(std::istream& s, double& x, double& y, double& z)
 {
   s >> x;
   s >> y;
   s >> z;
+  
+  return(!s.eof() && (x != 0. && y != 0. && z != 0.));
 }
 void write_coords(std::ostream& s, double x, double y, double z)
 {
@@ -65,6 +69,7 @@ int main(int argc, const char * argv[])
   {
     std::cout << it.x << ' ' << it.y << ' ' << it.z << std::endl;
   }*/
+  std::cout << "--------" << std::endl;
   
   std::ifstream in("navigation.in");
   std::ofstream out("navigation.out");
@@ -72,19 +77,26 @@ int main(int argc, const char * argv[])
   double x, y, z;
   read_coords(in, x, y, z);
   vertex source = g.find_nearest(x, y, z);
-  read_coords(in, x, y, z);
-  vertex target = g.find_nearest(x, y, z);
   
-  write_coords(std::cout, source.x, source.y, source.z);
-  write_coords(std::cout, target.x, target.y, target.z);
   
-  path.calculate(source);
-  std::cout << "distance: " << path.distance(target) << std::endl;
-  
-  path_t min_path;
-  path.shortest_path(min_path, target);
-  std::cout << "edges: " << min_path.size() << std::endl;
-  write_path(out, min_path);
+  while(read_coords(in, x, y, z))
+  {
+    vertex target = g.find_nearest(x, y, z);
+    
+    write_coords(std::cout, source.x, source.y, source.z);
+    write_coords(std::cout, target.x, target.y, target.z);
+    
+    path.calculate(source);
+    std::cout << "distance: " << path.distance(target) << std::endl;
+    
+    path_t min_path;
+    path.shortest_path(min_path, target);
+    std::cout << "edges: " << min_path.size() << std::endl;
+    write_path(out, min_path);
+    std::cout << "--------" << std::endl;
+    
+    source = target;
+  }
   
   return 0;
 }

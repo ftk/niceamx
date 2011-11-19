@@ -197,6 +197,8 @@ public:
     size_t size = G.V.size();
     //for(auto it = G.list.begin(); it != G.list.end(); ++it)
     //for(auto it : G.list)
+    dist.clear();
+    previous.clear();
     dist.reserve(size);
     previous.reserve(size);
     for(size_t i = 0; i < size; i++)
