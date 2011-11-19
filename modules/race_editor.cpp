@@ -47,6 +47,7 @@ bool make_cp(int id, const std::string&)
 
 void setup()
 {
+  details.str(std::string()); // clear
   details << "400\n";
 }
 
@@ -58,10 +59,11 @@ INIT
     return true;
   });
   REGISTER_COMMAND("cp", &make_cp);
-  REGISTER_COMMAND("stop", [&r](int, const std::string&) -> bool
+  REGISTER_COMMAND("stop", [](int, const std::string&) -> bool
   {
     std::ofstream file("race.txt");
     r.export_stream(file);
+    r.destruct();
     return true;
   });
   REGISTER_COMMAND("a", [](int id, const std::string&) -> bool
