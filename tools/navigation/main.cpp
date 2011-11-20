@@ -1,8 +1,4 @@
-
-
 #include "progress.hpp"
-
-
 
 #include "structs.h"
 #include "area.hpp"
@@ -10,12 +6,8 @@
 
 
 #include <iostream>
-
 #include <cstdlib>
-
-
 #include <fstream>
-
 #include <list>
 
 bool read_coords(std::istream& s, double& x, double& y, double& z)
@@ -24,7 +16,7 @@ bool read_coords(std::istream& s, double& x, double& y, double& z)
   s >> y;
   s >> z;
   
-  return(!s.eof() && (x != 0. && y != 0. && z != 0.));
+  return(!s.eof() && !(x == 0. && y == 0. && z == 0.));
 }
 void write_coords(std::ostream& s, double x, double y, double z)
 {
