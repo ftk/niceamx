@@ -331,16 +331,24 @@ int race_details::setup_player(int id, int pos)
 {
   --pos;
   veh_pos p = get_position(pos);
-  native::set_player_pos(id, p.pos.x + 5, p.pos.y, p.pos.z + 3);
-  int vehid = native::create_vehicle(vmodel, p.pos.x, p.pos.y, p.pos.z, p.angle, -1, -1, 1200);
-  if(vehid < 0 || vehid == native::INVALID_VEHICLE_ID)
-    return(0);
-  REGISTER_TIMER(2000, ([id, vehid]()
+  if(vmodel != 0)
   {
-    native::put_player_in_vehicle(id, vehid, 0);
-    throw(signals::timer_stop());
-  }));
-  return vehid;
+    native::set_player_pos(id, p.pos.x + 5, p.pos.y, p.pos.z + 3);
+    int vehid = native::create_vehicle(vmodel, p.pos.x, p.pos.y, p.pos.z, p.angle, -1, -1, 1200);
+    if(vehid < 0 || vehid == native::INVALID_VEHICLE_ID)
+      return(0);
+    REGISTER_TIMER(2000, ([id, vehid]()
+    {
+      native::put_player_in_vehicle(id, vehid, 0);
+      throw(signals::timer_stop());
+    }));
+    return vehid;
+  }
+  else
+  {
+    native::set_player_pos(id, p.pos.x, p.pos.y, p.pos.z);
+    return 0;
+  }
 }
 
 

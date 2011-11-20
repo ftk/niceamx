@@ -1,4 +1,5 @@
 #include "samp.h"
+#include "api/cmd.hpp"
 
 #ifndef NDEBUG
 #define TYPE "debug"
@@ -25,6 +26,12 @@ INIT
   REGISTER_CALLBACK(on_player_spawn, [](int id)
   {
     native::set_camera_behind_player(id);
+  });
+  
+  REGISTER_COMMAND("kill", [](int playerid, const std::string&) -> bool
+  {
+    native::set_player_health(playerid, 0.f);
+    return true;
   });
 
 }

@@ -88,7 +88,8 @@ void new_race()
 
   for(auto it = players.begin(), en = players.end(); it != en; ++it)
   {
-    native::destroy_vehicle(it->second.vehicleid);
+    if(it->second.vehicleid != 0)
+      native::destroy_vehicle(it->second.vehicleid);
   }
   players.clear();
 
@@ -158,12 +159,12 @@ INIT
   {
     r->proccess_cp(id);
   });
-
-  REGISTER_COMMAND("kill", [](int playerid, const std::string&) -> bool
+  
+  REGISTER_CALLBACK(on_player_disconnect, [](int id, int)
   {
-    native::set_player_health(playerid, 0.f);
-    return true;
+    r->part(id);
   });
+
 
   REGISTER_CALLBACK(plugin_unload, []()
   {

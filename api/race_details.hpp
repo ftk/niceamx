@@ -28,6 +28,8 @@ private:
 private:
   int vmodel;
   veh_pos left, right;
+  
+  static const int version = 1;
 public:
   float distance;
 public:
@@ -39,12 +41,24 @@ public:
     s >> vmodel;
     s >> left.pos.x >> left.pos.y >> left.pos.z >> left.angle;
     s >> right.pos.x >> right.pos.y >> right.pos.z >> right.angle;
+    int version = 0;
+    if(s.good())
+    {
+      s >> version;
+    }
+    assert(version <= race_details::version && "wrong version");
+    if(version >= 1)
+    {
+      s >> distance;
+    }
   }
   void export_stream(std::ostream& s)
   {
     s << vmodel << '\n';
     s << left.pos.x << ' ' << left.pos.y << ' ' << left.pos.z << ' ' << left.angle << '\n';
     s << right.pos.x << ' ' << right.pos.y << ' ' << right.pos.z << ' ' << right.angle << '\n';
+    s << version << '\n';
+    s << distance << '\n';
   }
 
 public:
