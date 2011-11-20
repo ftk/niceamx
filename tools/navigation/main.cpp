@@ -66,6 +66,8 @@ int main(int argc, const char * argv[])
   std::ifstream in("navigation.in");
   std::ofstream out("navigation.out");
   
+  assert(in && "file navigation.in not found");
+  
   double x, y, z;
   read_coords(in, x, y, z);
   vertex source = g.find_nearest(x, y, z);
