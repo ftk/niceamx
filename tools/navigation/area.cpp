@@ -112,17 +112,33 @@ static vertex node_to_vertex(path_node node)
   return v;
 }
 
-// TODO: add ped graph
-void areas::to_graph(graph& vehicle_map,  int type)
+void areas::to_graph(graph& map,  int type)
 {
   puts("processing...");
   progress::progress_display timer(MAX_AREAS);
+  
+  
+  unsigned int header::*nodes_count;
+  path_node * area::*nodes;
+  
+  if(type > 0) // vehicle map
+  {
+    nodes_count = &header::vehicle_nodes;
+    nodes = &area::vehicle_nodes;
+  }
+  else // ped map
+  {
+    nodes_count = &header::ped_nodes;
+    nodes = &area::ped_nodes;
+    type = -type;
+  }
+
   for(size_t i = 0; i < MAX_AREAS; i++)
   {
-    for(size_t j = 0; j < a[i].hdr.vehicle_nodes; j++)
+    for(size_t j = 0; j < a[i].hdr.*nodes_count; j++)
     {
-      const path_node& node = a[i].vehicle_nodes[j];
-      if(node.type != type)
+      const path_node& node = (a[i].*nodes)[j]; //  a[i].vehicle_nodes[j]
+      if(node.type != type && type != 0)
         continue;
       vertex v = node_to_vertex(node);
       assert(node.flags.links > 0 && "dead end!");
@@ -132,9 +148,9 @@ void areas::to_graph(graph& vehicle_map,  int type)
         const path_link link = a[i].links[k];
         const int len = a[i].link_lens[k].length;
         assert(link.area < MAX_AREAS);
-        assert(link.node < a[link.area].hdr.vehicle_nodes);
-        const path_node adj_node = a[link.area].vehicle_nodes[link.node];
-        vehicle_map.add_adjacent_edge(v, adjacent_edge(node_to_vertex(adj_node), len));
+        //assert(link.node < a[link.area].hdr.*nodes_count); // a[link.area].hdr.vehicle_nodes
+        const path_node adj_node = (a[link.area].*nodes)[link.node]; // a[link.area].vehicle_nodes[link.node]
+        map.add_adjacent_edge(v, adjacent_edge(node_to_vertex(adj_node), len));
       }
     }
     

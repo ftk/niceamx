@@ -68,7 +68,7 @@ public:
     special4 = 6
   };
   
-  void to_graph(graph& vehicle_map, int type = 1);
+  void to_graph(graph& map, int type = 1);
 };
 
 
