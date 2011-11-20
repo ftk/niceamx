@@ -1,0 +1,9 @@
+niceamx-test
+*.o
+*.obj
+*.so
+*.dll
+callgrind.out.*
+gmon.out
+Makefile
+*.mk
