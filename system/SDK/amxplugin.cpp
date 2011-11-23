@@ -314,6 +314,11 @@ NUDE int AMXAPI amx_UTF8Put(char *string, char **endptr, int maxchars, cell valu
 
 // Unoptimized Thunks (Linux/BSD/non MSVC++)
 
+#if defined __GNUC__ && defined NDEBUG
+#pragma GCC push_options
+#pragma GCC optimize ("no-PIC") // achtung! disables -fPIC
+#endif
+
 typedef uint16_t *  AMXAPI (*amx_Align16_t)(uint16_t *v);
 uint16_t * AMXAPI amx_Align16(uint16_t *v)
 {
@@ -623,6 +628,11 @@ int AMXAPI amx_UTF8Put(char *string, char **endptr, int maxchars, cell value)
 	amx_UTF8Put_t fn = ((amx_UTF8Put_t*)pAMXFunctions)[PLUGIN_AMX_EXPORT_UTF8Put];
 	return fn(string, endptr, maxchars, value);
 }
+
+#if defined __GNUC__ && defined NDEBUG
+#pragma GCC pop_options
+#endif
+
 
 #endif
 

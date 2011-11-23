@@ -6,13 +6,8 @@
 #ifndef SCLINUX_H
 #define SCLINUX_H
 
-#ifndef stricmp
-#define	stricmp(a,b)    strcasecmp(a,b)
-#endif
-
-#ifndef strnicmp
-#define	strnicmp(a,b,c) strncasecmp(a,b,c)
-#endif
+#define stricmp(a,b)    strcasecmp(a,b)
+#define strnicmp(a,b,c) strncasecmp(a,b,c)
 
 /*
  * WinWorld wants '\'. Unices do not.

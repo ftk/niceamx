@@ -207,7 +207,6 @@ typedef int (AMXAPI *AMX_DEBUG)(struct tagAMX *amx);
 
 #if !defined AMX_NO_ALIGN
   #if defined LINUX || defined __FreeBSD__
-    #pragma pack(push)
     #pragma pack(1)         /* structures must be packed (byte-aligned) */
   #elif defined MACOS && defined __MWERKS__
 	#pragma options align=mac68k
