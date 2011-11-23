@@ -23,7 +23,11 @@
 #ifndef AMX_H_INCLUDED
 #define AMX_H_INCLUDED
 
-#if !defined LINUX && (defined __linux__ || defined __linux || defined linux)
+#include <stdlib.h>   /* for size_t */
+#include <limits.h>
+
+
+#if defined __linux__ || defined __linux
   #define LINUX
 #elif defined FREEBSD && !defined __FreeBSD__
   #define __FreeBSD__
@@ -34,58 +38,46 @@
 
 
 #if !defined HAVE_STDINT_H
-  // Attempt to detect stdint.h
-  #if (!defined __STDC__ && __STDC_VERSION__ >= 199901L)\
-    || (defined _MSC_VER_ && _MSC_VER >= 1600) \
-    || defined __GNUC__
-    #define HAVE_STDINT_H
+  #if (defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L) \
+      || defined __GNUC__ || defined __LCC__ || defined __DMC__ \
+      || (defined __WATCOMC__ && __WATCOMC__ >= 1200)
+    #define HAVE_STDINT_H 1
   #endif
 #endif
-
-#include <stddef.h> // Fix for undefined size_t
-
-#if !defined AMX_NODYNLOAD
-  #define AMX_NODYNLOAD
+#if !defined HAVE_INTTYPES_H
+  #if defined __FreeBSD__
+    #define HAVE_INTTYPES_H 1
+  #endif
 #endif
-
-
-
 #if defined HAVE_STDINT_H
   #include <stdint.h>
+#elif defined HAVE_INTTYPES_H
+  #include <inttypes.h>
 #else
-  #if defined __LCC__ || defined __DMC__ || defined LINUX
-    #if defined HAVE_INTTYPES_H
-      #include <inttypes.h>
+  #if defined __MACH__
+    #include <ppc/types.h>
+  #endif
+  typedef short int           int16_t;
+  typedef unsigned short int  uint16_t;
+  #if defined SN_TARGET_PS2
+    typedef int               int32_t;
+    typedef unsigned int      uint32_t;
+  #else
+    typedef long int          int32_t;
+    typedef unsigned long int uint32_t;
+  #endif
+  #if defined __WIN32__ || defined _WIN32 || defined WIN32
+    typedef __int64           int64_t;
+    typedef unsigned __int64  uint64_t;
+    #define HAVE_I64
+  #endif
+  #if !defined _INTPTR_T_DEFINED
+    #if defined _LP64 || defined WIN64 || defined _WIN64
+      typedef __int64         intptr_t;
     #else
-      #include <stdint.h>
-    #endif
-  #elif !defined __STDC_VERSION__ || __STDC_VERSION__ < 199901L
-    /* The ISO C99 defines the int16_t and int_32t types. If the compiler got
-     * here, these types are probably undefined.
-     */
-    #if defined __MACH__
-      #include <ppc/types.h>
-      typedef unsigned short int  uint16_t;
-      typedef unsigned long int   uint32_t;
-    #elif defined __FreeBSD__
-      #include <inttypes.h>
-    #elif !defined _STDINT
-      typedef short int           int16_t;
-      typedef unsigned short int  uint16_t;
-      typedef int               int32_t;
-      typedef unsigned int      uint32_t;
-      #if defined __GNUC__
-        typedef long long         int64_t;
-        typedef unsigned long long uint64_t;
-        #define HAVE_I64
-      #elif defined __WIN32__ || defined _WIN32 || defined WIN32
-        typedef __int64	          int64_t;
-        typedef unsigned __int64  uint64_t;
-        #define HAVE_I64
-      #endif
+      typedef int32_t         intptr_t;
     #endif
   #endif
-  #define HAVE_STDINT_H
 #endif
 #if defined _LP64 || defined WIN64 || defined _WIN64
   #if !defined __64BIT__
@@ -93,11 +85,19 @@
   #endif
 #endif
 
-#if HAVE_ALLOCA_H
+#if !defined HAVE_ALLOCA_H
+  #if defined __GNUC__ || defined __LCC__ || defined __DMC__ || defined __ARMCC_VERSION
+    #define HAVE_ALLOCA_H 1
+  #elif defined __WATCOMC__ && __WATCOMC__ >= 1200
+    #define HAVE_ALLOCA_H 1
+  #endif
+#endif
+#if defined HAVE_ALLOCA_H && HAVE_ALLOCA_H
   #include <alloca.h>
+#elif defined __BORLANDC__
+  #include <malloc.h>
 #endif
 #if defined __WIN32__ || defined _WIN32 || defined WIN32 /* || defined __MSDOS__ */
-  #include <malloc.h>
   #if !defined alloca
     #define alloca(n)   _alloca(n)
   #endif
@@ -117,6 +117,9 @@ extern  "C" {
   #endif
   #if !defined AMXAPI
     #define AMXAPI          __stdcall
+  #endif
+  #if !defined AMXEXPORT
+    #define AMXEXPORT       __declspec(dllexport)
   #endif
 #endif
 
@@ -204,6 +207,7 @@ typedef int (AMXAPI *AMX_DEBUG)(struct tagAMX *amx);
 
 #if !defined AMX_NO_ALIGN
   #if defined LINUX || defined __FreeBSD__
+    #pragma pack(push)
     #pragma pack(1)         /* structures must be packed (byte-aligned) */
   #elif defined MACOS && defined __MWERKS__
 	#pragma options align=mac68k
@@ -333,7 +337,7 @@ enum {
   AMX_ERR_GENERAL       /* general error (unknown or unspecific error) */
 };
 
-/*      AMX_FLAG_CHAR16   0x01     no longer used */
+#define AMX_FLAG_OVERLAY  0x01  /* all function calls use overlays */
 #define AMX_FLAG_DEBUG    0x02  /* symbolic info. available */
 #define AMX_FLAG_COMPACT  0x04  /* compact encoding */
 #define AMX_FLAG_BYTEOPC  0x08  /* opcode is a byte (not a cell) */
@@ -348,9 +352,6 @@ enum {
 
 #define AMX_USERTAG(a,b,c,d)    ((a) | ((b)<<8) | ((long)(c)<<16) | ((long)(d)<<24))
 
-#if !defined AMX_COMPACTMARGIN
-  #define AMX_COMPACTMARGIN 64
-#endif
 
 /* for native functions that use floating point parameters, the following
  * two macros are convenient for casting a "cell" into a "float" type _without_
