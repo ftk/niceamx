@@ -33,7 +33,7 @@
   #endif
 #elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
   #ifndef _MSC_VER
-    #pragma message "Warning: Not using a VC++ compiler."
+    //#pragma message "Warning: Not using a VC++ compiler."
   #endif
   #define PLUGIN_CALL  __stdcall
   #define PLUGIN_EXPORT PLUGIN_EXTERN_C

@@ -86,7 +86,7 @@
 #endif
 
 #if !defined HAVE_ALLOCA_H
-  #if defined __GNUC__ || defined __LCC__ || defined __DMC__ || defined __ARMCC_VERSION
+  #if (defined __GNUC__ || defined __LCC__ || defined __DMC__ || defined __ARMCC_VERSION) && !defined WIN32
     #define HAVE_ALLOCA_H 1
   #elif defined __WATCOMC__ && __WATCOMC__ >= 1200
     #define HAVE_ALLOCA_H 1

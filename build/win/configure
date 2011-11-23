@@ -1,14 +1,2 @@
-#!/bin/bash
-curdir=`dirname $(readlink -f $0)`
-#cp -f ../build.sh ./
-#patch -f build.sh build.diff
-#if [ $? -ne 0 ]
-#then
-#  exit 1
-#fi
-#cp -f build.sh ../win-build.sh
-cd $curdir/..
-exec env OUT="win.mk" ./configure --config $curdir/msvc.txt $*
-#./build.sh --config $curdir/msvc.txt $* --makefile > win.mk
-#echo -e "install: all\n\tcp -fv niceamx.dll ../server/plugins/niceamx.dll" >> win.mk
-#rm -f ./win-build.sh
+#!/bin/sh
+exec env OUT="win.mk" ./configure --config win/msvc.txt "$@"
