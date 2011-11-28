@@ -127,22 +127,22 @@ compile()
 
       if [ $SHOW_ONLY -eq 0 -a $QUIET -eq 0 ]
       then
-	echo "$filename"
+        echo "$filename"
       fi
 
       cmdline="${CC} $(get_flags) $filename"
       if [ $DEBUG -eq 1 -o $SHOW_ONLY -eq 1 ]
       then
-	echo $cmdline
+        echo $cmdline
       fi
 
       if [ $SHOW_ONLY -eq 0 ]
       then
-	${cmdline}
-	if [ $? -ne 0 ]
-	then :
-	  exit 1
-	fi
+        ${cmdline}
+        if [ $? -ne 0 ]
+        then :
+          exit 1
+        fi
       fi
     else
       echo "$filename is not found" >> /dev/stderr
@@ -272,7 +272,7 @@ do
     shift 1
     cxxflags=`get_flags`
     ldflags=`get_ldflags`
-    echo -ne "CXX=${CC}\nCXXFLAGS=${cxxflags}\nOUTFILE=${PROJECT}\nOBJDIR=${OBJDIR}\nOBJS="
+    echo -ne "CXX=${CC}\noverride CXXFLAGS+=${cxxflags}\noverride LDFLAGS+=${ldflags}\nOUTFILE=${PROJECT}\nOBJDIR=${OBJDIR}\nOBJS="
     for i in $ALL_FILES
     do
       echo -n '$(OBJDIR)/'`basename ${i%.*}`".$OBJEXT "
@@ -304,48 +304,48 @@ do
     echo '$(OUTFILE): $(OBJS)'
     if [ $WINCL -ne 0 ]
     then
-      echo -e '\t$(CXX) $(OBJS)' "$ldflags"
+      echo -e '\t$(CXX) $(OBJS) $(LDFLAGS)'
       #echo -e '\trm -f *.lib *.exp'
       cxxflags="$INC_PARAMS $DEF_PARAMS"
     else
-      echo -e '\t$(CXX)' "$ldflags" '-o $(OUTFILE) $(OBJS)'
+      echo -e '\t$(CXX) $(LDFLAGS) -o $(OUTFILE) $(OBJS)'
     fi
     
     echo '$(OBJDIR)/'"%.${OBJEXT}:"
     if [ $WINCL -ne 0 ]
     then
-	  echo -e '\t$(CXX) $(CXXFLAGS) /Fo$@ $<\n'
-	else
-	  echo -e '\t$(CXX) $(CXXFLAGS) -o $@ $<\n'
-	  
-	  echo -e '%.gch:\n\t$(CXX) $(CXXFLAGS) -o $@ $<\n'
-	fi
+      echo -e '\t$(CXX) $(CXXFLAGS) /Fo$@ $<\n'
+    else
+      echo -e '\t$(CXX) $(CXXFLAGS) -o $@ $<\n'
+      
+      echo -e '%.gch:\n\t$(CXX) $(CXXFLAGS) -o $@ $<\n'
+    fi
     for i in $ALL_FILES
     do
       #echo -n "`dirname $i`/"
-	  base=`basename ${i%.*}`
-	  ${GCC} -MM $cxxflags -MT '$(OBJDIR)'"/$base.${OBJEXT}" "$i"
+      base=`basename ${i%.*}`
+      ${GCC} -MM $cxxflags -MT '$(OBJDIR)'"/$base.${OBJEXT}" "$i"
       if [ $? -ne 0 ]
       then
-		exit 1
+        exit 1
       fi
       echo
     done
 
     for i in `cfg_param pch`
       do
-	  ${GCC} -MM $cxxflags -MT ${i}.gch $i
-	  if [ $? -ne 0 ]
-	  then
-		exit 1
-	  fi
+      ${GCC} -MM $cxxflags -MT ${i}.gch $i
+      if [ $? -ne 0 ]
+      then
+        exit 1
+      fi
     done
 #     LINK=0
 #     QUIET=1
     exit 0
   elif [ "$1" = "--getconf" ]
   then
-	configure
+    configure
     echo "`cfg_param $2`"
     exit 0
     shift 1
