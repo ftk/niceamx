@@ -2,6 +2,8 @@
 #define PAWN_MARSHALING_PARAM_HPP
 #include "SDK/amx/amx.h"
 #include <string>
+#include <cstring>
+
 
 namespace pawn {
     // Классы параметров
@@ -95,7 +97,8 @@ namespace pawn {
             this->val = val;
         }
         void precall(AMX* amx, cell* params) {
-            params[param_id + 1] = amx_ftoc(val);
+            //params[param_id + 1] = amx_ftoc(val);
+            memcpy(&params[param_id + 1], &val, sizeof(float));
         }
         void postcall(AMX* amx, cell* params) {
         }
@@ -254,7 +257,8 @@ namespace pawn {
             amx_Allot(amx, 1, params + param_id + 1, &phys_addr);
         }
         void postcall(AMX* amx, cell* params) {
-            *val_ptr = amx_ctof(*phys_addr);
+            //*val_ptr = amx_ctof(*phys_addr);
+            memcpy(val_ptr, phys_addr, sizeof(float));
 
             amx_Release(amx, params[param_id + 1]);
             val_ptr = 0;
