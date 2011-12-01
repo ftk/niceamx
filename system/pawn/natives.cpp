@@ -21,7 +21,7 @@
 #include <iostream>
 #define DEBUG_NATIVE(f,p) std::cout << BOOST_PP_STRINGIZE(f) "(" << p << ");" << std::endl
 #else
-#define DEBUG_NATIVE(f,...) /* empty */
+#define DEBUG_NATIVE(f,...) (static_cast<void> (0)) /* empty */
 #endif
 
 #define SEPARATOR << ", " <<
@@ -354,7 +354,8 @@ namespace native
         typedef pawn::marh_collection_t::marhs_t::iterator iterator;
         for(iterator it = marhs.marhs.begin(), en = marhs.marhs.end(); it != en; ++it)
         {
-            assert((*it)->init(amx) && "Ќе удалось инициализировать натив. ¬озможно его нужно прописать в sys_all_call() в игровом режиме");
+            bool ret = (*it)->init(amx);
+            assert(ret && "Ќе удалось инициализировать натив. ¬озможно его нужно прописать в sys_all_call() в игровом режиме");
         }
     }
 
