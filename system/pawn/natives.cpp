@@ -355,7 +355,11 @@ namespace native
         for(iterator it = marhs.marhs.begin(), en = marhs.marhs.end(); it != en; ++it)
         {
             bool ret = (*it)->init(amx);
-            assert(ret && "Ќе удалось инициализировать натив. ¬озможно его нужно прописать в sys_all_call() в игровом режиме");
+            if(!ret)
+            {
+              assert(false && "Ќе удалось инициализировать натив. ¬озможно его нужно прописать в sys_all_call() в игровом режиме");
+              abort();
+            }
         }
     }
 

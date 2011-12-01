@@ -92,7 +92,7 @@ util::overtimer BOOST_PP_CAT(_timer_, __LINE__) \
 
 #else // _OVERTIMER_ENABLED
 
-#define MAKE_OVERTIMER(ms) /* empty */
+#define MAKE_OVERTIMER(ms) (static_cast<void> (0))/* empty */
 
 #endif // _OVERTIMER_ENABLED
 
