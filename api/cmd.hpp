@@ -22,14 +22,14 @@ namespace detail
   struct cmd_name
   {
     util::hash_t hash;
-    std::string name;
+    //std::string name;
     
-    cmd_name(const std::string& s) : name(s)
+    cmd_name(const std::string& s)// : name(s)
     {
       hash = util::hash(s);
     }
     
-    cmd_name(const char * s) : name(s)
+    cmd_name(const char * s)// : name(s)
     {
       hash = util::hash(s);
     }

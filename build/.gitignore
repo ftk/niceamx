@@ -1,5 +1,6 @@
 niceamx-test
 *.o
+*.d
 *.obj
 *.so
 *.dll
