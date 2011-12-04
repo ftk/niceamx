@@ -1,0 +1,1 @@
+pawn::marh_t<int, int, const std::string&, int, int> gpci_t("gpci", marhs); /* native gpci(playerid, serial [], len = sizeof serial, Float:AAAA=66.); */
