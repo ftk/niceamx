@@ -361,8 +361,8 @@ enum {
     #define amx_ftoc(f)   ( * (reinterpret_cast<cell *>(&f)) )   /* float to cell */
     #define amx_ctof(c)   ( * (reinterpret_cast<float *>(&c)) )  /* cell to float */
   #elif PAWN_CELL_SIZE==64
-    #define amx_ftoc(f)   ( reinterpret_cast<cell>(c) )   /* float to cell */
-    #define amx_ctof(c)   ( reinterpret_cast<double>(c) ) /* cell to float */
+    #define amx_ftoc(f)   ( * (reinterpret_cast<cell *>(&f)) )   /* float to cell */
+    #define amx_ctof(c)   ( * (reinterpret_cast<double *>(&c)) )  /* cell to float */
   #else
     #error Unsupported cell size
   #endif
