@@ -2,6 +2,7 @@
 #define SAMP_DEMARSHALING_HPP
 
 #include <string>
+//#include <cstring>
 #include <cassert>
 
 #include "SDK/amx/amx.h"
@@ -20,7 +21,7 @@ namespace pawn {
             assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
             val = static_cast<T>(params[param_id + 1]);
         }
-        T get()
+        T get() const
         {
             return val;
         }
@@ -36,14 +37,14 @@ namespace pawn {
             assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
             val = 0 != params[param_id + 1];
         }
-        bool get()
+        bool get() const
         {
             return val;
         }
     };
 
     template<int param_id>
-    class demarh_t<param_id, std::string>
+    class demarh_t<param_id, const std::string>
     {
         std::string val;
     public:
@@ -58,6 +59,36 @@ namespace pawn {
             val = std::string(buff);
             
         }
+        const std::string& get() const
+        {
+            return val;
+        }
+    };
+    template<int param_id>
+    class demarh_t<param_id, std::string>
+    {
+        std::string val;
+        cell* cstr;
+    public:
+        demarh_t(AMX* amx, cell* params)
+        {
+            assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
+            char buff[129];
+
+            amx_GetAddr(amx, params[param_id + 1], &cstr);
+            amx_GetString(buff, cstr, 0, sizeof(buff)/sizeof(buff[0]));
+            val = std::string(buff);
+            
+        }
+        
+        virtual ~demarh_t()
+        {
+            //strncpy(cstr, val.c_str(), 128);
+            const char * valstr = val.c_str();
+            while((*(cstr++) = *(valstr++) & 0x000000FF))
+              continue;
+        }
+        
         std::string& get()
         {
             return val;

@@ -2,7 +2,6 @@
 #include "signals.hpp"
 #include "SDK/amx/amx.h"
 #include "pawn_demarshaling.hpp"
-#include "post_process.h"
 #include <string>
 
 #include "util/overtimer.hpp"
@@ -138,10 +137,10 @@ namespace pawn
                 START();
                 
                 pawn::demarh_t<0, int> player_id(amx, params);
-                pawn::demarh_t<1, std::string> text(amx, params);
+                pawn::demarh_t<1, /*const*/ std::string> text(amx, params); // allow scripts to change message, edit events_samp.inl
                 DEBUG_CALLBACK(/*f*/ on_player_text, /*p*/ player_id.get() SEPARATOR  text.get());
                 CALL_R(/*f*/ on_player_text /*p*/ , player_id.get(), text.get());
-                return pp::player_text(player_id.get(), text.get());
+                return 1; // always allow player's chat
         }
 
 
@@ -151,7 +150,7 @@ namespace pawn
                 START();
                 
                 pawn::demarh_t<0, int> player_id(amx, params);
-                pawn::demarh_t<1, std::string> cmd(amx, params);
+                pawn::demarh_t<1, const std::string> cmd(amx, params);
                 DEBUG_CALLBACK(/*f*/ on_player_command_text, /*p*/ player_id.get() SEPARATOR  cmd.get());
                 CALL(/*f*/ on_player_command_text /*p*/ , player_id.get(), cmd.get());
                 return 1;
@@ -257,7 +256,7 @@ namespace pawn
         {
                 START();
                 
-                pawn::demarh_t<0, std::string> cmd(amx, params);
+                pawn::demarh_t<0, const std::string> cmd(amx, params);
                 DEBUG_CALLBACK(/*f*/ on_rcon_command, /*p*/ cmd.get());
                 CALL(/*f*/ on_rcon_command /*p*/ , cmd.get());
         }
@@ -429,8 +428,8 @@ namespace pawn
         {
                 START();
                 
-                pawn::demarh_t<0, std::string> ip(amx, params);
-                pawn::demarh_t<1, std::string> password(amx, params);
+                pawn::demarh_t<0, const std::string> ip(amx, params);
+                pawn::demarh_t<1, const std::string> password(amx, params);
                 pawn::demarh_t<3, bool> is_success(amx, params);
                 DEBUG_CALLBACK(/*f*/ on_rcon_login_attempt, /*p*/ ip.get() SEPARATOR  password.get() SEPARATOR  is_success.get());
                 CALL(/*f*/ on_rcon_login_attempt /*p*/ , ip.get(), password.get(), is_success.get()); 
@@ -494,7 +493,7 @@ namespace pawn
                 pawn::demarh_t<1, int> dialog_id(amx, params);
                 pawn::demarh_t<2, int> response(amx, params);
                 pawn::demarh_t<3, int> list_item(amx, params);
-                pawn::demarh_t<4, std::string> input_text(amx, params);
+                pawn::demarh_t<4, const std::string> input_text(amx, params);
                 DEBUG_CALLBACK(/*f*/ on_dialog_response, /*p*/ player_id.get() SEPARATOR  dialog_id.get() SEPARATOR  response.get() SEPARATOR  list_item.get() SEPARATOR  input_text.get());
                 CALL(/*f*/ on_dialog_response /*p*/ , player_id.get(), dialog_id.get(), response.get(), list_item.get(), input_text.get()); 
         }
