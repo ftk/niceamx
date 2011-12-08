@@ -1,6 +1,7 @@
 # edit
 
 CXX ?= g++
+CC ?= gcc
 
 SRCDIR = ..
 OBJDIR = obj
@@ -87,6 +88,8 @@ $(DIRS):
 
 $(OBJDIR)/%$(.postfix).o: $(SRCDIR)/%.cpp
 	$(CXX) -c -MMD -MP $(CPPFLAGS) $(CXXFLAGS) -o '$@' '$<'
+$(OBJDIR)/%$(.postfix).o: $(SRCDIR)/%.c
+	$(CC) -c -MMD -MP $(CPPFLAGS) $(CXXFLAGS) -o '$@' '$<'
 
 $(OUTFILE): $(DIRS) $(OBJS)
 	$(CXX) $(LDFLAGS) -o '$@' $(OBJS) $(LIBS)
