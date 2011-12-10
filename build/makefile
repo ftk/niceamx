@@ -51,7 +51,12 @@ SRCS_test = api/*.cpp system/*.cpp util/*.cpp modules/*.cpp tests/*.cpp
 #PREFIX_test = .
 postfix_test = .test
 
-
+ifdef export
+# make config=debug export=1
+LDFLAGS_$(config) += -static-libstdc++ -static-libgcc
+export: all
+	elfedit --output-osabi=none $(OUTFILE) || brandelf -f 0 $(OUTFILE) || freebsd-brandelf -f 0 $(OUTFILE)
+endif
 
 # do not edit --->
 
