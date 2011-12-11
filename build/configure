@@ -27,9 +27,12 @@ flags="$flags $@"
 CONFIG="build.txt"
 while [ ! -z "$2" ]
 do
-  test "$1" = "--config" || (shift 1; continue)
-  CONFIG="$2"
-  shift 2
+  if [ "$1" = "--config" ]
+  then
+    CONFIG="$2"
+    shift 1
+  fi
+  shift 1
 done
 
 
