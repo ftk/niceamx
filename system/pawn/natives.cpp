@@ -19,7 +19,8 @@
 #ifdef PRINT_OUTCOMING_NATIVES
 #include <boost/preprocessor/stringize.hpp>
 #include <iostream>
-#define DEBUG_NATIVE(f,p) std::cout << BOOST_PP_STRINGIZE(f) "(" << p << ");" << std::endl
+#define STREAM std::cout << "> "
+#define DEBUG_NATIVE(f,p) STREAM << BOOST_PP_STRINGIZE(f) "(" << p << ");" << std::endl
 #else
 #define DEBUG_NATIVE(f,...) (static_cast<void> (0)) /* empty */
 #endif

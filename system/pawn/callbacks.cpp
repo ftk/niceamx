@@ -27,7 +27,8 @@
 #ifdef PRINT_INCOMING_CALLBACKS
 #include <boost/preprocessor/stringize.hpp>
 #include <iostream>
-#define DEBUG_CALLBACK(f,p) std::cout << BOOST_PP_STRINGIZE(f) "(" << p << ");" << std::endl
+#define STREAM std::cout << "> "
+#define DEBUG_CALLBACK(f,p) STREAM << BOOST_PP_STRINGIZE(f) "(" << p << ");" << std::endl
 #else
 #define DEBUG_CALLBACK(f,...) /* empty */
 #endif
