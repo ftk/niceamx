@@ -1,6 +1,8 @@
 samp03svr*
-samp-server*.exe
 samp-npc*
 announ??
-announ??.exe
+*.exe
 server_log.txt
+niceamx-test
+callgrind.out.*
+gmon.out

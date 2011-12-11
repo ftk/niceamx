@@ -48,7 +48,7 @@ CXXFLAGS_test = $(CXXFLAGS) -ggdb3 -pedantic -Wextra -Wconversion -pg
 LDFLAGS_test = $(LDFLAGS) -ggdb3 -pg
 DEFINES_test = $(DEFINES) _DEBUG OVERTIMER_ENABLE PRINT_OUTCOMING_NATIVES TEST_MODE
 SRCS_test = api/*.cpp system/*.cpp util/*.cpp modules/*.cpp tests/*.cpp
-#PREFIX_test = .
+PREFIX_test = ../server
 postfix_test = .test
 
 ifdef export
