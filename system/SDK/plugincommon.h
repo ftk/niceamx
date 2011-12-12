@@ -36,7 +36,7 @@
     //#pragma message "Warning: Not using a VC++ compiler."
   #endif
   #define PLUGIN_CALL  __stdcall
-  #define PLUGIN_EXPORT PLUGIN_EXTERN_C
+  #define PLUGIN_EXPORT PLUGIN_EXTERN_C __declspec(dllexport)
 #else
   #error "You must define one of WIN32, LINUX or FREEBSD"
 #endif
