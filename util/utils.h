@@ -1,6 +1,7 @@
 #ifndef UTIL_UTILS_HPP
 #define UTIL_UTILS_HPP
 
+#include "config.h"
 #include <string>
 
 
@@ -13,7 +14,7 @@ hash_t hash(const char *);
 hash_t hash(const std::string &);
 
 // http://stackoverflow.com/questions/2111667/compile-time-string-hashing
-inline constexpr hash_t const_hash(const char *s, int off = 0) 
+inline BOOST_CONSTEXPR hash_t const_hash(const char *s, int off = 0) 
 {
     return !s[off] ? 5381 : (const_hash(s, off+1)*33) ^ s[off];
 }

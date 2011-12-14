@@ -3,7 +3,9 @@
 
 #include <cassert>
 #include <functional>
-#include <list>
+
+#include "util/config/slist.h"
+
 
 namespace signals {
 //
@@ -45,7 +47,7 @@ public:
 
     typedef timer slot_t;
 private:
-    typedef std::list<slot_t> slots_t;
+    typedef SLIST <slot_t> slots_t;
     slots_t slots;
 public:
 
