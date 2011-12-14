@@ -87,10 +87,10 @@ $(PREFIX)/$(OUTFILE): $(OUTFILE)
 	$(CP) '$<' '$@'
 
 uninstall:
-	$(RM) $(PREFIX)/$(OUTFILE)
+	-$(RM) $(PREFIX)/$(OUTFILE)
 
 clean:
-	$(RM) $(OBJS) $(OUTFILE) $(DEPS)
+	-$(RM) $(OBJS) $(OUTFILE) $(DEPS)
 
 CPPFLAGS += $(addprefix -I, $(INCLUDES)) $(addprefix -D, $(DEFINES))
 
@@ -113,6 +113,9 @@ $(OBJDIR)/%$(postfix).o: $(SRCDIR)/%.c
 $(OUTFILE): $(DIRS) $(OBJS)
 	$(CXX) $(LDFLAGS) -o '$@' $(OBJS) $(LIBS)
 
+# pre compiled headers (GCC)
+$(SRCDIR)/%.gch:
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) '$(@:.gch=)'
 
 -include $(DEPS)
 
