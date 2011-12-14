@@ -113,7 +113,8 @@ public:
   {
   }
   
-  template <typename Target = std::string>
+  //template <typename Target = std::string>
+  template <typename Target>
   Target at(int pos)
   {
     auto it = begin();

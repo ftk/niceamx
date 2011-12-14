@@ -40,7 +40,8 @@
 #if !defined HAVE_STDINT_H
   #if (defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L) \
       || defined __GNUC__ || defined __LCC__ || defined __DMC__ \
-      || (defined __WATCOMC__ && __WATCOMC__ >= 1200)
+      || (defined __WATCOMC__ && __WATCOMC__ >= 1200) \
+      || (defined _MSC_VER && _MSC_VER >= 1600)
     #define HAVE_STDINT_H 1
   #endif
 #endif

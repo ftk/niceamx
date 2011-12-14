@@ -33,7 +33,8 @@ bool make_cp(int id, const std::string&)
     details << x << ' ' << y << ' ' << z << ' ' << a << '\n';
   else
   {
-    r({x, y, z});
+    //r({x, y, z});
+    r(util::point3d(x, y, z)); // c++03
   }
   if(step_ == 3)
   {
