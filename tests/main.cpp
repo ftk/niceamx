@@ -22,7 +22,7 @@ int main()
   */
   assert(nullptr == 0);
   volatile bool isend = false;
-  NOTIFY("ggg");
+  util::notify("ggg %d %s", 15, "abc");
   REGISTER_TIMER(100, [](){ util::notify(boost::lexical_cast<std::string>(util::get_walltime())); } );
   
   auto lambda = []() { util::notify("muhaha"); };

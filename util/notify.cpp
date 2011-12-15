@@ -2,20 +2,21 @@
 #include "notify.h"
 
 #include <ostream>
+#include <string>
+#include <cstdlib>
+#include <cstdio>
+#include <cstdarg>
+#include <ctime>
+
+#include "util/config/attribute.h"
 
 #ifdef USE_PAWN_NOTIFY
-
 #include "pawn/pawnlog.hpp"
-
 #else
 #include <iostream>
 #endif
 
 
-#include <string>
-#include <cstdlib>
-#include <boost/lexical_cast.hpp>
-#include <ctime>
 
 #ifdef USE_PAWN_NOTIFY
 #define STDOUT_STREAM pawn::log
@@ -39,10 +40,10 @@ namespace util
       strftime(buf, sizeof(buf) / sizeof(*buf), " [%d-%m-%Y/%H:%M:%S] ", timedate);
       out << timestamp << buf << prefix << ": " << msg << NEWLINE;
     }
-    static inline std::string format_prefix(const char * prefix, const char * file, int line, const char * func)
+    static inline std::string format_prefix(const char * prefix, const char * file, const char * func)
     {
       std::string result = prefix;
-      return (((((((result += '[') += file) += ':') += boost::lexical_cast<std::string>(line)) += ':') += func) += ']');
+      return (((((result += '[') += file) += ':') += func) += ']');
     }
 
 #define MAKE_FUNC(func,ev) \
@@ -50,9 +51,18 @@ void func (const std::string& s) \
 { \
  print_to_stream(STDERR_STREAM, ev, s); \
 } \
-void func (const char * file, int line, const char * func, const std::string& s) \
+void func (const char * file, const char * func, const std::string& s) \
 { \
- print_to_stream(STDERR_STREAM, format_prefix(ev, file, line, func), s); \
+ print_to_stream(STDERR_STREAM, format_prefix(ev, file, func), s); \
+} \
+void func (const char * format, ...) \
+{ \
+ char buffer[256]; \
+ va_list args; \
+ va_start (args, format); \
+ vsprintf (buffer, format, args); \
+ va_end (args); \
+ print_to_stream(STDERR_STREAM, ev, buffer); \
 } \
 /* */
 
@@ -61,10 +71,10 @@ void func (const char * file, int line, const char * func, const std::string& s)
     MAKE_FUNC(error, "ERROR")
 
     
-    void abort(const std::string& s, int level)
+    void abort(const std::string& s, int errorlevel)
     {
         print_to_stream(STDERR_STREAM, "ABORTING", s);
-        exit(level);
+        exit(errorlevel);
     }
 
 

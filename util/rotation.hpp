@@ -11,13 +11,15 @@
 namespace util {
 
 //
-inline double rad_to_deg(double rad)
+template <typename T>
+inline T rad_to_deg(T rad)
 {
-  return double(rad * (180.f / PI));
+  return (rad * (180.f / PI));
 }
-inline double deg_to_rad(double deg)
+template <typename T>
+inline T deg_to_rad(T deg)
 {
-  return double(deg * (PI / 180.f));
+  return (deg * (PI / 180.f));
 }
 
 struct euler;
