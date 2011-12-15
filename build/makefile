@@ -37,7 +37,7 @@ DEFINES_release = $(DEFINES) NDEBUG
 
 # minimum optimization
 CXXFLAGS_debug = $(CXXFLAGS_plugin) -O0 -ggdb3 -Wextra -Wno-unused-parameter
-LDFLAGS_debug = $(LDFLAGS_plugin) -ggdb3
+LDFLAGS_debug = $(LDFLAGS_plugin) -ggdb3 -rdynamic
 DEFINES_debug = $(DEFINES) _DEBUG OVERTIMER_ENABLE PRINT_OUTCOMING_NATIVES
 OUTFILE_debug = niceamx-debug.so
 postfix_debug = .debug
@@ -45,7 +45,7 @@ postfix_debug = .debug
 # test build (for valgrind & co)
 OUTFILE_test = niceamx-test
 CXXFLAGS_test = $(CXXFLAGS) -ggdb3 -pedantic -Wextra -Wconversion -pg
-LDFLAGS_test = $(LDFLAGS) -ggdb3 -pg
+LDFLAGS_test = $(LDFLAGS) -ggdb3 -pg -rdynamic
 DEFINES_test = $(DEFINES) _DEBUG OVERTIMER_ENABLE PRINT_OUTCOMING_NATIVES TEST_MODE
 SRCS_test = api/*.cpp system/*.cpp util/*.cpp modules/*.cpp tests/*.cpp
 PREFIX_test = ../server
