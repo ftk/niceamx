@@ -2,6 +2,8 @@
 
 #include <cstring>
 #include <ctime>
+#include <cstdio>
+#include <cstdarg>
 //#include <time.h>
 
 #ifdef WIN32
@@ -83,6 +85,16 @@ void sleep(long ms)
 #else
   usleep(ms * 1000);
 #endif
+}
+
+std::string sprintf(const char * format, ...)
+{
+  char buffer[256];
+  va_list args;
+  va_start(args, format);
+  vsprintf(buffer, format, args);
+  va_end(args);
+  return buffer;
 }
 
 }

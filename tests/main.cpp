@@ -22,8 +22,10 @@ int main()
   */
   assert(nullptr == 0);
   volatile bool isend = false;
-  util::notify("ggg %d %s", 15, "abc");
-  REGISTER_TIMER(100, [](){ util::notify(boost::lexical_cast<std::string>(util::get_walltime())); } );
+  //util::notify("ggg %d %s", 15, "abc");
+  NOTIFY(util::sprintf("abc %s, %d %d", "def", 1, 2));
+  //REGISTER_TIMER(100, [](){ util::notify(boost::lexical_cast<std::string>(util::get_walltime())); } );
+  REGISTER_TIMER(100, [](){ util::notify("%lu %lu", util::get_walltime(), util::get_walltime_s()); } );
   
   auto lambda = []() { util::notify("muhaha"); };
   
@@ -38,7 +40,7 @@ int main()
     util::sleep(5);
     MAINBOX->timers.proccess(5);
     
-    isend = true;
+    //isend = true;
   }
   INVOKE_COMMANDS(0, "/kill");
   INVOKE_COMMANDS(0, "/v 555");
