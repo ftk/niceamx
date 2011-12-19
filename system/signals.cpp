@@ -51,8 +51,8 @@ namespace signals
         {
           it = slots.erase(it);
           en = slots.end();
-          //if(it == en)
-            //return;
+          if(it == en)
+            return;
         }
       }
     }

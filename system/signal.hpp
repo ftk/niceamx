@@ -62,6 +62,8 @@ public:
       {
         it = slots.erase(it);
         en = slots.end();
+        if(it == en)
+          return;
       }
     }
   }
