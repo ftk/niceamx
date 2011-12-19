@@ -22,7 +22,6 @@
 
 
 #include <boost/preprocessor/cat.hpp>
-#include <list>
 
 #include <string>
 

@@ -1,3 +1,4 @@
+//# -*- coding: cp1251 -*-
 #include "samp.h"
 
 //#include <cstdio>

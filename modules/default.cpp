@@ -1,5 +1,7 @@
+//# -*- coding: cp1251 -*-
 #include "samp.h"
 #include "api/cmd.hpp"
+#include "api/streams.hpp"
 
 #ifndef NDEBUG
 #define TYPE "debug"
@@ -33,5 +35,15 @@ INIT
     native::set_player_health(playerid, 0.f);
     return true;
   });
+  REGISTER_CALLBACK(on_player_connect, ([](int playerid)
+  {
+    api::message msg;
+    msg << native::get_player_name(playerid) << " присоединился к серверу." << std::endl;
+  }));
+  REGISTER_CALLBACK(on_player_disconnect, ([](int playerid, int)
+  {
+    api::message msg;
+    msg << native::get_player_name(playerid) << " отключился." << std::endl;
+  }));
 
 }

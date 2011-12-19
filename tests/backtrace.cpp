@@ -7,7 +7,7 @@
 
 #include "signals.hpp"
 
-void handler(int sig) 
+static void handler(int sig) 
 {
   void *array[MAX_TRACE];
   size_t size;

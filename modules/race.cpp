@@ -1,3 +1,5 @@
+//# -*- coding: cp1251 -*-
+
 #include "samp.h"
 
 #include "api/race.hpp"
@@ -22,7 +24,7 @@ static api::race * r = NULL;
 static api::race_details * r_d = NULL;
 static api::detail::race_loader * r_l = NULL;
 
-api::vote vote;
+static api::vote vote;
 
 struct playerstate
 {
@@ -60,7 +62,7 @@ void show_vote(int id)
   }), id, "Голосование", vote.join('\n'), "Выбрать", "Отмена");
 }
 
-std::string racefile = "Tampa";
+static std::string racefile = "Tampa";
 
 void load_race()
 {

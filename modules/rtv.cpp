@@ -1,3 +1,5 @@
+//# -*- coding: cp1251 -*-
+
 #include "samp.h"
 #include "api/cmd.hpp"
 #include "api/playerpool.hpp"
@@ -5,12 +7,11 @@
 
 #include <set>
 
-std::set<int> voted;
 
 extern void new_race();
-
-
 extern void show_vote(int id);
+
+static std::set<int> voted;
 
 INIT
 {
@@ -38,15 +39,8 @@ INIT
     return true;
   })("rtv")("vote")("votemap"));
 
-  REGISTER_CALLBACK(on_player_connect, ([](int playerid)
-  {
-    api::message msg;
-    msg << native::get_player_name(playerid) << " присоединился к серверу." << std::endl;
-  }));
   REGISTER_CALLBACK(on_player_disconnect, ([](int playerid, int)
   {
-    api::message msg;
-    msg << native::get_player_name(playerid) << " отключился." << std::endl;
     voted.erase(playerid);
   }));
 }
