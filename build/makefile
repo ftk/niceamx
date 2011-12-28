@@ -94,16 +94,17 @@ clean:
 
 CPPFLAGS += $(addprefix -I, $(INCLUDES)) $(addprefix -D, $(DEFINES))
 
-
+#PCH = $(SRCDIR)/system/samp.h.gch
 REALSRCS := $(wildcard $(addprefix $(SRCDIR)/, $(SRCS)))
 OBJS := $(REALSRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%$(postfix).o)
 DEPS := $(REALSRCS:$(SRCDIR)/%.cpp=$(DEPDIR)/%$(postfix).d)
+#$(PCH:$(SRCDIR)/%.gch=$(DEPDIR)/%$(postfix).d)
 
-DIRS := $(sort $(dir $(OBJS)) $(dir $(DEPS)))
+DIRS := $(OBJDIR) $(sort $(dir $(OBJS)) $(dir $(DEPS)))
 
 
 $(DIRS):
-	$(MKDIR) '$@'
+	-$(MKDIR) '$@'
 
 $(OBJDIR)/%$(postfix).o: $(SRCDIR)/%.cpp
 	$(CXX) -c -MMD -MP $(CPPFLAGS) $(CXXFLAGS) -o '$@' '$<'
@@ -114,8 +115,8 @@ $(OUTFILE): $(DIRS) $(OBJS)
 	$(CXX) $(LDFLAGS) -o '$@' $(OBJS) $(LIBS)
 
 # pre compiled headers (GCC)
-$(SRCDIR)/%.gch:
-	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) '$(@:.gch=)'
+$(SRCDIR)/%.gch: $(SRCDIR)/%
+	$(CXX) -c -MMD -MP -MF '$(*:%=$(DEPDIR)/%$(postfix).d)' $(CPPFLAGS) $(CXXFLAGS) '$<'
 
 -include $(DEPS)
 
