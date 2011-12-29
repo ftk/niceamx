@@ -24,11 +24,9 @@
 #include "util/notify.h"
 #include "util/utils.h"
 
-#endif
 
 namespace util
 {
-#ifdef _OVERTIMER_ENABLED
 
     class overtimer
     {
@@ -79,9 +77,9 @@ namespace util
 
     };
 
-#endif // _OVERTIMER_ENABLED
 
 }
+#endif // _OVERTIMER_ENABLED
 
 #ifdef _OVERTIMER_ENABLED
 

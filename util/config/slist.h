@@ -1,6 +1,6 @@
 #ifndef UTIL_CONFIG_SLIST_H
 #define UTIL_CONFIG_SLIST_H
-
+/* single-linked list -- SGI extension */
 #ifndef SLIST
 
 #include <boost/config.hpp>
