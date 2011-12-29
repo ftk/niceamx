@@ -31,8 +31,8 @@ CXXFLAGS_plugin := $(CXXFLAGS) -fPIC
 LDFLAGS_plugin := $(LDFLAGS) -fPIC -shared -Wl,--no-undefined
 
 # maximum optimization
-CXXFLAGS_release = $(CXXFLAGS_plugin) -O3 -fvisibility=hidden -fvisibility-inlines-hidden -ffunction-sections -fdata-sections -fstrict-aliasing -fmerge-all-constants -fomit-frame-pointer -pedantic
-LDFLAGS_release = $(LDFLAGS_plugin) -s -Wl,--gc-sections
+CXXFLAGS_release = $(CXXFLAGS_plugin) -O3 -fvisibility=hidden -fvisibility-inlines-hidden -ffunction-sections -fdata-sections -fstrict-aliasing -fmerge-all-constants -fomit-frame-pointer -pedantic -flto -fno-ident
+LDFLAGS_release = $(LDFLAGS_plugin) -O3 -s -Wl,--gc-sections -flto
 DEFINES_release = $(DEFINES) NDEBUG
 
 # minimum optimization
