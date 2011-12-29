@@ -92,7 +92,8 @@ std::string sprintf(const char * format, ...)
   char buffer[256];
   va_list args;
   va_start(args, format);
-  vsprintf(buffer, format, args);
+  int len = vsnprintf(buffer, 255, format, args);
+  buffer[len] = '\0';
   va_end(args);
   return buffer;
 }
