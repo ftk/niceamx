@@ -36,8 +36,8 @@ namespace signals
       return;
     
     START();
-    typedef slots_t::iterator iterator;
-    for(iterator it = slots.begin(), en = slots.end(); it != en; ++it)
+    auto it = slots.begin(), en = slots.end();
+    while(it != en)
     {
       it->remaining -= elapsed;
       if(it->remaining <= 0)
@@ -46,13 +46,12 @@ namespace signals
         try
         {
           it->invoke();
+          ++it;
         }
         catch(timer_stop)
         {
           it = slots.erase(it);
           en = slots.end();
-          if(it == en)
-            return;
         }
       }
     }

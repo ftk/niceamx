@@ -52,18 +52,18 @@ public:
   {
     if(slots.empty())
       return;
-    for(auto it = slots.begin(), en = slots.end(); it != en; ++it)
+    auto it = slots.begin(), en = slots.end();
+    while(it != en)
     {
       try
       {
         (*it)(args...);
+        ++it;
       }
       catch(slot_remove)
       {
         it = slots.erase(it);
         en = slots.end();
-        if(it == en)
-          return;
       }
     }
   }
