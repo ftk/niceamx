@@ -83,6 +83,31 @@ void load_race()
   r_d->import_stream(racedfp);
 }
 
+static int winner_id, winner_cps;
+static void on_player_enter_race_checkpoint(int id)
+{
+  r->proccess_cp(id);
+  
+  /* time diff announcement */
+  playerstate & pl = players[id];
+  pl.cp_time.push_back(util::get_walltime_s());
+  
+  // are you the first ?
+  if(pl.cp_time.size() > winner_cps)
+  {
+    winner_cps = pl.cp_time.size();
+    winner_id = id;
+  }
+  else if(winner_id != -1)
+  {
+    // looser
+    assert(winner_cps >= pl.cp_time.size());
+    long timediff = util::get_walltime_s() - players[winner_id].cp_time.at(pl.cp_time.size() - 1); // winner's time at this checkpoint
+    native::game_text_for_player(id, util::sprintf("%02ld:%02ld", timediff / 60, timediff % 60), 1000, 0); // show time difference
+  }
+}
+
+
 void new_race()
 {
   
@@ -99,6 +124,7 @@ void new_race()
     //it->second.cp_time.clear();
   }
   players.clear();
+  winner_id = winner_cps = -1;
 
   // load new race 
   int playersplace = 0;
@@ -112,7 +138,7 @@ void new_race()
   api::counter c(6, -1, [](api::counter *)
   {
     r->start();
-    PLAYERBOX->for_each([](int id)race_details
+    PLAYERBOX->for_each([](int id)
     {
       native::toggle_player_controllable(id, true);
     });
@@ -140,29 +166,6 @@ void new_race()
 }
 
 
-static int winner_id, winner_cps;
-static void on_player_enter_race_checkpoint(int id)
-{
-  r->proccess_cp(id);
-  
-  /* time diff announcement */
-  playerstate & pl = players[id];
-  pl.cp_time.push_back(util::get_walltime_s());
-  
-  // are you the first ?
-  if(pl.cp_time.size() > winner_cps)
-  {
-    winner_cps = pl.cp_time.size();
-    winner_id = id;
-  }
-  else if(winner_id != -1)
-  {
-    // looser
-    assert(winner_cps >= pl.cp_time.size());
-    long timediff = util::get_walltime_s() - players[winner_id].cp_time.at(pl.cp_time.size() - 1); // winner's time at this checkpoint
-    native::game_text_for_player(id, util::sprintf("%02ld:%02ld", timediff / 60, timediff % 60), 1000, 0); // show time difference
-  }
-}
 
 INIT
 {
