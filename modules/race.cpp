@@ -68,8 +68,7 @@ void show_vote(int id)
 
 void load_race()
 {
-  static std::string racefile = "Tampa";
-  racefile = vote.get_highest();
+  std::string racefile = vote.get_highest();
   vote.clear();
   api::message msg;
   *msg << "Загружена гонка " << racefile << std::endl;
@@ -79,11 +78,13 @@ void load_race()
   std::ifstream racedfp("races/" + racefile + "_d.txt");
   assert(racedfp);
   r_l->destruct();
+
   r_l->import_stream(racefp);
   r_d->import_stream(racedfp);
 }
 
-static int winner_id, winner_cps;
+static int winner_id;
+static unsigned winner_cps;
 static void on_player_enter_race_checkpoint(int id)
 {
   r->proccess_cp(id);
@@ -110,7 +111,6 @@ static void on_player_enter_race_checkpoint(int id)
 
 void new_race()
 {
-  
   load_race();
   // cleanup
   if(r != NULL)
@@ -124,7 +124,7 @@ void new_race()
     //it->second.cp_time.clear();
   }
   players.clear();
-  winner_id = winner_cps = -1;
+  winner_id = -1; winner_cps = 0;
 
   // load new race 
   int playersplace = 0;
@@ -179,15 +179,15 @@ INIT
   r_l = new api::detail::race_loader;
   r = new api::race(*r_l);
   
-  //REGISTER_TIMER(20000, &new_race);
-
+  REGISTER_TIMER(1500, &new_race);
+/*
   try
   {
     new_race();
   }
   catch(signals::timer_stop)
   {}
-  
+  */
     
   REGISTER_CALLBACK(on_player_spawn, &connect_to_race);
 
