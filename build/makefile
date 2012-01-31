@@ -33,7 +33,8 @@ LDFLAGS_plugin := $(LDFLAGS) -fPIC -shared -Wl,--no-undefined
 # maximum optimization
 CXXFLAGS_release = $(CXXFLAGS_plugin) -O3 -fvisibility=hidden -fvisibility-inlines-hidden -ffunction-sections -fdata-sections -fstrict-aliasing -fmerge-all-constants -fomit-frame-pointer -pedantic -flto -fno-ident
 LDFLAGS_release = $(LDFLAGS_plugin) -O3 -s -Wl,--gc-sections -flto
-DEFINES_release = $(DEFINES) NDEBUG
+# add NDEBUG definition when final version is out
+DEFINES_release = $(DEFINES)
 
 # minimum optimization
 CXXFLAGS_debug = $(CXXFLAGS_plugin) -O0 -ggdb3 -Wextra -Wno-unused-parameter

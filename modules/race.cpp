@@ -17,6 +17,7 @@
 
 #include <fstream>
 #include <map>
+#include <vector>
 
 //#include <boost/format.hpp>
 
@@ -30,6 +31,8 @@ struct playerstate
 {
   int vehicleid;
   long start;
+  
+  std::vector<long> cp_time;
 };
 
 static std::map<int, playerstate> players;
@@ -62,10 +65,10 @@ void show_vote(int id)
   }), id, "Голосование", vote.join('\n'), "Выбрать", "Отмена");
 }
 
-static std::string racefile = "Tampa";
 
 void load_race()
 {
+  static std::string racefile = "Tampa";
   racefile = vote.get_highest();
   vote.clear();
   api::message msg;
@@ -84,6 +87,7 @@ void new_race()
 {
   
   load_race();
+  // cleanup
   if(r != NULL)
     delete r;
   r = new api::race(*r_l);
@@ -92,9 +96,11 @@ void new_race()
   {
     if(it->second.vehicleid != 0)
       native::destroy_vehicle(it->second.vehicleid);
+    //it->second.cp_time.clear();
   }
   players.clear();
 
+  // load new race 
   int playersplace = 0;
   PLAYERBOX->for_each([&playersplace](int playerid)
   {
@@ -106,7 +112,7 @@ void new_race()
   api::counter c(6, -1, [](api::counter *)
   {
     r->start();
-    PLAYERBOX->for_each([](int id)
+    PLAYERBOX->for_each([](int id)race_details
     {
       native::toggle_player_controllable(id, true);
     });
@@ -133,6 +139,31 @@ void new_race()
   throw signals::timer_stop();
 }
 
+
+static int winner_id, winner_cps;
+static void on_player_enter_race_checkpoint(int id)
+{
+  r->proccess_cp(id);
+  
+  /* time diff announcement */
+  playerstate & pl = players[id];
+  pl.cp_time.push_back(util::get_walltime_s());
+  
+  // are you the first ?
+  if(pl.cp_time.size() > winner_cps)
+  {
+    winner_cps = pl.cp_time.size();
+    winner_id = id;
+  }
+  else if(winner_id != -1)
+  {
+    // looser
+    assert(winner_cps >= pl.cp_time.size());
+    long timediff = util::get_walltime_s() - players[winner_id].cp_time.at(pl.cp_time.size() - 1); // winner's time at this checkpoint
+    native::game_text_for_player(id, util::sprintf("%02ld:%02ld", timediff / 60, timediff % 60), 1000, 0); // show time difference
+  }
+}
+
 INIT
 {
   //util::notify("init");
@@ -157,14 +188,19 @@ INIT
     
   REGISTER_CALLBACK(on_player_spawn, &connect_to_race);
 
+  /*
   REGISTER_CALLBACK(on_player_enter_race_checkpoint, [](int id)
   {
-    r->proccess_cp(id);
-  });
+    
+  });*/
+  REGISTER_CB(on_player_enter_race_checkpoint);
   
   REGISTER_CALLBACK(on_player_disconnect, [](int id, int)
   {
     r->part(id);
+    if(players[id].vehicleid != 0)
+      native::destroy_vehicle(players[id].vehicleid);
+    players.erase(id);
   });
 
 
