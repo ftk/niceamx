@@ -65,7 +65,7 @@ namespace pawn {
             , typename base::param11_t::connect_type p11
             , typename base::param12_t::connect_type p12
             ) {
-            connect(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
+            this->connect(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
             return base::call_impl();
         }
     };
@@ -93,7 +93,7 @@ namespace pawn {
         int call(
               typename base::param0_t::connect_type p0
             ) {
-                connect(p0);
+                this->connect(p0);
                 return base::call_impl();
         }
     };
@@ -109,7 +109,7 @@ namespace pawn {
               typename base::param0_t::connect_type p0
             , typename base::param1_t::connect_type p1
             ) {
-                connect(p0, p1);
+                this->connect(p0, p1);
                 return base::call_impl();
         }
     };
@@ -126,7 +126,7 @@ namespace pawn {
             , typename base::param1_t::connect_type p1
             , typename base::param2_t::connect_type p2
             ) {
-                connect(p0, p1, p2);
+                this->connect(p0, p1, p2);
                 return base::call_impl();
         }
     };
@@ -144,7 +144,7 @@ namespace pawn {
             , typename base::param2_t::connect_type p2
             , typename base::param3_t::connect_type p3
             ) {
-                connect(p0, p1, p2, p3);
+                this->connect(p0, p1, p2, p3);
                 return base::call_impl();
         }
     };
@@ -163,7 +163,7 @@ namespace pawn {
             , typename base::param3_t::connect_type p3
             , typename base::param4_t::connect_type p4
             ) {
-                connect(p0, p1, p2, p3, p4);
+                this->connect(p0, p1, p2, p3, p4);
                 return base::call_impl();
         }
     };
@@ -183,7 +183,7 @@ namespace pawn {
             , typename base::param4_t::connect_type p4
             , typename base::param5_t::connect_type p5
             ) {
-                connect(p0, p1, p2, p3, p4, p5);
+                this->connect(p0, p1, p2, p3, p4, p5);
                 return base::call_impl();
         }
     };
@@ -204,7 +204,7 @@ namespace pawn {
             , typename base::param5_t::connect_type p5
             , typename base::param6_t::connect_type p6
             ) {
-                connect(p0, p1, p2, p3, p4, p5, p6);
+                this->connect(p0, p1, p2, p3, p4, p5, p6);
                 return base::call_impl();
         }
     };
@@ -226,7 +226,7 @@ namespace pawn {
             , typename base::param6_t::connect_type p6
             , typename base::param7_t::connect_type p7
             ) {
-                connect(p0, p1, p2, p3, p4, p5, p6, p7);
+                this->connect(p0, p1, p2, p3, p4, p5, p6, p7);
                 return base::call_impl();
         }
     };
@@ -249,7 +249,7 @@ namespace pawn {
             , typename base::param7_t::connect_type p7
             , typename base::param8_t::connect_type p8
             ) {
-                connect(p0, p1, p2, p3, p4, p5, p6, p7, p8);
+                this->connect(p0, p1, p2, p3, p4, p5, p6, p7, p8);
                 return base::call_impl();
         }
     };
@@ -273,7 +273,7 @@ namespace pawn {
             , typename base::param8_t::connect_type p8
             , typename base::param9_t::connect_type p9
             ) {
-                connect(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+                this->connect(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9);
                 return base::call_impl();
         }
     };
@@ -298,7 +298,7 @@ namespace pawn {
             , typename base::param9_t::connect_type p9
             , typename base::param10_t::connect_type p10
             ) {
-                connect(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+                this->connect(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
                 return base::call_impl();
         }
     };
@@ -324,7 +324,7 @@ namespace pawn {
             , typename base::param10_t::connect_type p10
             , typename base::param11_t::connect_type p11
             ) {
-                connect(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
+                this->connect(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
                 return base::call_impl();
         }
     };
