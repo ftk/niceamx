@@ -10,6 +10,7 @@
 
 #include "progress.hpp"
 #include <cstdio>
+#include <iostream>
 
 struct vertex
 {
@@ -17,7 +18,7 @@ struct vertex
   
   int id;
   
-  vertex() : x(0.), y(0.), z(0.), id(0) {}
+  vertex() : x(-1.1), y(0.), z(0.), id(0) {}
   
   inline bool operator == (const vertex& rhs) const
   {
@@ -63,7 +64,12 @@ private:
   std::vector<vertex> V;
   std::vector<edge> E;
   
+  //int id;
+  
 public:
+
+	//graph() : id(0) {}
+
   void add_adjacent_edge(vertex head, adjacent_edge e)
   {
     add_vertex(head);
@@ -83,10 +89,9 @@ private:
   }
   void add_vertex(vertex& src)
   {
-    static int id = 0;
     if(!find_vertex(src))
     {
-      src.id = id++;
+      src.id = V.size(); //id++;
       V.push_back(src);
     }
     
@@ -94,51 +99,9 @@ private:
   
   void add_edge(edge e)
   {
-    
     E.push_back(e);
   }
-  /*
-  int norm()
-  {
-    int id = 0;
-    V.clear();
-    V.reserve(list.size());
-    E.clear();
-    E.reserve(list.size() * 2);
-    for(std::pair<vertex, adjacency_list> pair : list)
-    {
-      auto it = std::find(V.begin(), V.end(), pair.first);
-      if(it == V.end())
-      {
-        pair.first.id = id++;
-        V.push_back(pair.first);
-      }
-      else
-      {
-        assert(it->id < id);
-        pair.first.id = it->id;
-      }
-      
-      for(adjacent_edge edge : pair.second)
-      {
-        auto it2 = std::find(V.begin(), V.end(), edge.tail);
-        if(it2 == V.end())
-        {
-          edge.tail.id = id++;
-          V.push_back(edge.tail);
-        }
-        else
-        {
-          assert(it2->id < id);
-          edge.tail.id = it2->id;
-        }
-        
-        E.push_back({pair.first, edge.tail, edge.weight});
-      }
-    }
-    return id;
-    
-  }*/
+
   
 public:
   vertex find_nearest(double x, double y, double z)
@@ -197,15 +160,9 @@ public:
     size_t size = G.V.size();
     //for(auto it = G.list.begin(); it != G.list.end(); ++it)
     //for(auto it : G.list)
-    dist.clear();
-    previous.clear();
-    dist.reserve(size);
-    previous.reserve(size);
-    for(size_t i = 0; i < size; i++)
-    {
-      dist.push_back(1000000);
-      previous.push_back(-1);
-    }
+    dist.resize(size, 6000000);
+    previous.resize(size, -1);
+
     assert(G.find_vertex(s));
     dist.at(s.id) = 0;
     
@@ -220,10 +177,10 @@ public:
       {
         int v = e.head.id;
         int u = e.tail.id;
-        register size_t tmp = dist[u] + e.weight;
-        if(dist[v] >= tmp)
+        //register size_t tmp = dist[u] + e.weight;
+        if(v != u && dist.at(v) > dist.at(u) + e.weight)
         {
-          dist[v] = tmp;
+          dist[v] = dist[u] + e.weight;
           previous[v] = u;
           changed = true;
         }
@@ -238,27 +195,40 @@ public:
   void shortest_path(path_t& path, vertex dest)
   {
     int u = dest;
-    while(previous[u] != -1)
+    int i = 0;
+    while(previous[u] != -1 && i < 100000)
     {
-      vertex v;
-      for(vertex& t : G.V)
+      vertex& v = G.V.at(u);
+      /*for(vertex& t : G.V)
       {
         if(t.id == u)
         {
           v = t;
           break;
         }
-      }
-      assert(v != vertex() && "not-connected graph?");
+      }*/
+      //for(int j = 0; j < G.V.size(); j++)
+      //	std::cerr << j << ' ' << G.V.at(j) << std::endl;
+      //assert((v != vertex()) && "not connected graph?");
+      if(v == vertex())
+      	std::cerr << u << ' ' << previous[u] << std::endl;
       
       path.push_front(v);
+      if(u == previous[u])
+      {
+      	std::cerr << "cyclic path!  " << u << std::endl;
+      	break;
+      }
       u = previous[u];
+      i++;
     }
+    if(i == 100000)
+    	std::cerr << "cyclic path!" << u << std::endl;
   }
   
   size_t distance(vertex dest)
   {
-    assert(dist[dest] != 1000000 && "no path");
+    assert(dist[dest] != 6000000 && "no path");
     return dist[dest];
   }
 };

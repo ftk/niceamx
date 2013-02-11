@@ -3,6 +3,9 @@
 #include "api/cmd.hpp"
 #include "api/streams.hpp"
 
+#include "util/utils.h"
+#include <iostream>
+
 #ifndef NDEBUG
 #define TYPE "debug"
 #else
@@ -17,6 +20,7 @@ INIT
     native::add_player_class(1, 0.f, 0.f, 10.f, 0.f, 0,0, 0,0, 0,0);
     native::add_player_class(2, 0.f, 0.f, 10.f, 0.f, 0,0, 0,0, 0,0);
     native::add_player_class(180, 0.f, 0.f, 10.f, 0.f, 0,0, 0,0, 0,0);
+    native::use_player_ped_anims();
   });
   
   REGISTER_CALLBACK(on_player_request_class, [](int id, int)
@@ -30,6 +34,12 @@ INIT
     native::set_camera_behind_player(id);
   });
   
+  /*
+  REGISTER_CALLBACK(on_plugin_load, []()
+  {
+  });*/
+
+  
   REGISTER_COMMAND("kill", [](int playerid, const std::string&) -> bool
   {
     native::set_player_health(playerid, 0.f);
@@ -38,12 +48,16 @@ INIT
   REGISTER_CALLBACK(on_player_connect, ([](int playerid)
   {
     api::message msg;
-    msg << native::get_player_name(playerid) << " Ð¿Ñ€Ð¸ÑÐ¾ÐµÐ´Ð¸Ð½Ð¸Ð»ÑÑ Ðº ÑÐµÑ€Ð²ÐµÑ€Ñƒ." << std::endl;
+    msg << native::get_player_name(playerid) << " ïðèñîåäèíèëñÿ ê ñåðâåðó." << std::endl;
   }));
   REGISTER_CALLBACK(on_player_disconnect, ([](int playerid, int)
   {
     api::message msg;
-    msg << native::get_player_name(playerid) << " Ð¾Ñ‚ÐºÐ»ÑŽÑ‡Ð¸Ð»ÑÑ." << std::endl;
+    msg << native::get_player_name(playerid) << " îòêëþ÷èëñÿ." << std::endl;
   }));
-
+/*
+  REGISTER_TIMER(2000, ([]()
+  {
+  	std::cout << util::get_walltime() << "\n";
+  }));*/
 }

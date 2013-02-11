@@ -10,6 +10,8 @@
 
 #include "destruct.h"
 
+#include "util/utils.h"
+
 //typedef std::list<AMX*> amxs_t;
 //static amxs_t amxs;
 #ifndef THREAD_SLEEP_TIME
@@ -94,11 +96,14 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick()
     }
   }
   */
-  if(ticks == (TIMERS_SLEEP_TIME / THREAD_SLEEP_TIME))
+
+  if(util::get_walltime() > ticks)
+  //if(ticks == (TIMERS_SLEEP_TIME / THREAD_SLEEP_TIME))
   {
     MAINBOX->timers(TIMERS_SLEEP_TIME);
-    ticks = 0;
+    ticks = util::get_walltime() + TIMERS_SLEEP_TIME;
+    //ticks = 0;
   }
-  ++ticks;
+  //++ticks;
   return;
 }

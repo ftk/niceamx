@@ -96,7 +96,7 @@ void areas::init(const char * path)
     links += a[i].hdr.links;
   }
 
-  printf("%d nodes and %d links loaded.\n", nodes, links);
+  printf("%lu nodes and %lu links loaded.\n", nodes, links);
 }
 
 static int hash(path_node node)

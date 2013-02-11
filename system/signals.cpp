@@ -2,8 +2,8 @@
 #include "signals.hpp"
 
 #include "util/overtimer.hpp"
-
-
+#include <iostream>
+#include "util/utils.h"
 
 #ifndef MAX_TIMER_EXEC_TIME
 #ifdef MAX_EXEC_TIME
@@ -37,9 +37,11 @@ namespace signals
     
     START();
     auto it = slots.begin(), en = slots.end();
+    
     while(it != en)
     {
       it->remaining -= elapsed;
+      //std::cout << it->remaining << '\n';
       if(it->remaining <= 0)
       {
         it->remaining = it->timeout;
@@ -54,7 +56,10 @@ namespace signals
           en = slots.end();
         }
       }
+      else
+      	++it;
     }
+    
   }
 
 

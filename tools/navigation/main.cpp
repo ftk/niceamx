@@ -47,7 +47,7 @@ int main(int argc, const char * argv[])
   }
   std::cout << g.v_size() << " nodes and " << g.e_size() << " edges parsed" << std::endl;
   
-  fordbellman path(g);
+  
   /*
   auto t = g.find_nearest(-200., -200., 0.);
   std::cout << t.x << ' ' << t.y << ' ' << t.z << std::endl;
@@ -75,6 +75,7 @@ int main(int argc, const char * argv[])
   
   while(read_coords(in, x, y, z))
   {
+  	fordbellman path(g);
     vertex target = g.find_nearest(x, y, z);
     
     write_coords(std::cout, source.x, source.y, source.z);
@@ -84,7 +85,10 @@ int main(int argc, const char * argv[])
     std::cout << "distance: " << path.distance(target) << std::endl;
     
     path_t min_path;
+    
     path.shortest_path(min_path, target);
+    min_path.push_front(source);
+    
     std::cout << "edges: " << min_path.size() << std::endl;
     write_path(out, min_path);
     std::cout << "--------" << std::endl;

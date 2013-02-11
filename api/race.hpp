@@ -138,7 +138,7 @@ public:
 
   float cp_size;
   
-  race(detail::checkpoint * r = NULL) : root(r), finished(0), finish_fn(NULL), cp_size(8.f) {}
+  race(detail::checkpoint * r = NULL) : root(r), finished(0), finish_fn(NULL), cp_size(14.f) {}
 
   inline void set_finish(onfinish_t fn)
   {

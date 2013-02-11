@@ -18,10 +18,11 @@ public:
     class timer
     {
 
-    private:
+	public:
       typedef long timeout_t;
       //typedef bool (*func_t)();
       typedef std::function<void ()> func_t;
+    private:
       timeout_t timeout;
       timeout_t remaining;
       func_t func;
@@ -56,7 +57,7 @@ public:
     void connect(slot_t);
     void proccess(int elapsed);
 
-    inline void operator () (int elapsed = 0)
+    inline void operator () (int elapsed)
     {
       proccess(elapsed);
     }

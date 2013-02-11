@@ -313,11 +313,11 @@ race_details::veh_pos race_details::get_position(int pos)
 {
   assert(pos >= 0);
   veh_pos & root = (pos % 2) ? right : left;
-  // first = left, second = right, third = next after left ltd
-  int away = pos / 2; // cars away from start
+  // first = left, second = right, third = behind left 
+  int away = pos / 2; // row
   float dist = away * distance; // distance away from start
   // getting coords
-  float angle = util::deg_to_rad(-root.angle); // in radians
+  float angle = util::deg_to_rad(root.angle); // in radians
   util::point3d position = root.pos;
   position.x += sin(angle) * dist;
   position.y += cos(angle) * dist;

@@ -16,6 +16,7 @@
 #include "util/utils.h"
 
 #include <fstream>
+#include <iostream>
 #include <map>
 #include <vector>
 
@@ -72,6 +73,8 @@ void load_race()
   vote.clear();
   api::message msg;
   *msg << "Загружена гонка " << racefile << std::endl;
+  
+  std::cout << racefile << std::endl;
   
   std::ifstream racefp("races/" + racefile + ".txt");
   assert(racefp);
