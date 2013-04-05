@@ -1,4 +1,4 @@
-#ifndef PAWN_NATIVES_H
+п»ї#ifndef PAWN_NATIVES_H
 #define PAWN_NATIVES_H
 #include "config.h"
 #include <string>
@@ -6,7 +6,7 @@
 namespace native
 {
 
-        //Константы сампа
+        //РљРѕРЅСЃС‚Р°РЅС‚С‹ СЃР°РјРїР°
         enum player_state {
             PLAYER_STATE_NONE               = 0
             ,PLAYER_STATE_ONFOOT            = 1
@@ -111,9 +111,9 @@ namespace native
         enum {KEY_ANALOG_RIGHT          = 16384};
         enum {KEY_ANALOG_LEFT           = 8192};
 
-        enum {KEY_UP                    = 65408}; // -128 - проверить с 0,3
+        enum {KEY_UP                    = 65408}; // -128 - РїСЂРѕРІРµСЂРёС‚СЊ СЃ 0,3
         enum {KEY_DOWN                  = 128};
-        enum {KEY_LEFT                  = 65408}; // -128 - проверить с 0,3
+        enum {KEY_LEFT                  = 65408}; // -128 - РїСЂРѕРІРµСЂРёС‚СЊ СЃ 0,3
         enum {KEY_RIGHT                 = 128};
 
         // Spectating
@@ -126,10 +126,10 @@ namespace native
         // SpecialActions
         enum special_action {
              SPECIAL_ACTION_NONE            = 0
-            ,SPECIAL_ACTION_DUCK            = 1 // Только чтение
+            ,SPECIAL_ACTION_DUCK            = 1 // РўРѕР»СЊРєРѕ С‡С‚РµРЅРёРµ
             ,SPECIAL_ACTION_USEJETPACK      = 2
-            ,SPECIAL_ACTION_ENTER_VEHICLE   = 3 // Только чтение
-            ,SPECIAL_ACTION_EXIT_VEHICLE    = 4 // Только чтение
+            ,SPECIAL_ACTION_ENTER_VEHICLE   = 3 // РўРѕР»СЊРєРѕ С‡С‚РµРЅРёРµ
+            ,SPECIAL_ACTION_EXIT_VEHICLE    = 4 // РўРѕР»СЊРєРѕ С‡С‚РµРЅРёРµ
             ,SPECIAL_ACTION_DANCE1          = 5
             ,SPECIAL_ACTION_DANCE2          = 6
             ,SPECIAL_ACTION_DANCE3          = 7
@@ -228,7 +228,7 @@ namespace native
             ,DIALOG_STYLE_LIST              = 2
         };
 
-        //Методы сампа
+        //РњРµС‚РѕРґС‹ СЃР°РјРїР°
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // a_objects.inc
@@ -383,7 +383,7 @@ namespace native
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // a_samp.inc
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Util - далеко не все нативы тут, в связи со своей ненужностью в C++
+        // Util - РґР°Р»РµРєРѕ РЅРµ РІСЃРµ РЅР°С‚РёРІС‹ С‚СѓС‚, РІ СЃРІСЏР·Рё СЃРѕ СЃРІРѕРµР№ РЅРµРЅСѓР¶РЅРѕСЃС‚СЊСЋ РІ C++
         void    send_client_message(int player_id, unsigned color, std::string const& message); // SendClientMessage(playerid, color, const message[]);
         void    send_player_message_to_player(int player_id, int sender_id, std::string const& message); // SendPlayerMessageToPlayer(playerid, senderid, const message[]);
         void    send_death_message(int killer_id, int killed_id, int weapon_id); // SendDeathMessage(killer,killee,weapon);
@@ -528,10 +528,20 @@ namespace native
         int get_vehicle_virtual_world(int vehicle_id); // GetVehicleVirtualWorld(vehicleid);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Недокументированные возможности
+        // РќРµРґРѕРєСѓРјРµРЅС‚РёСЂРѕРІР°РЅРЅС‹Рµ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // В сампе 0.3b возращает хеш пути к "GTA San Andreas User Files" в моих документах
+        // Р’ СЃР°РјРїРµ 0.3b РІРѕР·СЂР°С‰Р°РµС‚ С…РµС€ РїСѓС‚Рё Рє "GTA San Andreas User Files" РІ РјРѕРёС… РґРѕРєСѓРјРµРЅС‚Р°С…
         std::string get_serial(int player_id); // gpci(playerid, serial[], len);
+        
+        
+        // 0.3e
+        
+        void manual_vehicle_engine_and_lights (); // native ManualVehicleEngineAndLights();
+		void set_vehicle_params_ex (int vehicleid, int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective); // native SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+		void get_vehicle_params_ex (int vehicleid, int& engine, int& lights, int& alarm, int& doors, int& bonnet, int& boot, int& objective); // native GetVehicleParamsEx(vehicleid, &engine, &lights, &alarm, &doors, &bonnet, &boot, &objective);
+		void get_vehicle_model_info (int vehiclemodel, int infotype, float& X, float& Y, float& Z); // native GetVehicleModelInfo(vehiclemodel, infotype, &Float:X, &Float:Y, &Float:Z);
+		int get_vehicle_virtual_world (int vehicleid); // native GetVehicleVirtualWorld(vehicleid);
+
 } // namespace 
 
 #endif // PAWN_NATIVES_H

@@ -1,4 +1,4 @@
-#include "config.h"
+п»ї#include "config.h"
 #include "pawn_marshaling.hpp"
 #include "natives.h"
 
@@ -29,14 +29,15 @@
 
 // https://gta-paradise-sa.googlecode.com/svn/trunk/src/cplusplus/freezone-samp/src/core/samp/samp_api.cpp
 
+
+//Р”Р°РЅРЅС‹Рµ РґР»СЏ РјР°СЂС€Р°Р»РёРЅРіР° Р°СЂРіСѓРјРµРЅС‚РѕРІ РІ РїР°РІРЅ
+static pawn::marh_collection_t marhs; // Р”РѕР»Р¶РµРЅ Р±С‹С‚СЊ РґРѕ РѕР±СЉСЏРІР»РµРЅРёР№ marh_t
+
 namespace native 
 {
 
     namespace 
     {
-        //Данные для маршалинга аргументов в павн
-        pawn::marh_collection_t marhs; // Должен быть до объявлений marh_t
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // a_objects.inc
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +125,8 @@ namespace native
         pawn::marh_t<int, std::string const&> set_player_shop_name_t("SetPlayerShopName", marhs);
         pawn::marh_t<int, int, int> set_player_skill_level_t("SetPlayerSkillLevel", marhs);
         pawn::marh_t<int> get_player_surfing_vehicle_id_t("GetPlayerSurfingVehicleID", marhs);
-#ifdef _03B
+
+/*#ifdef _03B
         pawn::marh_t<int, int, int, float, float, float, float, float, float> set_player_holding_object_t("SetPlayerHoldingObject", marhs);
         pawn::marh_t<int> stop_player_holding_object_t("StopPlayerHoldingObject", marhs);
         pawn::marh_t<int> is_player_holding_object_t("IsPlayerHoldingObject", marhs);
@@ -136,7 +138,7 @@ namespace native
 	
 	pawn::marh_t<int, int, float, float, float, float, float, float> attach_object_to_vehicle_t("AttachObjectToVehicle", marhs);
 
-#endif
+#endif*/
         pawn::marh_t<int, std::string const&, unsigned int, float, int> set_player_chat_bubble_t("SetPlayerChatBubble", marhs);
 
         // Player controls
@@ -342,30 +344,21 @@ namespace native
         pawn::marh_t<int> get_vehicle_virtual_world_t("GetVehicleVirtualWorld", marhs);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Недокументированные возможности
+        // РќРµРґРѕРєСѓРјРµРЅС‚РёСЂРѕРІР°РЅРЅС‹Рµ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         pawn::marh_t<int, std::string&, pawn::string_len> gpci_t("gpci", marhs);
+        
+        
+        /*  0.3e  */
+		pawn::marh_t<> manual_vehicle_engine_and_lights_t("ManualVehicleEngineAndLights", marhs); // native ManualVehicleEngineAndLights();
+		pawn::marh_t<int, int, int, int, int, int, int, int> set_vehicle_params_ex_t("SetVehicleParamsEx", marhs); // native SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+		pawn::marh_t<int, int&, int&, int&, int&, int&, int&, int&> get_vehicle_params_ex_t("GetVehicleParamsEx", marhs); // native GetVehicleParamsEx(vehicleid, &engine, &lights, &alarm, &doors, &bonnet, &boot, &objective);
+		pawn::marh_t<int, int, float&, float&, float&> get_vehicle_model_info_t("GetVehicleModelInfo", marhs); // native GetVehicleModelInfo(vehiclemodel, infotype, &Float:X, &Float:Y, &Float:Z);
     } // namespace {
 
 
-    //Инициализация мода - инициализирем методы маршалинга
-    void natives_init(AMX* amx) 
-    {
 
-        typedef pawn::marh_collection_t::marhs_t::iterator iterator;
-        for(iterator it = marhs.marhs.begin(), en = marhs.marhs.end(); it != en; ++it)
-        {
-            bool ret = (*it)->init(amx);
-            if(!ret)
-            {
-              assert(false && "Не удалось инициализировать натив. Возможно его нужно прописать в sys_all_call() в игровом режиме");
-              abort();
-            }
-        }
-    }
-
-
-    //Методы сампа
+    //РњРµС‚РѕРґС‹ СЃР°РјРїР°
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // a_objects.inc
@@ -1907,7 +1900,7 @@ namespace native
         return get_vehicle_virtual_world_t.call(vehicle_id);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Недокументированные возможности
+    // РќРµРґРѕРєСѓРјРµРЅС‚РёСЂРѕРІР°РЅРЅС‹Рµ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     std::string get_serial (int player_id) 
     {
@@ -1917,9 +1910,57 @@ namespace native
         gpci_t.call(player_id, rezult, pawn::string_len::val);
         return rezult;
     }
+    
+    /***  0.3e ***/
+	void manual_vehicle_engine_and_lights ()
+	{
+		START();
+		DEBUG_NATIVE(/*f*/manual_vehicle_engine_and_lights, /*p*/"");
+		manual_vehicle_engine_and_lights_t.call();  
+	}
+	void set_vehicle_params_ex (int vehicleid, int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective)
+	{
+		START();
+		DEBUG_NATIVE(/*f*/set_vehicle_params_ex, /*p*/vehicleid SEPARATOR  engine SEPARATOR  lights SEPARATOR  alarm SEPARATOR  doors SEPARATOR  bonnet SEPARATOR  boot SEPARATOR  objective);
+		set_vehicle_params_ex_t.call(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);  
+	}
+	void get_vehicle_params_ex (int vehicleid, int& engine, int& lights, int& alarm, int& doors, int& bonnet, int& boot, int& objective)
+	{
+		START();
+		DEBUG_NATIVE(/*f*/get_vehicle_params_ex, /*p*/vehicleid SEPARATOR  engine SEPARATOR  lights SEPARATOR  alarm SEPARATOR  doors SEPARATOR  bonnet SEPARATOR  boot SEPARATOR  objective);
+		get_vehicle_params_ex_t.call(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);  
+	}
+	void get_vehicle_model_info (int vehiclemodel, int infotype, float& X, float& Y, float& Z)
+	{
+		START();
+		DEBUG_NATIVE(/*f*/get_vehicle_model_info, /*p*/vehiclemodel SEPARATOR  infotype SEPARATOR  X SEPARATOR  Y SEPARATOR  Z);
+		get_vehicle_model_info_t.call(vehiclemodel, infotype, X, Y, Z);  
+	}
 
 
-} // namespace samp {
+} // namespace native {
+
+//РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РјРѕРґР° - РёРЅРёС†РёР°Р»РёР·РёСЂРµРј РјРµС‚РѕРґС‹ РјР°СЂС€Р°Р»РёРЅРіР°
+
+namespace pawn
+{
+    void natives_init(AMX* amx)
+    {
+
+        //typedef pawn::marh_collection_t::marhs_t::iterator iterator;
+        //for(iterator it = marhs.marhs.begin(), en = marhs.marhs.end(); it != en; ++it)
+        for(auto it : ::marhs.marhs)
+        {
+            bool ret = (it)->init(amx);
+            if(!ret)
+            {
+              assert(false && "РќРµ СѓРґР°Р»РѕСЃСЊ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ РЅР°С‚РёРІ. Р’РѕР·РјРѕР¶РЅРѕ РµРіРѕ РЅСѓР¶РЅРѕ РїСЂРѕРїРёСЃР°С‚СЊ РІ sys_all_call() РІ РёРіСЂРѕРІРѕРј СЂРµР¶РёРјРµ");
+              abort();
+            }
+        }
+    }
+}
+
 
 // ([a-z_0-9]+)(\([^)]*\))((.*|\n){,9};\n *)(.+_t\.call\(([^)]*)\).*)
 // \1 \2 \3DEBUG_NATIVE(/*f*/\1, /*p*/\6);\n        \5

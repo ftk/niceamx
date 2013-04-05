@@ -1,6 +1,8 @@
 #ifndef API_VEHICLE_HPP
 #define API_VEHICLE_HPP
 
+// OBSOLETE
+
 #include "util/point.hpp"
 
 #include <cassert>

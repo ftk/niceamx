@@ -1,19 +1,22 @@
-#ifndef PAWN_MARSHALING_PARAM_HPP
+п»ї#ifndef PAWN_MARSHALING_PARAM_HPP
 #define PAWN_MARSHALING_PARAM_HPP
 #include "SDK/amx/amx.h"
 #include <string>
 #include <cstring>
 
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 
 namespace pawn {
-    // Классы параметров
+    // РљР»Р°СЃСЃС‹ РїР°СЂР°РјРµС‚СЂРѕРІ
     class string_len {
     public:
         enum {val = 256};
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //Данный класс не должен использоваться, а должны использоваться соответствующие специализации
+    //Р”Р°РЅРЅС‹Р№ РєР»Р°СЃСЃ РЅРµ РґРѕР»Р¶РµРЅ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ, Р° РґРѕР»Р¶РЅС‹ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРµ СЃРїРµС†РёР°Р»РёР·Р°С†РёРё
     template<int param_id, typename T>
     class marh_param_t {
     public:
@@ -151,20 +154,29 @@ namespace pawn {
         void postcall(AMX* amx, cell* params_t) {
             char buff[string_len::val];
 
-            fix_ru();
-            amx_GetString(buff, phys_addr, 0, string_len::val);
+			
+            //fix_ru();
+            //amx_GetString(buff, phys_addr, 0, string_len::val);
+            char * pbuf = buff;
+            for (cell* it = phys_addr,* end = phys_addr + string_len::val; *it && it < end; ++it, ++pbuf)
+            {
+                *pbuf = (*it & 0xff);
+            }
+            *pbuf = '\0';
+
             *val_ptr = std::string(buff);
 
             amx_Release(amx, params_t[param_id + 1]);
-            val_ptr = 0;
-            phys_addr = 0;
+            val_ptr = NULL;
+            phys_addr = NULL;
         }
+        /*
         inline void fix_ru() {
-            // Устнаняем проблему с отрицательными буквами (русскими)
+            // РЈСЃС‚РЅР°РЅСЏРµРј РїСЂРѕР±Р»РµРјСѓ СЃ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹РјРё Р±СѓРєРІР°РјРё (СЂСѓСЃСЃРєРёРјРё)
             for (cell* it = phys_addr,* end = phys_addr + string_len::val; *it && it < end; ++it) {
                 *it &= 0x000000FF;
             }
-        }
+        }*/
 
         static std::string get_pawn_call_arg() { return "vs"; }
     };

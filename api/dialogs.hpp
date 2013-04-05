@@ -54,7 +54,7 @@ public:
     show_impl(playerid, dialogid, style, cap, text, b1, b2);
   }
 
-  void invoke(int playerid, bool success, int listitem, const std::string& inputtext)
+  void invoke(int playerid, bool success, int/* listitem*/, const std::string& /*inputtext*/)
   {
     assert(handler != NULL);
     return handler(playerid, success);
@@ -80,7 +80,7 @@ public:
     show_impl(playerid, dialogid, style, cap, text, b1, b2);
   }
 
-  void invoke(int playerid, bool success, int listitem, const std::string& inputtext)
+  void invoke(int playerid, bool success, int /*listitem*/, const std::string& inputtext)
   {
     assert(handler != NULL);
     return handler(playerid, success, inputtext);
@@ -106,7 +106,7 @@ public:
     show_impl(playerid, dialogid, style, cap, text, b1, b2);
   }
 
-  void invoke(int playerid, bool success, int listitem, const std::string& inputtext)
+  void invoke(int playerid, bool success, int listitem, const std::string&/* inputtext*/)
   {
     assert(handler != NULL);
     return handler(playerid, success, listitem);

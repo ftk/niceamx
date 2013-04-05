@@ -3,23 +3,21 @@
 
 #include "util/point.hpp"
 
-#ifndef PI
-#define PI 3.1415926535897932384626433
-#endif
-
 
 namespace util {
+
+static const double pi = 3.1415926535897932384626433;
 
 //
 template <typename T>
 inline T rad_to_deg(T rad)
 {
-  return (rad * (180.f / PI));
+  return (rad * (180.f / pi));
 }
 template <typename T>
 inline T deg_to_rad(T deg)
 {
-  return (deg * (PI / 180.f));
+  return (deg * (pi / 180.f));
 }
 
 struct euler;

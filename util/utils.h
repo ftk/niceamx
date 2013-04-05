@@ -10,7 +10,7 @@
 namespace util {
 //
 
-typedef unsigned long hash_t;
+typedef unsigned long long hash_t;
 
 hash_t hash(const char *);
 hash_t hash(const std::string &);
@@ -23,7 +23,7 @@ inline BOOST_CONSTEXPR hash_t const_hash(const char *s, int off = 0)
 
 
 
-typedef unsigned long walltime_t;
+typedef unsigned long long walltime_t;
 walltime_t get_walltime();
 walltime_t get_walltime_s(); // in seconds
 

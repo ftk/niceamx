@@ -1,4 +1,4 @@
-#ifndef SAMP_DEMARSHALING_HPP
+п»ї#ifndef SAMP_DEMARSHALING_HPP
 #define SAMP_DEMARSHALING_HPP
 
 #include <string>
@@ -7,10 +7,15 @@
 
 #include "SDK/amx/amx.h"
 
-namespace pawn {
-    //Демаршалинг pawn аргументов
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 
-    //Класс аргумента
+
+namespace pawn {
+    //Р”РµРјР°СЂС€Р°Р»РёРЅРі pawn Р°СЂРіСѓРјРµРЅС‚РѕРІ
+
+    //РљР»Р°СЃСЃ Р°СЂРіСѓРјРµРЅС‚Р°
     template<int param_id, typename T>
     class demarh_t
     {

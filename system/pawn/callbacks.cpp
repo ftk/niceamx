@@ -4,6 +4,8 @@
 #include "pawn_demarshaling.hpp"
 #include <string>
 
+#include "plugin.h"
+
 #include "util/overtimer.hpp"
 
 #define PREFIX /* empty */
@@ -27,18 +29,14 @@
 #ifdef PRINT_INCOMING_CALLBACKS
 #include <boost/preprocessor/stringize.hpp>
 #include <iostream>
-#define STREAM std::cout << "> "
-#define DEBUG_CALLBACK(f,p) STREAM << BOOST_PP_STRINGIZE(f) "(" << p << ");" << std::endl
+#define STREAM std::cout << "< "
+#define DEBUG_CALLBACK(f,p) if(!MAINBOX->f.empty()) STREAM << BOOST_PP_STRINGIZE(f) "(" << p << ");" << std::endl
 #else
 #define DEBUG_CALLBACK(f,...) /* empty */
 #endif
 
 #define SEPARATOR << ", " <<
 
-namespace native // natives.cpp
-{
-  void natives_init(AMX *);
-}
 
 namespace pawn
 {
@@ -46,7 +44,8 @@ namespace pawn
         //OnGameModeExit();
         NATIVE_DECL(OnGameModeInit)
         {
-                native::natives_init(amx);
+                pawn::natives_init(amx);
+                pawn::gamemode = amx;
                 START();
                 
                 DEBUG_CALLBACK(/*f*/ on_game_mode_init, /*p*/ "");
@@ -55,6 +54,7 @@ namespace pawn
 
         NATIVE_DECL(OnGameModeExit)
         {
+                pawn::gamemode = NULL;
                 START();
                 
                 DEBUG_CALLBACK(/*f*/ on_game_mode_exit, /*p*/ "");
@@ -418,7 +418,7 @@ namespace pawn
                 START();
                 
                 pawn::demarh_t<0, int> player_id(amx, params);
-                DEBUG_CALLBACK(/*f*/ on_player_update, /*p*/ player_id.get());
+                //DEBUG_CALLBACK(/*f*/ on_player_update, /*p*/ player_id.get());
                 CALL(/*f*/ on_player_update /*p*/ , player_id.get());
                 return 1;
         }
@@ -522,7 +522,65 @@ namespace pawn
                 CALL(/*f*/ on_vehicle_damage_status_update /*p*/ , player_id.get(), vehicle_id.get());
         }
         
-
+        
+        // 0.3e
+		/* TODO:
+		forward OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat);
+		forward OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid);
+		forward OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid);
+		forward OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ);
+		forward OnPlayerClickTextDraw(playerid, Text:clickedid);
+		forward OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid);
+		#define EDIT_RESPONSE_CANCEL		0
+		#define EDIT_RESPONSE_FINAL			1
+		#define EDIT_RESPONSE_UPDATE		2
+		
+		forward OnPlayerEditObject( playerid, playerobject, objectid, response, Float:fX, Float:fY, Float:fZ, Float:fRotX, Float:fRotY, Float:fRotZ );
+		
+		forward OnPlayerEditAttachedObject( playerid, response, index, modelid, boneid,Float:fOffsetX, Float:fOffsetY, Float:fOffsetZ,Float:fRotX, Float:fRotY, Float:fRotZ,Float:fScaleX, Float:fScaleY, Float:fScaleZ );
+		
+		#define SELECT_OBJECT_GLOBAL_OBJECT	1
+		#define SELECT_OBJECT_PLAYER_OBJECT 2
+		
+		forward OnPlayerSelectObject(playerid, type, objectid, modelid, Float:fX, Float:fY, Float:fZ);
+		
+		*/
+        
+        NATIVE_DECL(OnUnoccupiedVehicleUpdate)
+        {
+                START();
+                
+                pawn::demarh_t<0, int> vehicle_id(amx, params);
+                pawn::demarh_t<1, int> player_id(amx, params);
+                pawn::demarh_t<2, int> passenger_seat(amx, params);
+                
+                DEBUG_CALLBACK(/*f*/ on_unoccupied_vehicle_update, /*p*/ vehicle_id.get() SEPARATOR  player_id.get() SEPARATOR  passenger_seat.get());
+                CALL(/*f*/ on_unoccupied_vehicle_update /*p*/ , vehicle_id.get(), player_id.get(), passenger_seat.get());
+        }
+        NATIVE_DECL(OnPlayerTakeDamage)
+        {
+                START();
+                
+                pawn::demarh_t<0, int> player_id(amx, params);
+                pawn::demarh_t<1, int> issuer_id(amx, params);
+                pawn::demarh_t<2, float> amount(amx, params);
+                pawn::demarh_t<3, int> weapon_id(amx, params);
+                
+                DEBUG_CALLBACK(/*f*/ on_player_take_damage, /*p*/ player_id.get() SEPARATOR  issuer_id.get() SEPARATOR  amount.get() SEPARATOR  weapon_id.get());
+                CALL(/*f*/ on_player_take_damage /*p*/ , player_id.get(), issuer_id.get(), amount.get(), weapon_id.get());
+        }
+        NATIVE_DECL(OnPlayerGiveDamage)
+        {
+                START();
+                
+                pawn::demarh_t<0, int> player_id(amx, params);
+                pawn::demarh_t<1, int> damaged_id(amx, params);
+                pawn::demarh_t<2, float> amount(amx, params);
+                pawn::demarh_t<3, int> weapon_id(amx, params);
+                
+                DEBUG_CALLBACK(/*f*/ on_player_give_damage, /*p*/ player_id.get() SEPARATOR  damaged_id.get() SEPARATOR  amount.get() SEPARATOR  weapon_id.get());
+                CALL(/*f*/ on_player_give_damage /*p*/ , player_id.get(), damaged_id.get(), amount.get(), weapon_id.get());
+        }
               //cell AMX_NATIVE_CALL ([A-Za-z0-9]+)\(AMX\* amx, cell\* params\) \{(([\n\t ]*pawn::.+)*)[\n\t ]*[^}]*\}[^}]*\}[\n\t ]*.*container_execute_handlers\(application::instance\(\), &.+_i::([^,]+)([^;]*);[^}]+\}
               //NATIVE_DECL(\1) \n\t{\n\t\t\2\n\t\tCALL(/*f*/ \4 /*p*/ \5; \n\t}\n
               
@@ -575,6 +633,9 @@ namespace pawn
             {"_DialogResponse",            OnDialogResponse},
             {"_PlayerClickPlayer",         OnPlayerClickPlayer},
             {"_VehicleDamageStatusUpdate", OnVehicleDamageStatusUpdate},
+            {"_UnoccupiedVehicleUpdate",   OnUnoccupiedVehicleUpdate},
+            {"_PlayerTakeDamage",          OnPlayerTakeDamage},
+            {"_PlayerGiveDamage",          OnPlayerGiveDamage},
             {0, 0}
 
         };

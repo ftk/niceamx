@@ -1,6 +1,6 @@
 #ifndef API_STREAMER_HPP
 #define API_STREAMER_HPP
-
+// OBSOLETE
 
 // macros
 

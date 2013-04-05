@@ -1,1 +1,0 @@
-native gpci(Float:playerid, serial[], len = sizeof serial, Float:aaa=66);

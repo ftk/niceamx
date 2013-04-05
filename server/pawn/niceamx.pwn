@@ -4,11 +4,9 @@
 #define Text3D _
 #define PlayerText3D _
 
-#define __samp03 2
+#include <a_samp>
 
-#include <a_master>
-
-#include "../include/niceamx"
+#include "../pawn/niceamx"
 
 main() 
 {
@@ -215,6 +213,22 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 	return _PlayerClickPlayer(playerid, clickedplayerid, source);
 }
 
+public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat)
+{
+	return _UnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat);
+}
+
+public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
+{
+	return _PlayerTakeDamage(playerid, issuerid, Float:amount, weaponid);
+}
+
+public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)
+{
+	return _PlayerGiveDamage(playerid, damagedid, Float:amount, weaponid);
+}
+
+native gpci(playerid, str[], len);
 
 forward sys_all_call();
 public sys_all_call()
@@ -300,9 +314,6 @@ public sys_all_call()
     SetPlayerShopName(vi, vs);
     SetPlayerSkillLevel(vi, vi, vi);
     GetPlayerSurfingVehicleID(vi);
-    SetPlayerHoldingObject(vi, vi, vi, vf, vf, vf, vf, vf, vf);
-    StopPlayerHoldingObject(vi);
-    IsPlayerHoldingObject(vi);
     SetPlayerChatBubble(vi, vs, vi, vf, vi);
     PutPlayerInVehicle(vi, vi, vi);
     GetPlayerVehicleID(vi);
@@ -463,5 +474,10 @@ public sys_all_call()
     SetVehicleVirtualWorld(vi, vi);
     GetVehicleVirtualWorld(vi);
     gpci(vi, vs, vi);
+    
+    GetVehicleModelInfo(vi, vi, vf, vf, vf);
+    SetVehicleParamsEx(vi, vi, vi, vi, vi, vi, vi, vi);
+    GetVehicleParamsEx(vi, vi, vi, vi, vi, vi, vi, vi);
+    ManualVehicleEngineAndLights();
 }
 

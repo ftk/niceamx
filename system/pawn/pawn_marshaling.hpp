@@ -1,4 +1,4 @@
-#ifndef SAMP_MARSHALING_HPP
+п»ї#ifndef SAMP_MARSHALING_HPP
 #define SAMP_MARSHALING_HPP
 #include "pawn_marshaling_amx.hpp"
 #include "pawn_marshaling_param.hpp"
@@ -8,7 +8,7 @@
 #include <cassert>
 
 namespace pawn {
-    //Маршалинг аргументов для вызова павн методов
+    //РњР°СЂС€Р°Р»РёРЅРі Р°СЂРіСѓРјРµРЅС‚РѕРІ РґР»СЏ РІС‹Р·РѕРІР° РїР°РІРЅ РјРµС‚РѕРґРѕРІ
 
     template<typename base>
     class marh_base: public marh_amx_t, protected base {
@@ -41,7 +41,7 @@ namespace pawn {
 
 
     //////////////////////////////////////////////////////////////////////////
-    //Классы функций павн
+    //РљР»Р°СЃСЃС‹ С„СѓРЅРєС†РёР№ РїР°РІРЅ
     class marh_null_t {};
     
     template<typename t0 = marh_null_t, typename t1 = marh_null_t, typename t2 = marh_null_t, typename t3 = marh_null_t, typename t4 = marh_null_t, typename t5 = marh_null_t, typename t6 = marh_null_t, typename t7 = marh_null_t, typename t8 = marh_null_t, typename t9 = marh_null_t, typename t10 = marh_null_t, typename t11 = marh_null_t, typename t12 = marh_null_t>
@@ -329,7 +329,7 @@ namespace pawn {
         }
     };
 
-    //Специализация для функции с переменным числом аргументов
+    //РЎРїРµС†РёР°Р»РёР·Р°С†РёСЏ РґР»СЏ С„СѓРЅРєС†РёРё СЃ РїРµСЂРµРјРµРЅРЅС‹Рј С‡РёСЃР»РѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ
     template<>
     class marh_t<std::vector<int>, marh_null_t, marh_null_t, marh_null_t, marh_null_t, marh_null_t, marh_null_t, marh_null_t, marh_null_t, marh_null_t, marh_null_t, marh_null_t, marh_null_t>: public marh_amx_t {
     public:

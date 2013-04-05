@@ -1,5 +1,6 @@
 #ifndef API_CMD_HPP
 #define API_CMD_HPP
+// OBSOLETE
 
 #include "config.h"
 #include "util/utils.h"

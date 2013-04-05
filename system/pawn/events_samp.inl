@@ -43,6 +43,15 @@ SIG(int, int) on_vehicle_stream_out;
 SIG(int, int, int, int, const std::string&) on_dialog_response;
 SIG(int, int, int) on_player_click_player;
 
+// 0.3e
+SIG(int, int, int) on_unoccupied_vehicle_update;
+SIG(int, int, float, int) on_player_take_damage;
+SIG(int, int, float, int) on_player_give_damage;
+
+SIG(int, float, float, float) on_player_click_map;
+// TODO:
+//SIG(int, int, float, int) on_player_take_damage;
+//SIG(int, int, float, int) on_player_take_damage;
 
 //\([A-Z]\)\([a-z]+\)
 //_\1\2

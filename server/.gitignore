@@ -6,3 +6,4 @@ server_log.txt
 niceamx-test
 callgrind.out.*
 gmon.out
+/include/*

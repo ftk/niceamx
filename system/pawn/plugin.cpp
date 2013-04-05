@@ -4,6 +4,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
 #include "pawnlog.hpp"
 #include "signals.hpp"
@@ -11,6 +12,9 @@
 #include "destruct.h"
 
 #include "util/utils.h"
+#include "util/log.h"
+
+#include "plugin.h"
 
 //typedef std::list<AMX*> amxs_t;
 //static amxs_t amxs;
@@ -24,6 +28,12 @@
 
 
 extern void *pAMXFunctions;
+
+namespace pawn
+{
+	AMX * gamemode;
+}
+
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() 
 {
@@ -43,7 +53,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void** ppData)
     INVOKE_INIT();
 
     MAINBOX->plugin_load();
-        
+
     return true;
 }
 
@@ -56,11 +66,6 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload()
     //pawn::logprint("plugin unload");
     INVOKE_DESTRUCTOR();
     pawn::logprintf = 0;
-}
-
-namespace pawn
-{
-        extern AMX_NATIVE_INFO toexport[]; // array with plugin natives
 }
 
 // Подгрузка виртуальной машины
@@ -79,31 +84,25 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX *amx)
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick()
 {
-  static int ticks = 0;
-  /*
-  if(!(ticks % (100 / THREAD_SLEEP_TIME)))
-  {
-    MAINBOX->timer100.execute();
-    if(!(ticks % (500 / THREAD_SLEEP_TIME)))
-    {
-      MAINBOX->timer500.execute();
-      if(!(ticks % (1000 / THREAD_SLEEP_TIME)))
-      {
-	MAINBOX->timer1000.execute();
-	
-	ticks = 0;
-      }
-    }
-  }
-  */
+  static unsigned int ticks = 0;
 
-  if(util::get_walltime() > ticks)
-  //if(ticks == (TIMERS_SLEEP_TIME / THREAD_SLEEP_TIME))
+
+  //if(util::get_walltime() > ticks)
+  if(ticks == (TIMERS_SLEEP_TIME / THREAD_SLEEP_TIME))
   {
-    MAINBOX->timers(TIMERS_SLEEP_TIME);
-    ticks = util::get_walltime() + TIMERS_SLEEP_TIME;
-    //ticks = 0;
+  	try
+  	{
+      MAINBOX->timers(TIMERS_SLEEP_TIME);
+    }
+    catch(std::exception& e)
+    {
+    	std::cerr << "Caught exception while processing timers: ";
+    	std::cerr << e.what() << std::endl;
+        util::log_msg_nofmt("timers/exception", e.what());
+    }
+    //ticks = util::get_walltime() + TIMERS_SLEEP_TIME;
+    ticks = 0;
   }
-  //++ticks;
+  ++ticks;
   return;
 }

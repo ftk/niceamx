@@ -1,6 +1,8 @@
 #ifndef API_OBJECT_HPP
 #define API_OBJECT_HPP
 
+// OBSOLETE
+
 #include "config.h"
 
 #include "util/point.hpp"

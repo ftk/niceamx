@@ -22,7 +22,7 @@ namespace signals {
 
 //
 
-class slot_remove {};
+class slot_remove {}; // used as exception
 
 template <typename Slot, typename ... Args>
 class basic_signal
@@ -89,17 +89,33 @@ public:
   {
     slots.push_front(f);
   }*/
+  
+  inline bool empty()
+  {
+  	return slots.empty();
+  }
 };
 
 // functor
+
+template <typename ... Args>
+using signal = basic_signal<std::function<SIGNAL_SLOT_RETURN_TYPE (Args...)>, Args...>;
+
+/*
 template <typename ... Args>
 class signal : public basic_signal<std::function<SIGNAL_SLOT_RETURN_TYPE (Args...)>, Args...>
-{};
+{};*/
+
 
 // function pointer
+
+template <typename ... Args>
+using signal_simple = basic_signal<SIGNAL_SLOT_RETURN_TYPE (*)(Args...), Args...>;
+/*
 template <typename ... Args>
 class signal_simple : public basic_signal<SIGNAL_SLOT_RETURN_TYPE (*)(Args...), Args...>
 {};
+*/
 
 }
 

@@ -60,7 +60,7 @@ walltime_t get_walltime()
   // TODO: replace with clock_gettime(CLOCK_MONOTONIC, timespec *)
   timeval tim;
   gettimeofday(&tim, NULL);
-  return((tim.tv_sec*1000) + (tim.tv_usec/1000));
+  return((tim.tv_sec*1000ULL) + (tim.tv_usec/1000ULL));
   /* 
   // undefined reference, even with -lrt
   timespec ts;
@@ -83,7 +83,7 @@ void sleep(long ms)
 #ifdef WIN32
   Sleep(ms);
 #else
-  usleep(ms * 1000);
+  usleep(ms * 1000L);
 #endif
 }
 

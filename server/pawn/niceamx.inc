@@ -40,3 +40,7 @@ native _VehicleStreamOut(vehicleid, forplayerid);
 native _DialogResponse(playerid, dialogid, response, listitem, inputtext[]);
 native _PlayerClickPlayer(playerid, clickedplayerid, source);
 
+native _UnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat);
+native _PlayerTakeDamage(playerid, issuerid, Float:amount, weaponid);
+native _PlayerGiveDamage(playerid, damagedid, Float:amount, weaponid);
+

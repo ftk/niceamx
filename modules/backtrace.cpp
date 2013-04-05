@@ -1,9 +1,12 @@
+#ifndef WIN32
+// glibc only (?)
+
 #include <stdio.h>
 #include <execinfo.h>
 #include <signal.h>
 #include <stdlib.h>
 
-#define MAX_TRACE 15
+#define MAX_TRACE 40
 
 #include "signals.hpp"
 
@@ -39,3 +42,6 @@ INIT
   signal(SIGSEGV, &handler);
   //tt();
 }
+
+#endif
+

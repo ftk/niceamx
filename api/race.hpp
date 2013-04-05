@@ -1,5 +1,6 @@
 #ifndef API_RACE_HPP
 #define API_RACE_HPP
+// OBSOLETE
 
 #include "util/point.hpp"
 

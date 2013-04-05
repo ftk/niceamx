@@ -1,4 +1,4 @@
-#ifndef PAWN_MARSHALING_AMX_HPP
+п»ї#ifndef PAWN_MARSHALING_AMX_HPP
 #define PAWN_MARSHALING_AMX_HPP
 #include "SDK/amx/amx.h"
 #include <string>
@@ -6,10 +6,10 @@
 
 namespace pawn {
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Классы описания методов
+    // РљР»Р°СЃСЃС‹ РѕРїРёСЃР°РЅРёСЏ РјРµС‚РѕРґРѕРІ
     class marh_amx_t;
 
-    // Колекция описателей. Используется для инициализации/финализации группы
+    // РљРѕР»РµРєС†РёСЏ РѕРїРёСЃР°С‚РµР»РµР№. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё/С„РёРЅР°Р»РёР·Р°С†РёРё РіСЂСѓРїРїС‹
     class marh_collection_t {
     public:
         typedef std::vector<marh_amx_t*> marhs_t;
@@ -36,7 +36,7 @@ namespace pawn {
         {}
 
     public:
-        // В случае ошибки возращает false
+        // Р’ СЃР»СѓС‡Р°Рµ РѕС€РёР±РєРё РІРѕР·СЂР°С‰Р°РµС‚ false
         bool init(AMX* new_amx)
         {
             if (new_amx) {
@@ -50,20 +50,19 @@ namespace pawn {
         }
 
 
-    private:
-        //Возращает адрес метода павн по его имени или 0 в случае неудачи
+    public:
+        //Р’РѕР·СЂР°С‰Р°РµС‚ Р°РґСЂРµСЃ РјРµС‚РѕРґР° РїР°РІРЅ РїРѕ РµРіРѕ РёРјРµРЅРё РёР»Рё 0 РІ СЃР»СѓС‡Р°Рµ РЅРµСѓРґР°С‡Рё
         static AMX_NATIVE marh_find_function(AMX* amx, std::string const& name)
         {
             if(!amx) {
-                return 0;
+                return NULL;
             }
 
             int index;
-            amx_FindNative(amx, name.c_str(), &index);
-
-            if(0x7FFFFFFF == index) {
+            if(amx_FindNative(amx, name.c_str(), &index) != AMX_ERR_NONE)
+			{
                 //The command cannot be found.
-                return 0;
+                return NULL;
             }
 
             // Proceed with locating the memory address for this function;

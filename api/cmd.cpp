@@ -1,6 +1,7 @@
 #include "cmd.hpp"
 #include "util/utils.h"
 #include "util/notify.h"
+// OBSOLETE - replace with cmd2
 
 #include <string>
 #include <cassert>

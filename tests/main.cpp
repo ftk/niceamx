@@ -2,8 +2,10 @@
 #include "util/utils.h"
 #include "util/notify.h"
 #include "destruct.h"
+#include "util/log.h"
 
-#include "api/cmd.hpp"
+#include "api/cmd2.hpp"
+#include "api/pipes.hpp"
 
 #include <ctime>
 #include <cstdlib>
@@ -15,37 +17,19 @@ int main()
   srand(time(NULL));
   INVOKE_INIT();
   MAINBOX->plugin_load();
-  /*
-  MAINBOX->on_dialog_response(10, 1, 1, 0, "a");
-  MAINBOX->on_dialog_response(10, 1, 1, 0, "a");
-  MAINBOX->on_dialog_response(10, 1, 1, 0, "a");
-  */
-  assert(nullptr == 0);
-  volatile bool isend = false;
-  //util::notify("ggg %d %s", 15, "abc");
-  NOTIFY(util::sprintf("abc %s, %d %d", "def", 1, 2));
-  //REGISTER_TIMER(100, [](){ util::notify(boost::lexical_cast<std::string>(util::get_walltime())); } );
-  REGISTER_TIMER(100, [](){ util::notify("%lu %lu", util::get_walltime(), util::get_walltime_s()); } );
   
-  auto lambda = []() { util::notify("muhaha"); };
+  using namespace api;
   
-  typedef signals::timers_container_t::timer timer;
-  timer timer1 { 1000, lambda }; // c++11 syntax
-  timer timer2 = { 1001, []() {} };
-  
-  REGISTER_TIMER2(timer1);
-  REGISTER_TIMER2(timer2);
-  while(!isend)
+  //REGISTER_COMMAND2("test")
+  INVOKE_COMMANDS(pipe::LOG, cmdflag::ALL, "gconfig test \"abc def ghi 1\"");
+  INVOKE_COMMANDS(pipe::LOG, cmdflag::ALL, "gconfig test");
+  while(false)
   {
     util::sleep(5);
     MAINBOX->timers.proccess(5);
     
     //isend = true;
   }
-  INVOKE_COMMANDS(0, "/kill");
-  INVOKE_COMMANDS(0, "/v 555");
-  INVOKE_COMMANDS(0, "/v 555A");
-  INVOKE_COMMANDS(0, "/a");
   MAINBOX->plugin_unload();
   INVOKE_DESTRUCTOR();
   return 0;

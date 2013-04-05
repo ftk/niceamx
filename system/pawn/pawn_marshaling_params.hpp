@@ -1,4 +1,4 @@
-#ifndef PAWN_MARSHALING_PARAMS_HPP
+﻿#ifndef PAWN_MARSHALING_PARAMS_HPP
 #define PAWN_MARSHALING_PARAMS_HPP
 #include "SDK/amx/amx.h"
 #include "pawn_marshaling_param.hpp"

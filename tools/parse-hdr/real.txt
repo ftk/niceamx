@@ -1,6 +1,0 @@
-/* native gpci(playerid, serial [], len = sizeof serial, Float:AAAA=66.); */
-int gpci (int playerid, int serial, const std::string& , int len, int serial)
-{
-  return gpci_t.call(playerid, serial, , len, serial);
-}
-

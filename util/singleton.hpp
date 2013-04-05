@@ -11,7 +11,7 @@
 
 namespace util {
 //
-
+/*
 template <typename T>
 class singleton : private boost::noncopyable
 {
@@ -42,7 +42,21 @@ public:
 
 template  <typename T>
 _QUALIFIER T * singleton<T>::instance = NULL;
+*/
 
+template <typename T>
+class singleton : private boost::noncopyable
+{
+public:
+	inline static T * get_instance()
+	{
+		static T inst;
+		return &inst;
+	}
+	inline static void rm_instance()
+	{
+	}
+};
 
 }
 

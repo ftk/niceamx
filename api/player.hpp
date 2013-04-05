@@ -1,5 +1,6 @@
 #ifndef API_PLAYER_HPP
 #define API_PLAYER_HPP
+// OBSOLETE
 
 #include "util/point.hpp"
 //#include "util/notify.hpp"

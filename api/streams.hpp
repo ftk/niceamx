@@ -1,6 +1,8 @@
 #ifndef API_STREAMS_HPP
 #define API_STREAMS_HPP
 
+// OBSOLETE
+
 #include "config.h"
 #include <ostream>
 #include <cassert>

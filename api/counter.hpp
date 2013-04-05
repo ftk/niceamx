@@ -3,6 +3,7 @@
 
 #include <boost/format.hpp>
 #include <functional>
+#include <cassert>
 
 #include "timers.hpp"
 
@@ -41,6 +42,13 @@ public:
       return false;
     }
   }
+  
+  void set_count(int x)
+  {
+  	assert(x >= 0);
+  	cnt = x;
+  }
+  
 private:
   static void announce(int playerid, const std::string& str, bool done = false);
 };

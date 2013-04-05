@@ -1,6 +1,8 @@
 #ifndef API_VOTE_HPP
 #define API_VOTE_HPP
 
+// OBSOLETE
+
 #include "config.h"
 
 #include <cassert>
@@ -90,13 +92,13 @@ public:
     for(auto it = candidates.begin(), en = candidates.end(); it != en; ++it)
     {
       if(it != candidates.cbegin())
-	result += static_cast<char>(lim);
+		result += static_cast<char>(lim);
       result += it->first;
     }
   }
   std::string join(char lim)
   {
-   std::string result = "";
+	std::string result = "";
     for(auto it = candidates.cbegin(), en = candidates.cend(); it != en; ++it)
     {
       if(it != candidates.cbegin())

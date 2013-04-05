@@ -395,7 +395,7 @@ static void on_player_connect(int playerid)
 static void on_player_disconnect(int playerid, int reason)
 {
   PLAYERBOX->remove(playerid);
-  STREAMER->hide_all(api::player(playerid));
+  //STREAMER->hide_all(api::player(playerid));
 }
 
 
@@ -422,9 +422,9 @@ INIT
   
   REGISTER_CB(on_player_connect);
   REGISTER_CB(on_player_disconnect);
-  REGISTER_CB(on_player_command_text);
+  //REGISTER_CB(on_player_command_text);
   REGISTER_CB(on_dialog_response);
-  REGISTER_CB(on_player_update);
+  //REGISTER_CB(on_player_update);
   
 }
 
