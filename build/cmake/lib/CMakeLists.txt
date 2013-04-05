@@ -1,13 +1,22 @@
 project (niceamx CXX C)
 
+
 set (src_dir "${CMAKE_SOURCE_DIR}/../..")
 
-aux_source_directory(${src_dir}/api sources)
-aux_source_directory(${src_dir}/system sources)
-aux_source_directory(${src_dir}/util sources)
 
-aux_source_directory(${src_dir}/system/pawn sources)
-aux_source_directory(${src_dir}/system/SDK sources)
+#aux_source_directory(${src_dir}/api sources)
+#aux_source_directory(${src_dir}/system sources)
+#aux_source_directory(${src_dir}/util sources)
+
+#aux_source_directory(${src_dir}/system/pawn sources)
+#aux_source_directory(${src_dir}/system/SDK sources)
+file(GLOB sources ${src_dir}/api *.cpp)
+file(GLOB sources ${src_dir}/system *.cpp)
+file(GLOB sources ${src_dir}/util *.cpp)
+file(GLOB sources ${src_dir}/system/SDK *.cpp)
+file(GLOB sources ${src_dir}/system/pawn *.cpp)
+
+
 
 include_directories (
   ${src_dir}/
@@ -74,6 +83,7 @@ set (libs "")
 
 add_library (niceamx MODULE ${sources})
 set_target_properties (niceamx PROPERTIES PREFIX "" )
+set_target_properties(niceamx PROPERTIES LINKER_LANGUAGE CXX)
 target_link_libraries(niceamx ${libs})
 
 install (TARGETS niceamx DESTINATION ${src_dir}/server/plugins)

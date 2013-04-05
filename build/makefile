@@ -18,6 +18,7 @@ CPPFLAGS = -std=c++0x
 CXXFLAGS = -Wall -pipe -m32
 LDFLAGS = -Wall -pipe -m32
 LIBS =
+BOOST_LIBS = 
 
 PREFIX = ../server/plugins
 
@@ -34,12 +35,12 @@ LDFLAGS_plugin := $(LDFLAGS) -fPIC -shared -Wl,--no-undefined
 CXXFLAGS_release = $(CXXFLAGS_plugin) -O3 -fvisibility=hidden -fvisibility-inlines-hidden -ffunction-sections -fdata-sections -fstrict-aliasing -fmerge-all-constants -fomit-frame-pointer -pedantic -flto -fno-ident
 LDFLAGS_release = $(LDFLAGS_plugin) -O3 -s -Wl,--gc-sections -flto
 # add NDEBUG definition when final version is out
-DEFINES_release = $(DEFINES)
+DEFINES_release = $(DEFINES) OVERTIMER_DISABLE
 
 # minimum optimization
 CXXFLAGS_debug = $(CXXFLAGS_plugin) -O0 -ggdb3 -Wextra -Wno-unused-parameter
 LDFLAGS_debug = $(LDFLAGS_plugin) -ggdb3 -rdynamic
-DEFINES_debug = $(DEFINES) _DEBUG OVERTIMER_ENABLE PRINT_OUTCOMING_NATIVES
+DEFINES_debug = $(DEFINES) _DEBUG PRINT_OUTCOMING_NATIVES PRINT_INCOMING_CALLBACKS OVERTIMER_DISABLE
 OUTFILE_debug = niceamx-debug.so
 postfix_debug = .debug
 
@@ -57,6 +58,9 @@ ifdef export
 LDFLAGS_$(config) += -static-libstdc++ -static-libgcc
 export: all
 	elfedit --output-osabi=none $(OUTFILE) || brandelf -f 0 $(OUTFILE) || freebsd-brandelf -f 0 $(OUTFILE)
+endif
+
+ifdef BOOST_ROOT
 endif
 
 # do not edit --->
