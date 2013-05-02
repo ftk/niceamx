@@ -1,0 +1,1 @@
+send_to -1 ggg{FF0000}hhh{00FF00}jjj

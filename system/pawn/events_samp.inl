@@ -1,68 +1,61 @@
 
+#ifndef SIGNAL
+#error SIGNAL(name,args...) is not defined
+#endif
+//#define SIGNAL(name,...) signals::signal<__VA_ARGS__> name;
 
-SIG() on_game_mode_init;
-SIG() on_game_mode_exit;
-SIG() on_filter_script_init;
-SIG() on_filter_script_exit;
-SIG(int) on_player_connect;
-SIG(int, int) on_player_disconnect;
-SIG(int) on_player_spawn;
-SIG(int, int, int) on_player_death;
-SIG(int) on_vehicle_spawn;
-SIG(int, int) on_vehicle_death;
-SIG(int, std::string&) on_player_text;
-SIG(int, const std::string&) on_player_command_text;
-SIG(int, int) on_player_request_class;
-SIG(int, int, int) on_player_enter_vehicle;
-SIG(int, int) on_player_exit_vehicle;
-SIG(int, int, int) on_player_state_change;
-SIG(int) on_player_enter_checkpoint;
-SIG(int) on_player_leave_checkpoint;
-SIG(int) on_player_enter_race_checkpoint;
-SIG(int) on_player_leave_race_checkpoint;
-SIG(const std::string&) on_rcon_command;
-SIG(int) on_player_request_spawn;
-SIG(int) on_object_moved;
-SIG(int, int) on_player_object_moved;
-SIG(int, int) on_player_pick_up_pickup;
-SIG(int, int, int) on_vehicle_mod;
-SIG(int, int, int) on_enter_exit_mod_shop;
-SIG(int, int, int) on_vehicle_paintjob;
-SIG(int, int, int, int) on_vehicle_respray;
-SIG(int, int) on_vehicle_damage_status_update;
-SIG(int, int) on_player_selected_menu_row;
-SIG(int) on_player_exited_menu;
-SIG(int, int, int) on_player_interior_change;
-SIG(int, int, int) on_player_key_state_change;
-SIG( const std::string&, const std::string&, int) on_rcon_login_attempt;
-SIG(int) on_player_update;
-SIG(int, int) on_player_stream_in;
-SIG(int, int) on_player_stream_out;
-SIG(int, int) on_vehicle_stream_in;
-SIG(int, int) on_vehicle_stream_out;
-SIG(int, int, int, int, const std::string&) on_dialog_response;
-SIG(int, int, int) on_player_click_player;
+
+SIGNAL(on_game_mode_init,)
+SIGNAL(on_game_mode_exit,)
+SIGNAL(on_filter_script_init,)
+SIGNAL(on_filter_script_exit,)
+SIGNAL(on_player_connect, int)
+SIGNAL(on_player_disconnect, int, int)
+SIGNAL(on_player_spawn, int)
+SIGNAL(on_player_death, int, int, int)
+SIGNAL(on_vehicle_spawn, int)
+SIGNAL(on_vehicle_death, int, int)
+SIGNAL(on_player_text, int, std::string&)
+SIGNAL(on_player_command_text, int, const std::string&)
+SIGNAL(on_player_request_class, int, int)
+SIGNAL(on_player_enter_vehicle, int, int, int)
+SIGNAL(on_player_exit_vehicle, int, int)
+SIGNAL(on_player_state_change, int, int, int)
+SIGNAL(on_player_enter_checkpoint, int)
+SIGNAL(on_player_leave_checkpoint, int)
+SIGNAL(on_player_enter_race_checkpoint, int)
+SIGNAL(on_player_leave_race_checkpoint, int)
+SIGNAL(on_rcon_command, const std::string&)
+SIGNAL(on_player_request_spawn, int)
+SIGNAL(on_object_moved, int)
+SIGNAL(on_player_object_moved, int, int)
+SIGNAL(on_player_pick_up_pickup, int, int)
+SIGNAL(on_vehicle_mod, int, int, int)
+SIGNAL(on_enter_exit_mod_shop, int, int, int)
+SIGNAL(on_vehicle_paintjob, int, int, int)
+SIGNAL(on_vehicle_respray, int, int, int, int)
+SIGNAL(on_vehicle_damage_status_update, int, int)
+SIGNAL(on_player_selected_menu_row, int, int)
+SIGNAL(on_player_exited_menu, int)
+SIGNAL(on_player_interior_change, int, int, int)
+SIGNAL(on_player_key_state_change, int, int, int)
+SIGNAL(on_rcon_login_attempt,  const std::string&, const std::string&, int)
+SIGNAL(on_player_update, int)
+SIGNAL(on_player_stream_in, int, int)
+SIGNAL(on_player_stream_out, int, int)
+SIGNAL(on_vehicle_stream_in, int, int)
+SIGNAL(on_vehicle_stream_out, int, int)
+SIGNAL(on_dialog_response, int, int, int, int, const std::string&)
+SIGNAL(on_player_click_player, int, int, int)
 
 // 0.3e
-SIG(int, int, int) on_unoccupied_vehicle_update;
-SIG(int, int, float, int) on_player_take_damage;
-SIG(int, int, float, int) on_player_give_damage;
+SIGNAL(on_unoccupied_vehicle_update, int, int, int)
+SIGNAL(on_player_take_damage, int, int, float, int)
+SIGNAL(on_player_give_damage, int, int, float, int)
 
-SIG(int, float, float, float) on_player_click_map;
+SIGNAL(on_player_click_map, int, float, float, float)
 // TODO:
-//SIG(int, int, float, int) on_player_take_damage;
-//SIG(int, int, float, int) on_player_take_damage;
+//SIGNAL(on_player_take_damage, int, int, float, int)
+//SIGNAL(on_player_take_damage, int, int, float, int)
 
-//\([A-Z]\)\([a-z]+\)
-//_\1\2
-
-// ^Ctrl-A ^Ctrl-U
-
-//$
-//;
-
-//^sig ([a-z_0-9]+)(<[^>]+>);
-//SIG\2 \1;
-
-#define CALLBACKS_SAMP_INCLUDED
 

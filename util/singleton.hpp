@@ -3,11 +3,11 @@
 
 #include <boost/noncopyable.hpp>
 
-#ifdef MULTITHREADED
+/*#ifdef MULTITHREADED
 #define _QUALIFIER volatile
 #else
 #define _QUALIFIER
-#endif
+#endif*/
 
 namespace util {
 //
@@ -56,11 +56,14 @@ public:
 	inline static void rm_instance()
 	{
 	}
+protected:
+    singleton() {}
+
 };
 
 }
 
-#undef _QUALIFIER
+//#undef _QUALIFIER
 
 
 #endif

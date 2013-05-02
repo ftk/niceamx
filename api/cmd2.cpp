@@ -4,19 +4,21 @@
 #include "pawn/natives.h"
 
 #include <string>
+#include <fstream>
 
 namespace api {
 
 
 
-bool commands2::proccess(int pipe, unsigned flags, const std::string &name, const std::string &params)
+bool commands::proccess(int pipe, unsigned flags, const std::string &name, const std::string &params)
 {
 	bool ok = false;
 	auto iter_pair = cmds.equal_range(cmdhash(name));
     for(auto it = iter_pair.first; it != iter_pair.second; ++it)
     {
-        if((flags & it->second.flags)/* == it->second->flags*/ && it->second.name == name)
+        if((flags & it->second.flags)/* == it->second.flags && it->second.name == name*/) 
         {
+        	// TODO: check collisions
             ok = it->second.handler(pipe, params) || ok;
         }
     }
@@ -24,17 +26,17 @@ bool commands2::proccess(int pipe, unsigned flags, const std::string &name, cons
     return ok;
 }
 
-bool commands2::execute_line(int pipe, unsigned flags, const std::string &line)
+bool commands::execute_line(int pipe, unsigned flags, const std::string &line)
 {
-	if(line.empty() || line[0] == '#')
+	if(line.empty())
 		return true;
 	
-	std::size_t name_start = line.find_first_not_of(' ');
+	std::size_t name_start = line.find_first_not_of(" \t");
 	
 	if(line[name_start] == '#')
 		return true;
 	
-	std::size_t name_end = line.find_first_of(' ');
+	std::size_t name_end = line.find_first_of(" \t", name_start);
 	return proccess(pipe, flags, line.substr(name_start, name_end), line);
 }
 
@@ -47,7 +49,7 @@ static void player_cmdhandler(int playerid, const std::string& cmdline)
 	if(native::is_player_admin(playerid))
 		flags |= cmdflag::ADMIN;
 	
-	bool result = commands2::get_instance()->execute_line(playerid, flags, cmd);
+    bool result = INVOKE_COMMANDS(playerid, flags, cmd);
 	
 	if(!result)
 		send_pipe_msg(playerid, "Incorrect command!");
@@ -60,7 +62,7 @@ static void rcon_cmdhandler(const std::string& cmdline)
 	
 	int playerid = pipe::RCON;
 	
-	bool result = commands2::get_instance()->execute_line(playerid, flags, cmdline);
+    bool result = INVOKE_COMMANDS(playerid, flags, cmdline);
 	
 	if(!result)
 		send_pipe_msg(playerid, "Incorrect command!");
@@ -73,11 +75,45 @@ static bool echo_cmd(int pipe, const std::string &params)
 	return true;
 }
 
+static bool execute_file(int pipe, const std::string &params)
+{
+	parser p("*sr", params);
+	std::ifstream in(p.get_string(0));
+	if(!in)
+	{
+		send_pipe_msgf(pipe, "Cannot open file: %s",p.get_string(0));
+		return true;
+	}
+	
+	std::string str;
+    int line = 1;
+	while(!in.eof())
+	{
+		std::getline(in, str);
+		bool ok = INVOKE_COMMANDS(pipe, cmdflag::CONFIG, str);
+		if(!ok)
+            send_pipe_msgf(pipe, "Cannot execute(%d): %s", line, str.c_str());
+        line++;
+	}
+	
+	
+	return true;
+}
+
+static bool execute_rcon(int /*pipe*/, const std::string &params)
+{
+	parser p("*sr", params);
+	native::send_rcon_command(p.get_string(0));
+    return true;
+}
+
 INIT
 {
 	REGISTER_CALLBACK(on_player_command_text, &player_cmdhandler);
 	REGISTER_CALLBACK(on_rcon_command, &rcon_cmdhandler);
 	REGISTER_COMMAND2("echo", cmdflag::ALL, &echo_cmd);
+	REGISTER_COMMAND2("execfile", cmdflag::CONFIG | cmdflag::ADMIN | cmdflag::RCON, &execute_file);
+	REGISTER_COMMAND2("execrcon", cmdflag::CONFIG | cmdflag::ADMIN, &execute_rcon);
 }
 
 // parser

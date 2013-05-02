@@ -4,42 +4,66 @@
 #include <string>
 #include <ostream>
 
-namespace pawn 
+#include "util/streambuf.hpp"
+
+
+
+namespace pawn {
+
+typedef void (*logprintf_t)(char const* format, ...);
+extern logprintf_t logprintf;
+
+void logprint(std::string const& log_str);
+
+/*
+class log_t : public std::ostream
 {
-  typedef void (*logprintf_t)(char const* format, ...);
-  extern logprintf_t logprintf;
+//std::string buffer;
+public:
 
-  void logprint(std::string const& log_str);
+log_t() {}
 
-  /*
-  class log_t : public std::ostream
+template <typename T>
+inline log_t& operator << (T& obj)
+{
+
+  std::string word(obj);
+  if(word == "\n")
   {
-    //std::string buffer;
-  public:
+logprint(buffer);
+buffer = "";
+  }
+  else
+buffer += word;
 
-    log_t() {}
+  logprint(std::string(obj));
+  return (*this);
+}
+};*/
 
-    template <typename T>
-    inline log_t& operator << (T& obj)
+
+class pawnlog_sink : public util::line_sink
+{
+protected:
+    void call()
     {
-
-      std::string word(obj);
-      if(word == "\n")
-      {
-	logprint(buffer);
-	buffer = "";
-      }
-      else
-	buffer += word;
-
-      logprint(std::string(obj));
-      return (*this);
+        logprint(buffer);
     }
-  };*/
+public:
+    pawnlog_sink(int) {}
+};
+
+extern util::stream<pawnlog_sink> log;
+
+
+void logger_serverlog(const char * module, const char * msg);
 
 
 
-  extern std::ostream log;
+//extern std::ostream log;
+
+
+
 } // namespace pawn {
 
 

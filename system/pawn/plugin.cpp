@@ -5,11 +5,11 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <stdexcept>
 
 #include "pawnlog.hpp"
 #include "signals.hpp"
 
-#include "destruct.h"
 
 #include "util/utils.h"
 #include "util/log.h"
@@ -18,16 +18,7 @@
 
 //typedef std::list<AMX*> amxs_t;
 //static amxs_t amxs;
-#ifndef THREAD_SLEEP_TIME
-#define THREAD_SLEEP_TIME 5 // main samp thread 
-#endif
 
-#ifndef TIMERS_SLEEP_TIME
-#define TIMERS_SLEEP_TIME 100
-#endif
-
-
-extern void *pAMXFunctions;
 
 namespace pawn
 {
@@ -43,14 +34,23 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports()
 //Загрузка плагина
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void** ppData) 
 {
-    pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
-
+    //pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
+    pawn::init_amx_funcs(reinterpret_cast<void **>(ppData[PLUGIN_DATA_AMX_EXPORTS]));
+    
     pawn::logprintf = reinterpret_cast<pawn::logprintf_t>(reinterpret_cast<std::ptrdiff_t>(ppData[PLUGIN_DATA_LOGPRINTF]));
     
     srand((unsigned)time(NULL));
     
+    util::register_logger(&util::logger_rotational);
+#ifdef _DEBUG
+    util::register_logger(&pawn::logger_serverlog);
+#endif
+    util::log_msg_nofmt("plugin/load", "Initializing...");
+    
     //INITBOX->execute();
     INVOKE_INIT();
+
+    pawn::logprint("  Initialized.");
 
     MAINBOX->plugin_load();
 
@@ -63,8 +63,7 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload()
     // Вызываем обработчик события
     MAINBOX->plugin_unload();
 
-    //pawn::logprint("plugin unload");
-    INVOKE_DESTRUCTOR();
+    pawn::logprint("  Unloaded.");
     pawn::logprintf = 0;
 }
 
@@ -77,32 +76,32 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX *amx)
 }
 
 // Выгрузка виртуальной машины
-PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX *amx) 
+PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX * /*amx*/)
 {
     return AMX_ERR_NONE;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick()
 {
-  static unsigned int ticks = 0;
+    static unsigned int ticks = 0;
 
 
-  //if(util::get_walltime() > ticks)
-  if(ticks == (TIMERS_SLEEP_TIME / THREAD_SLEEP_TIME))
-  {
-  	try
-  	{
-      MAINBOX->timers(TIMERS_SLEEP_TIME);
-    }
-    catch(std::exception& e)
+    //if(util::get_walltime() > ticks)
+    if(ticks == (TIMERS_RESOLUTION / THREAD_SLEEP_TIME))
     {
-    	std::cerr << "Caught exception while processing timers: ";
-    	std::cerr << e.what() << std::endl;
-        util::log_msg_nofmt("timers/exception", e.what());
+        try
+        {
+            MAINBOX->timers();
+        }
+        catch(std::exception& e)
+        {
+            std::cerr << "Caught exception while processing timers: ";
+            std::cerr << e.what() << std::endl;
+            util::log_msg_nofmt("timers/exception", e.what());
+        }
+        //ticks = util::get_walltime() + TIMERS_SLEEP_TIME;
+        ticks = 0;
     }
-    //ticks = util::get_walltime() + TIMERS_SLEEP_TIME;
-    ticks = 0;
-  }
-  ++ticks;
-  return;
+    ++ticks;
+    return;
 }

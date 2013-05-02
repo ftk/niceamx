@@ -6,10 +6,10 @@
 #include "api/pipes.hpp"
 
 #include "pawn/pawn_marshaling_amx.hpp"
-#include "pawn/pawn_marshaling_param.hpp"
+#include "pawn/marh_param.hpp"
 #include "pawn/plugin.h"
 
-#include "SDK/amx/amx.h"
+#include "SDK/amxinline.h"
 
 #include <string>
 #include <list>
@@ -40,14 +40,15 @@ static bool exec_native(int pipe, const std::string& params)
     api::parser p2(format, p1.get_string(2));
     if(p2.error)
     {
-        api::send_pipe_msg(pipe, "Wrong arguments supplied!");
+        //api::send_pipe_msg(pipe, "Wrong arguments supplied!");
+        //return true;
     }
 
     cell * cells = new cell[p2.size() + 1];
 
     cells[0] = p2.size() * sizeof(cell);
 
-    std::list<cell *> addresses;
+    //std::list<cell *> addresses;
 
     // precall
     for(int i = 0; i < p2.size(); i++)
@@ -60,62 +61,64 @@ static bool exec_native(int pipe, const std::string& params)
         else if(type == 'f')
         {
             float t = p2.get_float(i);
-            memcpy(&cells[i+1], &t, sizeof(float));
+            pawn::float_to_cell(&cells[i+1], &t);
         }
         else if(type == 's')
         {
             const char * s = p2.get_string(i);
-            cell * phys_addr;
             int len = strlen(s) + 1;
-            amx_Allot(amx, len, &cells[i+1], &phys_addr);
-            amx_SetString(phys_addr, s, 0, 0, len);
+            pawn::amx_allot(amx, len, cells[i+1]);
+            //cell * phys_addr = pawn::amx_get_addr(amx, cells[i+1]);
+            //amx_SetString(phys_addr, s, 0, 0, len);
+            pawn::amx_set_string(amx, cells[i+1], s, len);
         }
         else if(type == 'I' || type == 'F' || type == 'S') // pointers
         {
-            cell * phys_addr;
-            amx_Allot(amx, pawn::string_len::val, &cells[i+1], &phys_addr);
-            addresses.push_back(phys_addr);
+            pawn::amx_allot(amx, type == 'S' ? pawn::string_len::val : 1, cells[i+1]);
+            //addresses.push_back(phys_addr);
         }
     }
 
     // call
-    long result = native_fn(amx, cells);
+    cell result = native_fn(amx, cells);
 
     // postcall
     for(int i = 0; i < p2.size(); i++)
     {
         char type = p2.get_type(i);
+        cell amx_addr = cells[i+1];
         if(type == 'I')
         {
-            api::send_pipe_msgf(pipe, "I@%d: %d", i, *(addresses.front()));
-            addresses.pop_front();
+            api::send_pipe_msgf(pipe, "I@%d: %d", i, *(pawn::amx_get_addr(amx, amx_addr)));
+            //addresses.pop_front();
         }
         else if(type == 'F')
         {
             float t;
-            memcpy(&t, addresses.front(), sizeof(float));
+            pawn::cell_to_float(&t, pawn::amx_get_addr(amx, amx_addr));
 
             api::send_pipe_msgf(pipe, "F@%d: %f", i, t);
-            addresses.pop_front();
+            //addresses.pop_front();
         }
         else if(type == 'S')
         {
-            char buff[pawn::string_len::val];
-            amx_GetString(buff, addresses.front(), 0, pawn::string_len::val);
+            char buf[pawn::string_len::val];
+            //amx_GetString(buf, pawn::amx_get_addr(amx, ax_addr), 0, pawn::string_len::val);
 
-            api::send_pipe_msgf(pipe, "S@%d: %s", i, buff);
-            addresses.pop_front();
+            pawn::amx_get_string(amx, cells[i+1], buf, pawn::string_len::val);
+            api::send_pipe_msgf(pipe, "S@%d: %s", i, buf);
+            //addresses.pop_front();
         }
 
         // release
         if(type == 'I' || type == 'F' || type == 'S' || type == 's')
-            amx_Release(amx, cells[i+1]);
+            pawn::amx_release(amx, amx_addr);
     }
     delete[] cells;
     
     float t;
-    memcpy(&t, &result, sizeof(float));
-    api::send_pipe_msgf(pipe, "Returned: %ld (%.2f)", result, t);
+    pawn::cell_to_float(&t, &result);
+    api::send_pipe_msgf(pipe, "Returned: %d (%.2f)", result, t);
     return true;
 }
 
@@ -123,7 +126,7 @@ static bool exec_native(int pipe, const std::string& params)
 INIT
 {
     using namespace api::cmdflag;
-    REGISTER_COMMAND2("native", ADMIN | RCON | SYSTEM, &exec_native);
+    REGISTER_COMMAND2("native", ADMIN | RCON | SYSTEM | CONFIG, &exec_native);
 }
 
 #endif

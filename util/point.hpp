@@ -4,80 +4,96 @@
 namespace util {
 //
 
+
 template <typename T>
-struct basic_point
+struct point2d_base
 {
   typedef T result_type;
-  typedef T float_t;
+  T x, y;
   
-  virtual basic_point * operator->()
-  {
-    return this; // ?
-  }
-  virtual const basic_point * operator->() const
-  {
-    return this;
-  }
+  point2d_base(T x_ = 0.f, T y_ = 0.f) : x(x_), y(y_)
+  {}
+
+  point2d_base operator -() const { return point2d_base(-x, -y); }
+  point2d_base operator -(const point2d_base &v) const { return point2d_base(x-v.x, y-v.y); }
+  point2d_base operator +(const point2d_base &v) const { return point2d_base(x+v.x, y+v.y); }
+  point2d_base operator *(const T v) const { return point2d_base(x*v, y*v); }
+  point2d_base operator *(const point2d_base &v) const { return point2d_base(x*v.x, y*v.y); }
+  point2d_base operator /(const T v) const { return point3d_base(x/v, y/v); }
+  point2d_base operator /(const point2d_base &v) const { return point2d_base(x/v.x, y/v.y); }
+
+  const point2d_base &operator =(const point2d_base &v) { x = v.x; y = v.y; return *this; }
+
+  const point2d_base &operator +=(const point2d_base &v) { x += v.x; y += v.y; return *this; }
+  const point2d_base &operator -=(const point2d_base &v) { x -= v.x; y -= v.y; return *this; }
+  const point2d_base &operator *=(const T v) { x *= v; y *= v; return *this;	}
+  const point2d_base &operator *=(const point2d_base &v) { x *= v.x; y *= v.y; return *this; }
+  const point2d_base &operator /=(const T v) { x /= v; y /= v; return *this;	}
+  const point2d_base &operator /=(const point2d_base &v) { x /= v.x; y /= v.y; return *this; }
+
+  bool operator ==(const point2d_base &v) const { return x == v.x && y == v.y; }
+
+  operator const T* () { return &x; }
 };
 
 template <typename T>
-struct point2d_base : basic_point<T>
+struct point3d_base
 {
   typedef T result_type;
-  result_type x, y;
-  
-  point2d_base(result_type x_ = 0.f, result_type y_ = 0.f) : x(x_), y(y_)
+  T x, y, z;
+
+  point3d_base(T x_ = 0.f, T y_ = 0.f, T z_ = 0.f) : x(x_), y(y_), z(z_)
   {}
   
-  point2d_base * operator->()
-  {
-    return this; // ?
-  }
-  const point2d_base * operator->() const
-  {
-    return this;
-  }
+  const point3d_base &operator =(const point3d_base &v) { x = v.x; y = v.y; z = v.z; return *this; }
+
+  point3d_base operator -(const point3d_base &v) const { return point3d_base(x-v.x, y-v.y, z-v.z); }
+  point3d_base operator -() const { return point3d_base(-x, -y, -z); }
+  point3d_base operator +(const point3d_base &v) const { return point3d_base(x+v.x, y+v.y, z+v.z); }
+  point3d_base operator *(const T v) const { return point3d_base(x*v, y*v, z*v); }
+  point3d_base operator *(const point3d_base &v) const { return point3d_base(x*v.x, y*v.y, z*v.z); }
+  point3d_base operator /(const T v) const { return point3d_base(x/v, y/v, z/v); }
+  point3d_base operator /(const point3d_base &v) const { return point3d_base(x/v.x, y/v.y, z/v.z); }
+
+  const point3d_base &operator +=(const point3d_base &v) { x += v.x; y += v.y; z += v.z; return *this; }
+  const point3d_base &operator -=(const point3d_base &v) { x -= v.x; y -= v.y; z -= v.z; return *this; }
+  const point3d_base &operator *=(const T v) { x *= v; y *= v; z *= v; return *this;	}
+  const point3d_base &operator *=(const point3d_base &v) { x *= v.x; y *= v.y; z *= v.z; return *this; }
+  const point3d_base &operator /=(const T v) { x /= v; y /= v; z /= v; return *this;	}
+  const point3d_base &operator /=(const point3d_base &v) { x /= v.x; y /= v.y; z /= v.z; return *this; }
+
+  bool operator ==(const point3d_base &v) const { return x == v.x && y == v.y && z == v.z; }
 };
 
 template <typename T>
-struct point3d_base : basic_point<T>
+struct point4d_base
 {
   typedef T result_type;
-  result_type x, y, z;
+  T x, y, z, w;
 
-  point3d_base(result_type x_ = 0.f, result_type y_ = 0.f, result_type z_ = 0.f) : x(x_), y(y_), z(z_)
+  point4d_base(T x_ = 0.f, T y_ = 0.f, T z_ = 0.f, T w_ = 0.f) : x(x_), y(y_), z(z_), w(w_)
   {}
   
-  point3d_base * operator->()
-  {
-    return this; // ?
-  }
-  const point3d_base * operator->() const
-  {
-    return this;
-  }
+  point4d_base operator +(const point4d_base &v) const { return point4d_base(x+v.x, y+v.y, z+v.z, w+v.w); }
+  point4d_base operator -(const point4d_base &v) const { return point4d_base(x-v.x, y-v.y, z-v.z, w-v.w); }
+  point4d_base operator -() const { return point4d_base(-x, -y, -z, -w); }
+  point4d_base operator *(const point4d_base &v) const { return point4d_base(x*v.x, y*v.y, z*v.z, w*v.w); }
+  point4d_base operator *(const T v) const { return point4d_base(x*v, y*v, z*v, w*v); }
+  point4d_base operator /(const point4d_base &v) const { return point4d_base(x/v.x, y/v.y, z/v.z, w/v.w); }
+  point4d_base operator /(const T v) const { return point4d_base(x/v, y/v, z/v, w/v); }
 
-};
+  const point4d_base &operator =(const point4d_base &v) { x = v.x; y = v.y; z = v.z; w = v.w; return *this; }
 
-template <typename T>
-struct point4d_base : basic_point<T>
-{
-  typedef T result_type;
-  result_type x, y, z, w;
+  const point4d_base &operator +=(const point4d_base &v) { x += v.x; y += v.y; z += v.z; w += v.w; return *this; }
+  const point4d_base &operator -=(const point4d_base &v) { x -= v.x; y -= v.y; z -= v.z; w -= v.w; return *this; }
+  const point4d_base &operator *=(const T v) { x *= v; y *= v; z *= v; w *= v; return *this;	}
+  const point4d_base &operator *=(const point4d_base &v) { x *= v.x; y *= v.y; z *= v.z; w *= v.w; return *this; }
+  const point4d_base &operator /=(const T v) { x /= v; y /= v; z /= v; w /= v; return *this;	}
+  const point4d_base &operator /=(const point4d_base &v) { x /= v.x; y /= v.y; z /= v.z; w /= v.w; return *this; }
 
-  point4d_base(result_type x_ = 0.f, result_type y_ = 0.f, result_type z_ = 0.f, result_type w_ = 0.f) : x(x_), y(y_), z(z_), w(w_)
-  {}
-  
-  point4d_base * operator->()
-  {
-    return this; // ?
-  }
-  const point4d_base * operator->() const
-  {
-    return this;
-  }
+  bool operator ==(const point4d_base &v) const { return x == v.x && y == v.y && z == v.z && w == v.w; } //TODO: do this with an eps instead
 
-  
+
 };
 
 typedef point2d_base<float> point2d;

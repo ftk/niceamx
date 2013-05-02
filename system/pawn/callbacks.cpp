@@ -21,9 +21,7 @@
 
 #define START() MAKE_OVERTIMER(MAX_CB_EXEC_TIME)
 
-#define CALL(sig,...) /*return (cell)*/ MAINBOX->sig(__VA_ARGS__); return 1
-#define CALL_R(sig,...) MAINBOX->sig(__VA_ARGS__)
-
+#define CALL(sig,...) return static_cast<cell>(MAINBOX->sig(__VA_ARGS__))
 
 
 #ifdef PRINT_INCOMING_CALLBACKS
@@ -140,8 +138,7 @@ namespace pawn
                 pawn::demarh_t<0, int> player_id(amx, params);
                 pawn::demarh_t<1, /*const*/ std::string> text(amx, params); // allow scripts to change message, edit events_samp.inl
                 DEBUG_CALLBACK(/*f*/ on_player_text, /*p*/ player_id.get() SEPARATOR  text.get());
-                CALL_R(/*f*/ on_player_text /*p*/ , player_id.get(), text.get());
-                return 1; // always allow player's chat
+                CALL(/*f*/ on_player_text /*p*/ , player_id.get(), text.get());
         }
 
 
@@ -154,7 +151,6 @@ namespace pawn
                 pawn::demarh_t<1, const std::string> cmd(amx, params);
                 DEBUG_CALLBACK(/*f*/ on_player_command_text, /*p*/ player_id.get() SEPARATOR  cmd.get());
                 CALL(/*f*/ on_player_command_text /*p*/ , player_id.get(), cmd.get());
-                return 1;
         }
 
 
@@ -420,7 +416,6 @@ namespace pawn
                 pawn::demarh_t<0, int> player_id(amx, params);
                 //DEBUG_CALLBACK(/*f*/ on_player_update, /*p*/ player_id.get());
                 CALL(/*f*/ on_player_update /*p*/ , player_id.get());
-                return 1;
         }
 
 
@@ -569,6 +564,18 @@ namespace pawn
                 DEBUG_CALLBACK(/*f*/ on_player_take_damage, /*p*/ player_id.get() SEPARATOR  issuer_id.get() SEPARATOR  amount.get() SEPARATOR  weapon_id.get());
                 CALL(/*f*/ on_player_take_damage /*p*/ , player_id.get(), issuer_id.get(), amount.get(), weapon_id.get());
         }
+        NATIVE_DECL(OnPlayerClickMap)
+        {
+                START();
+                
+                pawn::demarh_t<0, int> player_id(amx, params);
+                pawn::demarh_t<1, float> x(amx, params);
+                pawn::demarh_t<2, float> y(amx, params);
+                pawn::demarh_t<3, float> z(amx, params);
+
+                DEBUG_CALLBACK(/*f*/ on_player_click_map, /*p*/ player_id.get() SEPARATOR  x.get() SEPARATOR  y.get() SEPARATOR  z.get());
+                CALL(/*f*/ on_player_click_map /*p*/ , player_id.get(), x.get(), y.get(), z.get());
+        }
         NATIVE_DECL(OnPlayerGiveDamage)
         {
                 START();
@@ -636,7 +643,8 @@ namespace pawn
             {"_UnoccupiedVehicleUpdate",   OnUnoccupiedVehicleUpdate},
             {"_PlayerTakeDamage",          OnPlayerTakeDamage},
             {"_PlayerGiveDamage",          OnPlayerGiveDamage},
-            {0, 0}
+            {"_PlayerClickMap",            OnPlayerClickMap},
+            {NULL, NULL}
 
         };
         

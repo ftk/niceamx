@@ -73,16 +73,9 @@ MAX_TIMER_EXEC_TIME=3
 PRINT_INCOMING_CALLBACKS -- on_game_mode_init();
 PRINT_OUTCOMING_NATIVES -- add_player_class(1, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0);
 
-NO_NOTIFY_DATETIME
-USE_PAWN_NOTIFY -- use logprintf instead of cout wen notifying
-
-
-STREAMER_CELL_SIZE=600 -- 10x10 cells on map by default
-
 THREAD_SLEEP_TIME=5 -- 'sleep' option in server.cfg
-TIMERS_SLEEP_TIME=100 -- check timers every... 100ms
+TIMERS_RESOLUTION=100 -- timers resolution
 
-MULTITHREADED -- define if you are using threads (not tested yet)
 
 
   

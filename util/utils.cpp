@@ -9,14 +9,14 @@
 #ifdef WIN32
 #include <windows.h>
 #else
-//#include <unistd.h>
+#include <unistd.h>
 #include <sys/time.h>
 #endif
 
 
 namespace util {
 //
-
+/*
 hash_t hash(const char * str)
 {
   std::size_t len = strlen(str);
@@ -50,7 +50,7 @@ hash_t hash(const std::string & str)
 	hash = (hash ^ ch) * 16777619UL;
   }
   return hash;
-}
+}*/
 
 walltime_t get_walltime()
 {

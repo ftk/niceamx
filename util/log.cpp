@@ -22,25 +22,67 @@ namespace util {
 static time_t log_rotate_time = 0;
 static FILE * log_file = NULL;
 
-/*
-static log_fnptr_t loggers[MAX_LOGGERS];
+
+static logger_fun_t loggers[MAX_LOGGERS];
 static int num_loggers = 0;
 
-bool rotate_log = true;
-
-void log_line(const char * str)
+// log functions
+void log_msg(const char * module, const char * format, ...)
 {
-	for(int i = 0; i < num_loggers; i++)
-		loggers[i](str);
+  char buffer[MAX_LOG_LINE];
+  va_list args;
+  va_start(args, format);
+  int len = vsnprintf(buffer, MAX_LOG_LINE-1, format, args);
+  buffer[len] = '\0';
+  va_end(args);
+  
+  return log_msg_nofmt(module, buffer);
 }
 
-void logger_register(log_fnptr_t fn)
+void log_msg_nofmt(const char * module, const char * msg)
 {
-	if(num_loggers < MAX_LOGGERS)
-		loggers[num_loggers++] = fn;
-}*/
+	for(int i = 0; i < num_loggers; i++)
+		loggers[i](module, msg);
+}
 
-static void log_filename(const char * str)
+void log_debug(const char * module, const char * format, ...)
+{
+#if defined _DEBUG || defined DEBUG
+  char buffer[MAX_LOG_LINE];
+  va_list args;
+  va_start(args, format);
+  int len = vsnprintf(buffer, MAX_LOG_LINE-1, format, args);
+  buffer[len] = '\0';
+  va_end(args);
+
+  return log_msg_nofmt(module, buffer);
+#else
+  ((void)module);
+  ((void)format);
+#endif
+}
+// loggers
+
+void register_logger(logger_fun_t fn)
+{
+	assert(num_loggers < MAX_LOGGERS);
+	loggers[num_loggers++] = fn;
+}
+
+
+void logger_stdout(const char * module, const char * str)
+{
+	fprintf(stdout, "<%s>: %s\n", module, str);
+}
+void logger_stderr(const char * module, const char * str)
+{
+	fprintf(stderr, "<%s>: %s\n", module, str);
+}
+
+// rotational logger
+
+
+static void logger_file_open(const char * str)
 {
 	if(log_file != NULL)
 	{
@@ -49,24 +91,6 @@ static void log_filename(const char * str)
 	}
 	if(str)
 		log_file = fopen(str, "a");
-}
-
-static void logger_file(const char * str)
-{
-	if(log_file != NULL)
-	{
-		fputs(str, log_file);
-		fputc('\n', log_file);
-		//fprintf(log_file, "%s\n", str);
-		
-		#ifndef NDEBUG
-		fflush(log_file);
-		
-		fputs(str, stdout);
-		fputc('\n', stdout);
-		
-		#endif
-	}
 }
 
 static void rotate_log()
@@ -87,86 +111,51 @@ static void rotate_log()
 	
 	char filename[256];
 	strftime(filename, sizeof(filename), LOG_FILENAME, timeinfo);
-	log_filename(filename);
+	logger_file_open(filename);
 	assert(log_file != NULL);
 }
-
-
-void log_msg(const char * module, const char * format, ...)
+static void logger_file(const char * str)
 {
-  char buffer[MAX_LOG_LINE];
-  va_list args;
-  va_start(args, format);
-  int len = vsnprintf(buffer, MAX_LOG_LINE, format, args);
-  buffer[len] = '\0';
-  va_end(args);
-  
-  return log_msg_nofmt(module, buffer);
+	if(log_file != NULL)
+	{
+		fputs(str, log_file);
+		fputc('\n', log_file);
+	}
 }
 
-void log_msg_nofmt(const char * module, const char * msg)
+
+void logger_rotational(const char * module, const char * msg)
 {
 	time_t rawtime;
 	struct tm * timeinfo;
 	
 	time(&rawtime);
-	timeinfo = localtime(&rawtime);
 
 	if(rawtime >= log_rotate_time)
 	{
 		rotate_log();
 	}
+	
+	timeinfo = localtime(&rawtime);
+	
 	char buffer[MAX_LOG_LINE];
-	int len = snprintf(buffer, MAX_LOG_LINE, "%02d:%02d:%02d:%08lX:<%s>: ", 
+	int len = snprintf(buffer, MAX_LOG_LINE-1, "%02d:%02d:%02d:%08lX:<%s>: ", 
 		timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, 
 		(unsigned long)rawtime, module);
 	
 	strncpy(buffer + len, msg, MAX_LOG_LINE - len - 1);
-	
+	buffer[MAX_LOG_LINE-1] = '\0';
 	//log_line(buffer);
 	logger_file(buffer);
 }
 
 
-/*
-void log(enum log_level crit, const char * format, ...)
-{
-  char buffer[MAX_LOG_LINE];
-  va_list args;
-  va_start(args, format);
-  int len = vsnprintf(buffer, MAX_LOG_LINE - 1, format, args);
-  buffer[len] = '\0';
-  va_end(args);
-  
-  return log_nofmt(crit, buffer);
-}
-
-void log_nofmt(enum log_level crit, const char * str)
-{
-  std::string urgency;  
-  switch (crit) 
-  {
-  case LOG_INFO:
-    urgency = "[INFO] ";
-    break;
-  case LOG_WARNING:
-    urgency = "[WARNING] ";
-    break;
-  case LOG_ERROR:
-    urgency = "[ERROR] ";
-    break;
-  case LOG_NOTICE:
-    urgency = "[NOTICE] ";
-    break;
-  case LOG_DEBUG:
-    urgency = "[DEBUG] ";
-    break;
-  default:
-    //urgency = "";
-  }
-  // TODO
-}*/
 
 
 
-}
+
+
+
+} // util
+
+

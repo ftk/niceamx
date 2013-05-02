@@ -3,6 +3,8 @@
 #define Menu _
 #define Text3D _
 #define PlayerText3D _
+#define PlayerText _
+
 
 #include <a_samp>
 
@@ -228,13 +230,18 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)
 	return _PlayerGiveDamage(playerid, damagedid, Float:amount, weaponid);
 }
 
+public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+{
+	return _PlayerClickMap(playerid, fX, fY, fZ);
+}
+
 native gpci(playerid, str[], len);
 
 forward sys_all_call();
 public sys_all_call()
 {
 	new vi;
-    new vs[16];
+    new vs[1];
     new Float:vf;
 
     CreateObject(vi, vf, vf, vf, vf, vf, vf, vf);
@@ -475,9 +482,70 @@ public sys_all_call()
     GetVehicleVirtualWorld(vi);
     gpci(vi, vs, vi);
     
-    GetVehicleModelInfo(vi, vi, vf, vf, vf);
-    SetVehicleParamsEx(vi, vi, vi, vi, vi, vi, vi, vi);
-    GetVehicleParamsEx(vi, vi, vi, vi, vi, vi, vi, vi);
-    ManualVehicleEngineAndLights();
+    // 0.3e
+AttachObjectToVehicle(vi, vi, vf, vf, vf, vf, vf, vf);
+AttachObjectToObject(vi, vi, vf, vf, vf, vf, vf, vf, vi);
+AttachObjectToPlayer(vi, vi, vf, vf, vf, vf, vf, vf);
+MoveObject(vi, vf, vf, vf, vf, vf, vf, vf);
+IsObjectMoving(vi);
+EditObject(vi, vi);
+EditPlayerObject(vi, vi);
+SelectObject(vi);
+CancelEdit(vi);
+AttachPlayerObjectToVehicle(vi, vi, vi, vf, vf, vf, vf, vf, vf);
+MovePlayerObject(vi, vi, vf, vf, vf, vf, vf, vf, vf);
+IsPlayerObjectMoving(vi, vi);
+SetObjectMaterial(vi, vi, vi, vs, vs, vi);
+SetPlayerObjectMaterial(vi, vi, vi, vi, vs, vs, vi);
+SetObjectMaterialText(vi, vs, vi, vi, vs, vi, vi, vi, vi, vi);
+SetPlayerObjectMaterialText(vi, vi, vs, vi, vi, vs, vi, vi, vi, vi, vi);
+GetPlayerDistanceFromPoint(vi, vf, vf, vf);
+GetPlayerTargetPlayer(vi);
+PlayAudioStreamForPlayer(vi, vs, vf, vf, vf, vf, vi);
+StopAudioStreamForPlayer(vi);
+GetPlayerSurfingObjectID(vi);
+RemoveBuildingForPlayer(vi, vi, vf, vf, vf, vf);
+SetPlayerAttachedObject(vi, vi, vi, vi, vf, vf, vf, vf, vf, vf, vf, vf, vf, vi, vi);
+RemovePlayerAttachedObject(vi, vi);
+IsPlayerAttachedObjectSlotUsed(vi, vi);
+EditAttachedObject(vi, vi);
+CreatePlayerTextDraw(vi, vf, vf, vs);
+PlayerTextDrawDestroy(vi, vi);
+PlayerTextDrawLetterSize(vi, vi, vf, vf);
+PlayerTextDrawTextSize(vi, vi, vf, vf);
+PlayerTextDrawAlignment(vi, vi, vi);
+PlayerTextDrawColor(vi, vi, vi);
+PlayerTextDrawUseBox(vi, vi, vi);
+PlayerTextDrawBoxColor(vi, vi, vi);
+PlayerTextDrawSetShadow(vi, vi, vi);
+PlayerTextDrawSetOutline(vi, vi, vi);
+PlayerTextDrawBackgroundColor(vi, vi, vi);
+PlayerTextDrawFont(vi, vi, vi);
+PlayerTextDrawSetProportional(vi, vi, vi);
+PlayerTextDrawSetSelectable(vi, vi, vi);
+PlayerTextDrawShow(vi, vi);
+PlayerTextDrawHide(vi, vi);
+PlayerTextDrawSetString(vi, vi, vs);
+SetPlayerMapIcon(vi, vi, vf, vf, vf, vi, vi, vi);
+SetPlayerCameraLookAt(vi, vf, vf, vf, vi);
+GetPlayerCameraMode(vi);
+AttachCameraToObject(vi, vi);
+AttachCameraToPlayerObject(vi, vi);
+InterpolateCameraPos(vi, vf, vf, vf, vf, vf, vf, vi, vi);
+InterpolateCameraLookAt(vi, vf, vf, vf, vf, vf, vf, vi, vi);
+StopRecordingPlayerData(vi);
+SelectTextDraw(vi, vi);
+CancelSelectTextDraw(vi);
+GetPlayerNetworkStats(vi, vs, vi);
+GetNetworkStats(vs, vi);
+GetPlayerVersion(vi, vs, vi);
+TextDrawSetSelectable(vi, vi);
+GetVehicleDistanceFromPoint(vi, vf, vf, vf);
+ManualVehicleEngineAndLights();
+SetVehicleParamsEx(vi, vi, vi, vi, vi, vi, vi, vi);
+GetVehicleParamsEx(vi, vi, vi, vi, vi, vi, vi, vi);
+GetVehicleModelInfo(vi, vi, vf, vf, vf);
+GetVehicleVirtualWorld(vi);
+
 }
 

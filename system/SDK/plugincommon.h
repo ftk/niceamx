@@ -24,7 +24,7 @@
   #ifndef __GNUC__
     #pragma message "Warning: Not using a GNU compiler."
   #endif
-  #define PLUGIN_CALL 
+  #define PLUGIN_CALL __attribute__((cdecl))
   #ifndef SAMPSVR
     // Compile code with -fvisibility=hidden to hide non-exported functions.
     #define PLUGIN_EXPORT PLUGIN_EXTERN_C __attribute__((visibility("default")))

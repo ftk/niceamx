@@ -32,13 +32,13 @@ CXXFLAGS_plugin := $(CXXFLAGS) -fPIC
 LDFLAGS_plugin := $(LDFLAGS) -fPIC -shared -Wl,--no-undefined
 
 # maximum optimization
-CXXFLAGS_release = $(CXXFLAGS_plugin) -O3 -fvisibility=hidden -fvisibility-inlines-hidden -ffunction-sections -fdata-sections -fstrict-aliasing -fmerge-all-constants -fomit-frame-pointer -pedantic -flto -fno-ident
+CXXFLAGS_release = $(CXXFLAGS_plugin) -O3 -fvisibility=hidden -fvisibility-inlines-hidden -ffunction-sections -fdata-sections -fstrict-aliasing -fmerge-all-constants -fomit-frame-pointer -pedantic -flto -fno-ident -mfpmath=sse -msse3 -march=nocona -fgraphite-identity -floop-interchange -floop-block
 LDFLAGS_release = $(LDFLAGS_plugin) -O3 -s -Wl,--gc-sections -flto
 # add NDEBUG definition when final version is out
 DEFINES_release = $(DEFINES) OVERTIMER_DISABLE
 
 # minimum optimization
-CXXFLAGS_debug = $(CXXFLAGS_plugin) -O0 -ggdb3 -Wextra -Wno-unused-parameter
+CXXFLAGS_debug = $(CXXFLAGS_plugin) -O0 -ggdb3 -Wextra -Wno-unused-parameter -fstack-protector-all
 LDFLAGS_debug = $(LDFLAGS_plugin) -ggdb3 -rdynamic
 DEFINES_debug = $(DEFINES) _DEBUG PRINT_OUTCOMING_NATIVES PRINT_INCOMING_CALLBACKS OVERTIMER_DISABLE
 OUTFILE_debug = niceamx-debug.so

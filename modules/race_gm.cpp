@@ -7,8 +7,11 @@
 //#include "api/dialogs.hpp"
 #include "api/cmd2.hpp"
 #include "api/playerpool.hpp"
+#include "api/dialogs.hpp"
+#include "api/location.hpp"
 
 #include "gamemode.hpp"
+#include "gvote.hpp"
 
 #include "util/rotation.hpp"
 #include "util/log.h"
@@ -34,7 +37,7 @@ struct vehicle_pos
 
 struct race_checkpoints_t
 {
-	typedef std::list<checkpoint> checkpoints_t;
+    typedef std::list<util::point3d> checkpoints_t;
 	typedef checkpoints_t::iterator iterator;
 	
 	checkpoints_t list;
@@ -43,7 +46,7 @@ struct race_checkpoints_t
     {
       while(!s.eof())
       {
-        checkpoint pos;
+        util::point3d pos;
         s >> pos.x >> pos.y >> pos.z;
         if(pos.x != 0.f && pos.y != 0.f && pos.z != 0.f)
 			list.push_back(pos);
@@ -74,10 +77,10 @@ static int create_vehicle_for_player(int playerid, int model, const vehicle_pos&
     int vehid = native::create_vehicle(model, pos.x, pos.y, pos.z, pos.angle, -1, -1, 1200);
     if(vehid < 0 || vehid == native::INVALID_VEHICLE_ID)
       return(0);
-    REGISTER_TIMER(2000, ([playerid, vehid]()
+    REGISTER_TIMER_ONCE(2000, ([playerid, vehid]()
     {
       native::put_player_in_vehicle(playerid, vehid, 0);
-      throw(signals::timer_stop());
+      //throw(signals::timer_stop());
     }));
     return vehid;
   }
@@ -131,8 +134,8 @@ public:
 		PREPARING,
 		COUNTDOWN,
 		RACING,
-		FINISHED,
-		FINISHED_ALL
+        FINISHED_ONE, // 1 or more players finished
+        FINISHED_ALL // everybody finished
 	};
 	int race_state = NONE;
 	
@@ -145,7 +148,7 @@ private:
 	vehicle_pos p1, p2;
 	float row_distance;
 	
-	int finished_players;
+    int finished_players;
 
     float size = 14.f;
 	
@@ -180,16 +183,16 @@ private:
         pos.angle = 0.0f;
         auto ncp = st.get_next_cp();
         if(ncp != checkpoints.end())
-            pos.angle = util::rad_to_deg(atan2(ncp->x - st.checkpoint->x, ncp->y - st.checkpoint->y));
+            pos.angle = -util::rad_to_deg(atan2(ncp->x - st.checkpoint->x, ncp->y - st.checkpoint->y));
 		return pos;
 	}
 public:
 	void change_player_state(int player, int newstate)
 	{
-		util::log_msg("race/state", "p: %d state: %d", player, newstate);
 		
 		player_state& state = players_states.at(player);
-		state.state = newstate;
+        util::log_msg("race/state", "p: %d oldstate: %d state: %d", player, state.state, newstate);
+        state.state = newstate;
 		//int oldstate = state.state;
 		if(newstate == player_state::PREPARING)
 		{
@@ -206,12 +209,13 @@ public:
 			{
                 pos = get_vehicle_position(state);
                 setup(player, pos);
-	            REGISTER_TIMER(4000, ([this, player](){
+                REGISTER_TIMER_ONCE(4000, ([this, player](){
 	                //toggle_vehicle_engine(state.vehicle, true);
 	                this->change_player_state(player, player_state::PLAYING);
-	                throw signals::timer_stop();
+                    //throw signals::timer_stop();
 	            }));
 			}
+            native::set_player_score(player, 0);
 
 		}
 		else if(newstate == player_state::DEAD)
@@ -224,13 +228,29 @@ public:
             toggle_vehicle_engine(state.vehicle, true);
             on_checkpoint(player);
         }
-		// ...
+        else if(newstate == player_state::FINISHED)
+        {
+            ++finished_players;
+            if(finished_players == static_cast<int>(players_states.size()))
+                change_race_state(FINISHED_ALL);
+            else
+                change_race_state(FINISHED_ONE);
+            api::send_pipe_msgf(api::pipe::ALL, "%s finished (%d)",
+                            native::get_player_name(player).c_str(),
+                            finished_players);
+            native::give_player_money(player, 100 * (players_states.size() - finished_players));
+            native::set_player_score(player, finished_players);
+            show_vote_dialog(player);
+        }
+        // ...
 		//state.state = newstate;
 	}
 	
 	void change_race_state(int newstate)
 	{
-		util::log_msg("race/state", "state: %d", newstate);
+        util::log_msg("race/state", "oldstate: %d state: %d", race_state, newstate);
+        if(race_state == newstate)
+            return;
 		race_state = newstate;
 	
 		if(newstate == COUNTDOWN)
@@ -241,7 +261,7 @@ public:
 			});
 			
 			c.set_count(6);
-			REGISTER_TIMER(1000, c);
+            REGISTER_TIMER(1000, c);
 		}
         else if(newstate == RACING)
         {
@@ -250,28 +270,78 @@ public:
                 this->change_player_state(it.first, player_state::PLAYING);
             });*/
             for(auto it : players_states)
-                this->change_player_state(it.first, player_state::PLAYING);
+                if(it.second.state == player_state::PREPARING)
+                    this->change_player_state(it.first, player_state::PLAYING);
         }
         else if(newstate == PREPARING)
         {
         	finished_players = 0;
-            REGISTER_TIMER(2500, ([this](){
+            REGISTER_TIMER_ONCE(2500, ([this](){
                 this->change_race_state(COUNTDOWN);
-                throw signals::timer_stop();
+                //util::log_msg_nofmt("dbg", "t1");
+                //throw signals::timer_stop();
             }));
+            //util::log_msg_nofmt("dbg", "t2");
             for(auto it : players_states)
                 this->change_player_state(it.first, player_state::PREPARING);
         }
-		// ...
+        else if(newstate == FINISHED_ONE)
+        {
+            REGISTER_TIMER_ONCE(60*1000, ([this]()
+            {
+                if(this->race_state == FINISHED_ONE)
+                    this->new_race();
+            }));
+            api::send_pipe_msg(api::pipe::ALL, "Race will be changed in 60 seconds");
+        }
+        else if(newstate == FINISHED_ALL)
+        {
+            REGISTER_TIMER_ONCE(10*1000, ([this]()
+            {
+                if(this->race_state == FINISHED_ALL)
+                    this->new_race();
+            }));
+            api::send_pipe_msg(api::pipe::ALL, "Race will be changed in 10 seconds");
+        }
+        // ...
 		//race_state = newstate;
 	}
-	
+
+
+    void show_vote_dialog(int playerid)
+    {
+        SHOW_DIALOG(api::dialog_list, ([this](int playerid, bool succ, int item)
+        {
+            if(succ)
+            {
+                gvotes->vote(item);
+                api::send_pipe_msgf(api::pipe::ALL, "%s voted for %s",
+                                    PLAYERBOX->get_info(playerid).name.c_str(),
+                                    gvotes->at(item).name.c_str());
+            }
+        }), playerid, "Voting", gvotes->join('\n'), "Yes", "No");
+    }
+
+    void new_race()
+    {
+        bool ok = gvotes->get_top_option().execute_command(api::pipe::LOG, api::cmdflag::CONFIG);
+        if(ok)
+        {
+            gvotes->reset();
+            //change_race_state(PREPARING);
+        }
+        else
+            util::log_msg("race/newrace", "Cannot execute: %s", gvotes->get_top_option().cmd.c_str());
+    }
 	
 
 public:
 
 	void on_checkpoint(int player)
 	{
+        try {
+
+
 		if(!is_connected(player))
 			return;
         auto& state = players_states.at(player);
@@ -283,7 +353,6 @@ public:
         if(state.checkpoint == checkpoints.end())
         {
             // finished
-            ++finished_players;
             change_player_state(player, player_state::FINISHED);
             native::disable_player_race_checkpoint(player);
             return;
@@ -300,6 +369,12 @@ public:
                                                state.checkpoint->x, state.checkpoint->y, state.checkpoint->z, size);
         }
         ++(state.checkpoint);
+
+
+        } catch(std::exception& e)
+        {
+            std::cout << e.what() << std::endl;
+        }
 	}
 
     void load(std::istream& s)
@@ -342,9 +417,10 @@ INIT
 
     REGISTER_CALLBACK(plugin_unload, ([gm](){ delete gm; }));
 
-    REGISTER_CALLBACK(on_game_mode_init, ([](){
+    REGISTER_CALLBACK(on_game_mode_init, ([gm](){
         native::manual_vehicle_engine_and_lights();
-        INVOKE_COMMANDS(api::pipe::STDOUT, api::cmdflag::SYSTEM, "load_race races/un_autogen_d0a1.txt");
+        INVOKE_COMMANDS(api::pipe::FILE, api::cmdflag::CONFIG, "execfile data/autoexec.txt");
+        gm->new_race();
     }));
 
     REGISTER_CALLBACK(on_player_connect, ([gm](int player){
@@ -370,7 +446,7 @@ INIT
 
 
 
-    REGISTER_COMMAND2("load_race", api::cmdflag::ADMIN | api::cmdflag::RCON | api::cmdflag::SYSTEM,
+    REGISTER_COMMAND2("load_race", api::cmdflag::ADMIN | api::cmdflag::RCON | api::cmdflag::CONFIG,
                       ([gm](int pipe, const std::string& params)
     {
         api::parser p("*sr", params);
@@ -378,7 +454,7 @@ INIT
         if(in)
         {
             gm->load(in);
-        	api::send_pipe_msgf(pipe, "Loaded: %s", p.get_string(0));
+            api::send_pipe_msgf(pipe, "Loaded race: %s", p.get_string(0));
         }
         else
             api::send_pipe_msgf(pipe, "Cannot open: %s", p.get_string(0));

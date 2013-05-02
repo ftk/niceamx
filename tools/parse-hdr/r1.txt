@@ -1,0 +1,315 @@
+int attach_object_to_vehicle (int objectid, int vehicleid, float OffsetX, float OffsetY, float OffsetZ, float RotX, float RotY, float RotZ)
+{
+	START();
+	cell _R; CALL_NATIVE_R(attach_object_to_vehicle,  objectid, vehicleid, OffsetX, OffsetY, OffsetZ, RotX, RotY, RotZ);
+}
+int attach_object_to_object (int objectid, int attachtoid, float OffsetX, float OffsetY, float OffsetZ, float RotX, float RotY, float RotZ, int SyncRotation)
+{
+	START();
+	cell _R; CALL_NATIVE_R(attach_object_to_object,  objectid, attachtoid, OffsetX, OffsetY, OffsetZ, RotX, RotY, RotZ, SyncRotation);
+}
+int attach_object_to_player (int objectid, int playerid, float OffsetX, float OffsetY, float OffsetZ, float RotX, float RotY, float RotZ)
+{
+	START();
+	cell _R; CALL_NATIVE_R(attach_object_to_player,  objectid, playerid, OffsetX, OffsetY, OffsetZ, RotX, RotY, RotZ);
+}
+int move_object (int objectid, float X, float Y, float Z, float Speed, float RotX, float RotY, float RotZ)
+{
+	START();
+	cell _R; CALL_NATIVE_R(move_object,  objectid, X, Y, Z, Speed, RotX, RotY, RotZ);
+}
+int is_object_moving (int objectid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(is_object_moving,  objectid);
+}
+int edit_object (int playerid, int objectid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(edit_object,  playerid, objectid);
+}
+int edit_player_object (int playerid, int objectid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(edit_player_object,  playerid, objectid);
+}
+int select_object (int playerid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(select_object,  playerid);
+}
+int cancel_edit (int playerid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(cancel_edit,  playerid);
+}
+int attach_player_object_to_vehicle (int playerid, int objectid, int vehicleid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float RotZ)
+{
+	START();
+	cell _R; CALL_NATIVE_R(attach_player_object_to_vehicle,  playerid, objectid, vehicleid, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, RotZ);
+}
+int move_player_object (int playerid, int objectid, float X, float Y, float Z, float Speed, float RotX, float RotY, float RotZ)
+{
+	START();
+	cell _R; CALL_NATIVE_R(move_player_object,  playerid, objectid, X, Y, Z, Speed, RotX, RotY, RotZ);
+}
+int is_player_object_moving (int playerid, int objectid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(is_player_object_moving,  playerid, objectid);
+}
+int set_object_material (int objectid, int materialindex, int modelid, string txdname, string texturename, int materialcolor=0)
+{
+	START();
+	cell _R; CALL_NATIVE_R(set_object_material,  objectid, materialindex, modelid, txdname, texturename, materialcolor=0);
+}
+int set_player_object_material (int playerid, int objectid, int materialindex, int modelid, string txdname, string texturename, int materialcolor=0)
+{
+	START();
+	cell _R; CALL_NATIVE_R(set_player_object_material,  playerid, objectid, materialindex, modelid, txdname, texturename, materialcolor=0);
+}
+int set_object_material_text (int objectid, string text, int materialindex, int materialsize, string fontface, int fontsize, int bold, int fontcolor, int backcolor, int textalignment)
+{
+	START();
+	cell _R; CALL_NATIVE_R(set_object_material_text,  objectid, text, materialindex, materialsize, fontface, fontsize, bold, fontcolor, backcolor, textalignment);
+}
+int set_player_object_material_text (int playerid, int objectid, string text, int materialindex, int materialsize, string fontface, int fontsize, int bold, int fontcolor, int backcolor, int textalignment)
+{
+	START();
+	cell _R; CALL_NATIVE_R(set_player_object_material_text,  playerid, objectid, text, materialindex, materialsize, fontface, fontsize, bold, fontcolor, backcolor, textalignment);
+}
+float get_player_distance_from_point (int playerid, float X, float Y, float Z)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_player_distance_from_point,  playerid, X, Y, Z);
+}
+int get_player_target_player (int playerid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_player_target_player,  playerid);
+}
+int play_audio_stream_for_player (int playerid, string url, float posX, float posY, float posZ, float distance, int usepos)
+{
+	START();
+	cell _R; CALL_NATIVE_R(play_audio_stream_for_player,  playerid, url, posX, posY, posZ, distance, usepos);
+}
+int stop_audio_stream_for_player (int playerid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(stop_audio_stream_for_player,  playerid);
+}
+int get_player_surfing_object_i_d (int playerid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_player_surfing_object_i_d,  playerid);
+}
+int remove_building_for_player (int playerid, int modelid, float fX, float fY, float fZ, float fRadius)
+{
+	START();
+	cell _R; CALL_NATIVE_R(remove_building_for_player,  playerid, modelid, fX, fY, fZ, fRadius);
+}
+int set_player_attached_object (int playerid, int index, int modelid, int bone, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ, int materialcolor1, int materialcolor2)
+{
+	START();
+	cell _R; CALL_NATIVE_R(set_player_attached_object,  playerid, index, modelid, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ, materialcolor1, materialcolor2);
+}
+int remove_player_attached_object (int playerid, int index)
+{
+	START();
+	cell _R; CALL_NATIVE_R(remove_player_attached_object,  playerid, index);
+}
+int is_player_attached_object_slot_used (int playerid, int index)
+{
+	START();
+	cell _R; CALL_NATIVE_R(is_player_attached_object_slot_used,  playerid, index);
+}
+int edit_attached_object (int playerid, int index)
+{
+	START();
+	cell _R; CALL_NATIVE_R(edit_attached_object,  playerid, index);
+}
+playertext create_player_text_draw (int playerid, float x, float y, string text)
+{
+	START();
+	cell _R; CALL_NATIVE_R(create_player_text_draw,  playerid, x, y, text);
+}
+int player_text_draw_destroy (int playerid, playertext text)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_destroy,  playerid, text);
+}
+int player_text_draw_letter_size (int playerid, playertext text, float x, float y)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_letter_size,  playerid, text, x, y);
+}
+int player_text_draw_text_size (int playerid, playertext text, float x, float y)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_text_size,  playerid, text, x, y);
+}
+int player_text_draw_alignment (int playerid, playertext text, int alignment)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_alignment,  playerid, text, alignment);
+}
+int player_text_draw_color (int playerid, playertext text, int color)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_color,  playerid, text, color);
+}
+int player_text_draw_use_box (int playerid, playertext text, int use)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_use_box,  playerid, text, use);
+}
+int player_text_draw_box_color (int playerid, playertext text, int color)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_box_color,  playerid, text, color);
+}
+int player_text_draw_set_shadow (int playerid, playertext text, int size)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_set_shadow,  playerid, text, size);
+}
+int player_text_draw_set_outline (int playerid, playertext text, int size)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_set_outline,  playerid, text, size);
+}
+int player_text_draw_background_color (int playerid, playertext text, int color)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_background_color,  playerid, text, color);
+}
+int player_text_draw_font (int playerid, playertext text, int font)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_font,  playerid, text, font);
+}
+int player_text_draw_set_proportional (int playerid, playertext text, int set)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_set_proportional,  playerid, text, set);
+}
+int player_text_draw_set_selectable (int playerid, playertext text, int set)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_set_selectable,  playerid, text, set);
+}
+int player_text_draw_show (int playerid, playertext text)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_show,  playerid, text);
+}
+int player_text_draw_hide (int playerid, playertext text)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_hide,  playerid, text);
+}
+int player_text_draw_set_string (int playerid, playertext text, string string)
+{
+	START();
+	cell _R; CALL_NATIVE_R(player_text_draw_set_string,  playerid, text, string);
+}
+int set_player_map_icon (int playerid, int iconid, float x, float y, float z, int markertype, int color, int style)
+{
+	START();
+	cell _R; CALL_NATIVE_R(set_player_map_icon,  playerid, iconid, x, y, z, markertype, color, style);
+}
+int set_player_camera_look_at (int playerid, float x, float y, float z, int cut)
+{
+	START();
+	cell _R; CALL_NATIVE_R(set_player_camera_look_at,  playerid, x, y, z, cut);
+}
+int get_player_camera_mode (int playerid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_player_camera_mode,  playerid);
+}
+int attach_camera_to_object (int playerid, int objectid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(attach_camera_to_object,  playerid, objectid);
+}
+int attach_camera_to_player_object (int playerid, int playerobjectid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(attach_camera_to_player_object,  playerid, playerobjectid);
+}
+int interpolate_camera_pos (int playerid, float FromX, float FromY, float FromZ, float ToX, float ToY, float ToZ, int time, int cut)
+{
+	START();
+	cell _R; CALL_NATIVE_R(interpolate_camera_pos,  playerid, FromX, FromY, FromZ, ToX, ToY, ToZ, time, cut);
+}
+int interpolate_camera_look_at (int playerid, float FromX, float FromY, float FromZ, float ToX, float ToY, float ToZ, int time, int cut)
+{
+	START();
+	cell _R; CALL_NATIVE_R(interpolate_camera_look_at,  playerid, FromX, FromY, FromZ, ToX, ToY, ToZ, time, cut);
+}
+int stop_recording_player_data (int playerid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(stop_recording_player_data,  playerid);
+}
+int select_text_draw (int playerid, int hovercolor)
+{
+	START();
+	cell _R; CALL_NATIVE_R(select_text_draw,  playerid, hovercolor);
+}
+int cancel_select_text_draw (int playerid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(cancel_select_text_draw,  playerid);
+}
+int get_player_network_stats (int playerid, string retstr, int retstr_size)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_player_network_stats,  playerid, retstr, retstr_size);
+}
+int get_network_stats (string retstr, int retstr_size)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_network_stats,  retstr, retstr_size);
+}
+int get_player_version (int playerid, const string version, int len)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_player_version,  playerid, version, len);
+}
+int text_draw_set_selectable (text text, int set)
+{
+	START();
+	cell _R; CALL_NATIVE_R(text_draw_set_selectable,  text, set);
+}
+float get_vehicle_distance_from_point (int vehicleid, float X, float Y, float Z)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_vehicle_distance_from_point,  vehicleid, X, Y, Z);
+}
+int manual_vehicle_engine_and_lights ()
+{
+	START();
+	cell _R; CALL_NATIVE_R(manual_vehicle_engine_and_lights,  );
+}
+int set_vehicle_params_ex (int vehicleid, int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective)
+{
+	START();
+	cell _R; CALL_NATIVE_R(set_vehicle_params_ex,  vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+}
+int get_vehicle_params_ex (int vehicleid, int& engine, int& lights, int& alarm, int& doors, int& bonnet, int& boot, int& objective)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_vehicle_params_ex,  vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+}
+int get_vehicle_model_info (int vehiclemodel, int infotype, float& X, float& Y, float& Z)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_vehicle_model_info,  vehiclemodel, infotype, X, Y, Z);
+}
+int get_vehicle_virtual_world (int vehicleid)
+{
+	START();
+	cell _R; CALL_NATIVE_R(get_vehicle_virtual_world,  vehicleid);
+}

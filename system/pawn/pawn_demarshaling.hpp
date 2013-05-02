@@ -2,7 +2,7 @@
 #define SAMP_DEMARSHALING_HPP
 
 #include <string>
-//#include <cstring>
+#include <cstring>
 #include <cassert>
 
 #include "SDK/amx/amx.h"
@@ -47,7 +47,23 @@ namespace pawn {
             return val;
         }
     };
-
+    
+    template<int param_id>
+    class demarh_t<param_id, float>
+    {
+        float val;
+        static_assert(sizeof(float) == sizeof(cell), "Unsupported cell size");
+    public:
+        demarh_t(AMX* amx, cell* params)
+        {
+            assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
+            memcpy(&val, &params[param_id + 1], sizeof(float));
+        }
+        float get() const
+        {
+            return val;
+        }
+    };
     template<int param_id>
     class demarh_t<param_id, const std::string>
     {

@@ -12,12 +12,12 @@ static const double pi = 3.1415926535897932384626433;
 template <typename T>
 inline T rad_to_deg(T rad)
 {
-  return (rad * (180.f / pi));
+  return (rad * (180. / pi));
 }
 template <typename T>
 inline T deg_to_rad(T deg)
 {
-  return (deg * (pi / 180.f));
+  return (deg * (pi / 180.));
 }
 
 struct euler;
@@ -38,7 +38,7 @@ struct euler : basic_rotation
   
   euler(point3d o) : rot(o) 
   {}
-  euler(point3d::float_t x, point3d::float_t y, point3d::float_t z) : rot(x, y, z)
+  euler(float x, float y, float z) : rot(x, y, z)
   {}
   
   euler() : rot() {}
@@ -77,7 +77,7 @@ struct quaternion : basic_rotation
   quaternion(point4d o) : rot(o)
   {}
   
-  quaternion(point4d::float_t x, point4d::float_t y, point4d::float_t z, point4d::float_t w) : rot(x, y, z, w)
+  quaternion(float x, float y, float z, float w) : rot(x, y, z, w)
   {}
   
   quaternion() : rot() 

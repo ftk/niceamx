@@ -3,9 +3,10 @@
 
 #include <cassert>
 #include <functional>
+#include <queue>
 
-#include "util/config/slist.h"
 
+#include "util/utils.h"
 
 namespace signals {
 //
@@ -20,22 +21,39 @@ public:
 
 	public:
       typedef long timeout_t;
+      typedef util::walltime_t walltime_t;
       //typedef bool (*func_t)();
       typedef std::function<void ()> func_t;
     private:
+      walltime_t trigger;
       timeout_t timeout;
-      timeout_t remaining;
+      //timeout_t remaining;
       func_t func;
+      bool once;
     public:
-      timer(timeout_t timeout_, func_t func_) :
-        timeout(timeout_),
-        remaining(timeout_),
-        func(func_)
+      timer(timeout_t timeout, const func_t& func, bool once = false) :
+        timeout(timeout),
+        func(std::move(func)), once(once)
       {
-        assert(timeout_ >= 0L);
+        assert(timeout > 0L);
+        trigger = util::get_walltime() + timeout;
       }
+    //private:
+      timer(walltime_t trigger, timeout_t timeout, const func_t& func) :
+        trigger(trigger),
+        timeout(timeout),
+        func(std::move(func)), once(false)
+      {
+          assert(timeout > 0L);
+      }
+    public:
+      bool operator > (const timer& rhs) const
+      {
+          return trigger > rhs.trigger;
+      }
+
     private:
-      inline void invoke()
+      inline void invoke() const
       {
         return func();
       }
@@ -47,19 +65,30 @@ public:
     };
 
     typedef timer slot_t;
+
 private:
-    typedef SLIST <slot_t> slots_t;
+    typedef std::priority_queue<slot_t, std::vector<slot_t>, std::greater<slot_t> > slots_t;
     slots_t slots;
+
 public:
 
     timers_container_t() {}
 
-    void connect(slot_t);
-    void proccess(int elapsed);
-
-    inline void operator () (int elapsed)
+    inline void connect(const slot_t& tm)
     {
-      proccess(elapsed);
+        slots.push(tm);
+    }
+    template <typename... Args>
+    inline void emplace(Args&&... args)
+    {
+        slots.emplace(std::forward<Args>(args)...);
+    }
+
+    void process();
+
+    inline void operator () ()
+    {
+        process();
     }
 
 };
@@ -69,18 +98,31 @@ public:
 class timer_stop // used as exception
 {};
 
+class timer_change_timeout
+{
+public:
+    typedef timers_container_t::timer::timeout_t timeout_t;
+    timer_change_timeout(timeout_t t) : new_timeout(t) 
+    {
+    	assert(t > 0);
+    }
+private:
+    timeout_t new_timeout;
+    friend class timers_container_t;
+};
 
-}
+
+} // namespace
 
 /*
 //#define REGISTER_TIMER(ms,fn) \
 MAINBOX->BOOST_PP_CAT(timer, ms).connect(fn)
 */
 
-#define MAKE_TIMER(ms,fn) signals::timers_container_t::timer(ms, fn) // calling constructor to make timer ( for internal use )
 
-#define REGISTER_TIMER2(obj) REGISTER_CALLBACK(timers, obj)
-#define REGISTER_TIMER(ms,fn) REGISTER_TIMER2(MAKE_TIMER(ms, fn))
-
+#define REGISTER_TIMER(ms,...) (MAINBOX->timers.emplace(ms, (__VA_ARGS__), false))
+#define REGISTER_TIMER_ONCE(ms,...) (MAINBOX->timers.emplace(ms, (__VA_ARGS__), true))
+//#define REGISTER_TIMER(ms,fn) (MAINBOX->timers.connect({ms, fn}))
+//#define REGISTER_TIMER_ONCE(ms,fn) (MAINBOX->timers.connect({ms, fn, true}))
 
 #endif

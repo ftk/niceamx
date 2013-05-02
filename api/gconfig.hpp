@@ -34,6 +34,10 @@ public:
 	{
 		dict[pname] = value;
 	}
+	inline void unset(const std::string& pname)
+	{
+		dict.erase(pname);
+	}
 	
 	inline bool exists(const std::string& pname) const
 	{

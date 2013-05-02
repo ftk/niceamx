@@ -1,0 +1,12 @@
+echo united!
+
+set_spawn 2234.0 -2227.0 6.5385 270.0
+
+
+gvote_clear
+execfile data/races/votes.txt
+execfile data/united/classes.txt
+
+
+max_vehicles 618
+execfile data/united/vehicles_colors.txt

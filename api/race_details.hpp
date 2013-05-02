@@ -8,7 +8,6 @@
 #include "util/point.hpp"
 #include "counter.hpp"
 
-#include "vehicle.hpp"
 
 #include <istream>
 #include <ostream>
@@ -64,17 +63,18 @@ public:
   }
 
 public:
+  int setup_player(int id, int pos = 1);
+  /*
   void setup_vehicle(basic_vehicle & v, int pos = 1)
   {
     return setup_vehicle(v, get_position(pos - 1));
   }
-  int setup_player(int id, int pos = 1);
 private:
   void setup_vehicle(basic_vehicle & v, const veh_pos & pos)
   {
     v.set_pos(pos.pos);
     v.set_ang(pos.angle);
-  }
+  }*/
   veh_pos get_position(int pos = 0);
 };
 

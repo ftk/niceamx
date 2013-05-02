@@ -27,7 +27,7 @@
 #include <limits.h>
 
 
-#if defined __linux__ || defined __linux
+#if defined __linux__ || defined __linux || defined __LINUX__
   #define LINUX
 #elif defined FREEBSD && !defined __FreeBSD__
   #define __FreeBSD__
@@ -208,6 +208,7 @@ typedef int (AMXAPI *AMX_DEBUG)(struct tagAMX *amx);
 
 #if !defined AMX_NO_ALIGN
   #if defined LINUX || defined __FreeBSD__
+  	#pragma pack(push)
     #pragma pack(1)         /* structures must be packed (byte-aligned) */
   #elif defined MACOS && defined __MWERKS__
 	#pragma options align=mac68k
@@ -221,8 +222,8 @@ typedef int (AMXAPI *AMX_DEBUG)(struct tagAMX *amx);
 #endif
 
 typedef struct tagAMX_NATIVE_INFO {
-  const char _FAR *name PACKED;
-  AMX_NATIVE func       PACKED;
+  const char _FAR *name;
+  AMX_NATIVE func;
 } PACKED AMX_NATIVE_INFO;
 
 #define AMX_USERNUM     4
@@ -243,35 +244,35 @@ typedef struct tagFUNCSTUBNT {
  * fields are valid at all times; many fields are cached in local variables.
  */
 typedef struct tagAMX {
-  unsigned char _FAR *base PACKED; /* points to the AMX header plus the code, optionally also the data */
-  unsigned char _FAR *data PACKED; /* points to separate data+stack+heap, may be NULL */
-  AMX_CALLBACK callback PACKED;
-  AMX_DEBUG debug       PACKED; /* debug callback */
+  unsigned char _FAR *base       ; /* points to the AMX header plus the code, optionally also the data */
+  unsigned char _FAR *data       ; /* points to separate data+stack+heap, may be NULL */
+  AMX_CALLBACK callback       ;
+  AMX_DEBUG debug             ; /* debug callback */
   /* for external functions a few registers must be accessible from the outside */
-  cell cip              PACKED; /* instruction pointer: relative to base + amxhdr->cod */
-  cell frm              PACKED; /* stack frame base: relative to base + amxhdr->dat */
-  cell hea              PACKED; /* top of the heap: relative to base + amxhdr->dat */
-  cell hlw              PACKED; /* bottom of the heap: relative to base + amxhdr->dat */
-  cell stk              PACKED; /* stack pointer: relative to base + amxhdr->dat */
-  cell stp              PACKED; /* top of the stack: relative to base + amxhdr->dat */
-  int flags             PACKED; /* current status, see amx_Flags() */
+  cell cip                    ; /* instruction pointer: relative to base + amxhdr->cod */
+  cell frm                    ; /* stack frame base: relative to base + amxhdr->dat */
+  cell hea                    ; /* top of the heap: relative to base + amxhdr->dat */
+  cell hlw                    ; /* bottom of the heap: relative to base + amxhdr->dat */
+  cell stk                    ; /* stack pointer: relative to base + amxhdr->dat */
+  cell stp                    ; /* top of the stack: relative to base + amxhdr->dat */
+  int flags                   ; /* current status, see amx_Flags() */
   /* user data */
-  long usertags[AMX_USERNUM] PACKED;
-  void _FAR *userdata[AMX_USERNUM] PACKED;
+  long usertags[AMX_USERNUM]       ;
+  void _FAR *userdata[AMX_USERNUM]       ;
   /* native functions can raise an error */
-  int error             PACKED;
+  int error                   ;
   /* passing parameters requires a "count" field */
   int paramcount;
   /* the sleep opcode needs to store the full AMX status */
-  cell pri              PACKED;
-  cell alt              PACKED;
-  cell reset_stk        PACKED;
-  cell reset_hea        PACKED;
-  cell sysreq_d         PACKED; /* relocated address/value for the SYSREQ.D opcode */
+  cell pri                    ;
+  cell alt                    ;
+  cell reset_stk              ;
+  cell reset_hea              ;
+  cell sysreq_d               ; /* relocated address/value for the SYSREQ.D opcode */
   #if defined JIT
     /* support variables for the JIT */
-    int reloc_size      PACKED; /* required temporary buffer for relocations */
-    long code_size      PACKED; /* estimated memory footprint of the native code */
+    int reloc_size            ; /* required temporary buffer for relocations */
+    long code_size            ; /* estimated memory footprint of the native code */
   #endif
 } PACKED AMX;
 
@@ -279,23 +280,23 @@ typedef struct tagAMX {
  * structure is used internaly.
  */
 typedef struct tagAMX_HEADER {
-  int32_t size          PACKED; /* size of the "file" */
-  uint16_t magic        PACKED; /* signature */
-  char    file_version  /*PACKED*/; /* file format version */
-  char    amx_version   /*PACKED*/; /* required version of the AMX */
-  int16_t flags         PACKED;
-  int16_t defsize       PACKED; /* size of a definition record */
-  int32_t cod           PACKED; /* initial value of COD - code block */
-  int32_t dat           PACKED; /* initial value of DAT - data block */
-  int32_t hea           PACKED; /* initial value of HEA - start of the heap */
-  int32_t stp           PACKED; /* initial value of STP - stack top */
-  int32_t cip           PACKED; /* initial value of CIP - the instruction pointer */
-  int32_t publics       PACKED; /* offset to the "public functions" table */
-  int32_t natives       PACKED; /* offset to the "native functions" table */
-  int32_t libraries     PACKED; /* offset to the table of libraries */
-  int32_t pubvars       PACKED; /* the "public variables" table */
-  int32_t tags          PACKED; /* the "public tagnames" table */
-  int32_t nametable     PACKED; /* name table */
+  int32_t size                ; /* size of the "file" */
+  uint16_t magic              ; /* signature */
+  char    file_version        ; /* file format version */
+  char    amx_version         ; /* required version of the AMX */
+  int16_t flags               ;
+  int16_t defsize             ; /* size of a definition record */
+  int32_t cod                 ; /* initial value of COD - code block */
+  int32_t dat                 ; /* initial value of DAT - data block */
+  int32_t hea                 ; /* initial value of HEA - start of the heap */
+  int32_t stp                 ; /* initial value of STP - stack top */
+  int32_t cip                 ; /* initial value of CIP - the instruction pointer */
+  int32_t publics             ; /* offset to the "public functions" table */
+  int32_t natives             ; /* offset to the "native functions" table */
+  int32_t libraries           ; /* offset to the table of libraries */
+  int32_t pubvars             ; /* the "public variables" table */
+  int32_t tags                ; /* the "public tagnames" table */
+  int32_t nametable           ; /* name table */
 } PACKED AMX_HEADER;
 
 #if PAWN_CELL_SIZE==16
@@ -390,52 +391,52 @@ enum {
       else (result) = NULL;                                                 \
     } while (0)
 
-uint16_t * AMXAPI amx_Align16(uint16_t *v);
-uint32_t * AMXAPI amx_Align32(uint32_t *v);
+extern uint16_t * AMXAPI (*amx_Align16)(uint16_t *v);
+extern uint32_t * AMXAPI (*amx_Align32)(uint32_t *v);
 #if defined _I64_MAX || defined HAVE_I64
-  uint64_t * AMXAPI amx_Align64(uint64_t *v);
+extern   uint64_t * AMXAPI (*amx_Align64)(uint64_t *v);
 #endif
-int AMXAPI amx_Allot(AMX *amx, int cells, cell *amx_addr, cell **phys_addr);
-int AMXAPI amx_Callback(AMX *amx, cell index, cell *result, cell *params);
-int AMXAPI amx_Cleanup(AMX *amx);
-int AMXAPI amx_Clone(AMX *amxClone, AMX *amxSource, void *data);
-int AMXAPI amx_Exec(AMX *amx, cell *retval, int index);
-int AMXAPI amx_FindNative(AMX *amx, const char *name, int *index);
-int AMXAPI amx_FindPublic(AMX *amx, const char *funcname, int *index);
-int AMXAPI amx_FindPubVar(AMX *amx, const char *varname, cell *amx_addr);
-int AMXAPI amx_FindTagId(AMX *amx, cell tag_id, char *tagname);
-int AMXAPI amx_Flags(AMX *amx,uint16_t *flags);
-int AMXAPI amx_GetAddr(AMX *amx,cell amx_addr,cell **phys_addr);
-int AMXAPI amx_GetNative(AMX *amx, int index, char *funcname);
-int AMXAPI amx_GetPublic(AMX *amx, int index, char *funcname);
-int AMXAPI amx_GetPubVar(AMX *amx, int index, char *varname, cell *amx_addr);
-int AMXAPI amx_GetString(char *dest,const cell *source, int use_wchar, size_t size);
-int AMXAPI amx_GetTag(AMX *amx, int index, char *tagname, cell *tag_id);
-int AMXAPI amx_GetUserData(AMX *amx, long tag, void **ptr);
-int AMXAPI amx_Init(AMX *amx, void *program);
-int AMXAPI amx_InitJIT(AMX *amx, void *reloc_table, void *native_code);
-int AMXAPI amx_MemInfo(AMX *amx, long *codesize, long *datasize, long *stackheap);
-int AMXAPI amx_NameLength(AMX *amx, int *length);
-AMX_NATIVE_INFO * AMXAPI amx_NativeInfo(const char *name, AMX_NATIVE func);
-int AMXAPI amx_NumNatives(AMX *amx, int *number);
-int AMXAPI amx_NumPublics(AMX *amx, int *number);
-int AMXAPI amx_NumPubVars(AMX *amx, int *number);
-int AMXAPI amx_NumTags(AMX *amx, int *number);
-int AMXAPI amx_Push(AMX *amx, cell value);
-int AMXAPI amx_PushArray(AMX *amx, cell *amx_addr, cell **phys_addr, const cell array[], int numcells);
-int AMXAPI amx_PushString(AMX *amx, cell *amx_addr, cell **phys_addr, const char *string, int pack, int use_wchar);
-int AMXAPI amx_RaiseError(AMX *amx, int error);
-int AMXAPI amx_Register(AMX *amx, const AMX_NATIVE_INFO *nativelist, int number);
-int AMXAPI amx_Release(AMX *amx, cell amx_addr);
-int AMXAPI amx_SetCallback(AMX *amx, AMX_CALLBACK callback);
-int AMXAPI amx_SetDebugHook(AMX *amx, AMX_DEBUG debug);
-int AMXAPI amx_SetString(cell *dest, const char *source, int pack, int use_wchar, size_t size);
-int AMXAPI amx_SetUserData(AMX *amx, long tag, void *ptr);
-int AMXAPI amx_StrLen(const cell *cstring, int *length);
-int AMXAPI amx_UTF8Check(const char *string, int *length);
-int AMXAPI amx_UTF8Get(const char *string, const char **endptr, cell *value);
-int AMXAPI amx_UTF8Len(const cell *cstr, int *length);
-int AMXAPI amx_UTF8Put(char *string, char **endptr, int maxchars, cell value);
+extern int AMXAPI (*amx_Allot)(AMX *amx, int cells, cell *amx_addr, cell **phys_addr);
+extern int AMXAPI (*amx_Callback)(AMX *amx, cell index, cell *result, cell *params);
+extern int AMXAPI (*amx_Cleanup)(AMX *amx);
+extern int AMXAPI (*amx_Clone)(AMX *amxClone, AMX *amxSource, void *data);
+extern int AMXAPI (*amx_Exec)(AMX *amx, cell *retval, int index);
+extern int AMXAPI (*amx_FindNative)(AMX *amx, const char *name, int *index);
+extern int AMXAPI (*amx_FindPublic)(AMX *amx, const char *funcname, int *index);
+extern int AMXAPI (*amx_FindPubVar)(AMX *amx, const char *varname, cell *amx_addr);
+extern int AMXAPI (*amx_FindTagId)(AMX *amx, cell tag_id, char *tagname);
+extern int AMXAPI (*amx_Flags)(AMX *amx,uint16_t *flags);
+extern int AMXAPI (*amx_GetAddr)(AMX *amx,cell amx_addr,cell **phys_addr);
+extern int AMXAPI (*amx_GetNative)(AMX *amx, int index, char *funcname);
+extern int AMXAPI (*amx_GetPublic)(AMX *amx, int index, char *funcname);
+extern int AMXAPI (*amx_GetPubVar)(AMX *amx, int index, char *varname, cell *amx_addr);
+extern int AMXAPI (*amx_GetString)(char *dest,const cell *source, int use_wchar, size_t size);
+extern int AMXAPI (*amx_GetTag)(AMX *amx, int index, char *tagname, cell *tag_id);
+extern int AMXAPI (*amx_GetUserData)(AMX *amx, long tag, void **ptr);
+extern int AMXAPI (*amx_Init)(AMX *amx, void *program);
+extern int AMXAPI (*amx_InitJIT)(AMX *amx, void *reloc_table, void *native_code);
+extern int AMXAPI (*amx_MemInfo)(AMX *amx, long *codesize, long *datasize, long *stackheap);
+extern int AMXAPI (*amx_NameLength)(AMX *amx, int *length);
+extern AMX_NATIVE_INFO * AMXAPI (*amx_NativeInfo)(const char *name, AMX_NATIVE func);
+extern int AMXAPI (*amx_NumNatives)(AMX *amx, int *number);
+extern int AMXAPI (*amx_NumPublics)(AMX *amx, int *number);
+extern int AMXAPI (*amx_NumPubVars)(AMX *amx, int *number);
+extern int AMXAPI (*amx_NumTags)(AMX *amx, int *number);
+extern int AMXAPI (*amx_Push)(AMX *amx, cell value);
+extern int AMXAPI (*amx_PushArray)(AMX *amx, cell *amx_addr, cell **phys_addr, const cell array[], int numcells);
+extern int AMXAPI (*amx_PushString)(AMX *amx, cell *amx_addr, cell **phys_addr, const char *string, int pack, int use_wchar);
+extern int AMXAPI (*amx_RaiseError)(AMX *amx, int error);
+extern int AMXAPI (*amx_Register)(AMX *amx, const AMX_NATIVE_INFO *nativelist, int number);
+extern int AMXAPI (*amx_Release)(AMX *amx, cell amx_addr);
+extern int AMXAPI (*amx_SetCallback)(AMX *amx, AMX_CALLBACK callback);
+extern int AMXAPI (*amx_SetDebugHook)(AMX *amx, AMX_DEBUG debug);
+extern int AMXAPI (*amx_SetString)(cell *dest, const char *source, int pack, int use_wchar, size_t size);
+extern int AMXAPI (*amx_SetUserData)(AMX *amx, long tag, void *ptr);
+extern int AMXAPI (*amx_StrLen)(const cell *cstring, int *length);
+extern int AMXAPI (*amx_UTF8Check)(const char *string, int *length);
+extern int AMXAPI (*amx_UTF8Get)(const char *string, const char **endptr, cell *value);
+extern int AMXAPI (*amx_UTF8Len)(const cell *cstr, int *length);
+extern int AMXAPI (*amx_UTF8Put)(char *string, char **endptr, int maxchars, cell value);
 
 #if PAWN_CELL_SIZE==16
   #define amx_AlignCell(v) amx_Align16(v)
@@ -452,7 +453,7 @@ int AMXAPI amx_UTF8Put(char *string, char **endptr, int maxchars, cell value);
 
 #if !defined AMX_NO_ALIGN
   #if defined LINUX || defined __FreeBSD__
-    #pragma pack()    /* reset default packing */
+    #pragma pack(pop)    /* reset previous packing */
   #elif defined MACOS && defined __MWERKS__
     #pragma options align=reset
   #else

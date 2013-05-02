@@ -12,41 +12,24 @@
 
 namespace util {
 
-/*
-enum log_level
-{
-  LOG_NONE = 0,
-  LOG_INFO,
-  LOG_WARNING,
-  LOG_ERROR,
-  LOG_NOTICE,
-  LOG_DEBUG
-};
-
-void log(enum log_level crit, const char * format, ...) __attribute__((format(printf, 2, 3)));
-void log_nofmt(enum log_level crit, const char * str);
-*/
-
 
 
 void log_msg(const char * module, const char * format, ...) __attribute__((format(printf, 2, 3)));
 
 void log_msg_nofmt(const char * module, const char * msg);
 
+void log_debug(const char * module, const char * format, ...) __attribute__((format(printf, 2, 3)));
+
 // ---
-/*
 
-typedef void (*log_fnptr_t)(const char *);
 
-void logger_register(log_fnptr_t fn);
+typedef void (*logger_fun_t)(const char *, const char *); // module, msg
 
-void log_filename(const char * str);
+void register_logger(logger_fun_t fn);
 
-void logger_file(const char * str);
+void logger_rotational(const char * module, const char * str);
+void logger_stdout(const char * module, const char * str);
+void logger_stderr(const char * module, const char * str);
 
-void log_line(const char * str);
-
-extern bool log_rotate;
-*/
 } //
 #endif

@@ -8,54 +8,54 @@
 static const char en_ru_transform[][2] =
 {
     /*
-    { 'é', 'q' },
-    { 'ö', 'w' },
-    { 'ó', 'e' },
-    { 'ê', 'r' },
-    { 'å', 't' },
-    { 'í', 'y' },
-    { 'ã', 'u' },
-    { 'ø', 'i' },
-    { 'ù', 'o' },
-    { 'ç', 'p' },
-    { 'ô', 'a' },
-    { 'û', 's' },
-    { 'â', 'd' },
-    { 'à', 'f' },
-    { 'ï', 'g' },
-    { 'ð', 'h' },
-    { 'î', 'j' },
-    { 'ë', 'k' },
-    { 'ä', 'l' },
-    { 'ÿ', 'z' },
-    { '÷', 'x' },
-    { 'ñ', 'c' },
-    { 'ì', 'v' },
-    { 'è', 'b' },
-    { 'ò', 'n' },
-    { 'ü', 'm' },
+    { '\xE9', 'q' },
+    { '\xF6', 'w' },
+    { '\xF3', 'e' },
+    { '\xEA', 'r' },
+    { '\xE5', 't' },
+    { '\xED', 'y' },
+    { '\xE3', 'u' },
+    { '\xF8', 'i' },
+    { '\xF9', 'o' },
+    { '\xE7', 'p' },
+    { '\xF4', 'a' },
+    { '\xFB', 's' },
+    { '\xE2', 'd' },
+    { '\xE0', 'f' },
+    { '\xEF', 'g' },
+    { '\xF0', 'h' },
+    { '\xEE', 'j' },
+    { '\xEB', 'k' },
+    { '\xE4', 'l' },
+    { '\xFF', 'z' },
+    { '\xF7', 'x' },
+    { '\xF1', 'c' },
+    { '\xEC', 'v' },
+    { '\xE8', 'b' },
+    { '\xF2', 'n' },
+    { '\xFC', 'm' },
     */
-    { '¸', '`' },
+    { '\xB8', '`' },
     { '?', ',' },
     { '/', '.' },
-    { 'õ', '[' },
-    { 'ú', ']' },
-    { 'æ', ';' },
-    { 'ý', '\''},
+    { '\xF5', '[' },
+    { '\xFA', ']' },
+    { '\xE6', ';' },
+    { '\xFD', '\''},
 
     { '.', '/' },
     { '\"','@' },
     { '?', '&' },
     { ',', '?' },
-    //{ '¹', '#' },
+    //{ '\xB9', '#' },
     { '$', ';' },
     { ':', '^' }
 };
 
 
 
-static const char en_ru_tralphabet[] = "ôèñâóàïðøîëäüòùçéêûåãìö÷íÿ"; // abcdefghijkl....
-static const char ru_en_tralphabet[] = "f,dult;pbqrkvyjghcnea[wxio]sm\'.z"; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½...
+static const char en_ru_tralphabet[] = "\xF4\xE8\xF1\xE2\xF3\xE0\xEF\xF0\xF8\xEE\xEB\xE4\xFC\xF2\xF9\xE7\xE9\xEA\xFB\xE5\xE3\xEC\xF6\xF7\xED\xFF"; // abcdefghijkl....
+static const char ru_en_tralphabet[] = "f,dult;pbqrkvyjghcnea[wxio]sm\'.z";
 
 #define isupper_lat(ch) (((ch)>='A')&&((ch)<='Z'))
 #define islower_lat(ch) (((ch)>='a')&&((ch)<='z'))
@@ -63,11 +63,11 @@ static const char ru_en_tralphabet[] = "f,dult;pbqrkvyjghcnea[wxio]sm\'.z"; // ï
 #define toupper_lat(ch) (islower_lat(ch)?((ch)-'a'+'A'):(ch))
 #define tolower_lat(ch) (isupper_lat(ch)?((ch)-'A'+'a'):(ch))
 
-#define isupper_cyr(ch) (((ch)>='À')&&((ch)<='ß'))
-#define islower_cyr(ch) (((ch)>='à')&&((ch)<='ÿ'))
+#define isupper_cyr(ch) (((ch)>='\xC0')&&((ch)<='\xDF'))
+#define islower_cyr(ch) (((ch)>='\xE0')&&((ch)<='\xFF'))
 
-#define toupper_cyr(ch) (islower_cyr(ch)?((ch)-'à'+'À'):(ch))
-#define tolower_cyr(ch) (isupper_cyr(ch)?((ch)-'À'+'à'):(ch))
+#define toupper_cyr(ch) (islower_cyr(ch)?((ch)-'\xE0'+'\xC0'):(ch))
+#define tolower_cyr(ch) (isupper_cyr(ch)?((ch)-'\xC0'+'\xE0'):(ch))
 
 #define isupper(ch) (isupper_lat(ch)||isupper_cyr(ch))
 #define islower(ch) (islower_lat(ch)||islower_cyr(ch))
@@ -84,7 +84,7 @@ static const char ru_en_tralphabet[] = "f,dult;pbqrkvyjghcnea[wxio]sm\'.z"; // ï
 #define isspacer(ch) ((ch)==' '||(ch)=='\t'||(ch)=='\r'||(ch)=='\n')
 
 
-static void on_player_text(int playerid, std::string& text)
+static void on_player_text(int /**/, std::string& text)
 {
   int len = text.size();
   //printf("%d\n", len);
@@ -108,12 +108,12 @@ static void on_player_text(int playerid, std::string& text)
       }
       else if(islower_cyr(tmp))
       {
-        tmp -= 'à';
+        tmp -= '\xE0';
         tr = 2; // rus
       }
       else if(isupper_cyr(tmp))
       {
-        tmp -= 'À';
+        tmp -= '\xC0';
         tr = 3; // RUS
       }
       else // non-alpha
@@ -129,7 +129,7 @@ static void on_player_text(int playerid, std::string& text)
           {
             text[i] = tmp = en_ru_transform[j][0];
             if(tr == 1)
-                text[i] = tmp != '¸' ? toupper_cyr(tmp) : '¨';
+                text[i] = tmp != '\xB8' ? toupper_cyr(tmp) : '\xA8';
             else if(tr == 3)
                 text[i] = toupper_lat(tmp);
             break;
@@ -146,7 +146,7 @@ static void on_player_text(int playerid, std::string& text)
       if(tr == 1)
         text[i] = text[i] - 'a' + 'A';
       else if(tr == 3)
-        text[i] = text[i] - 'à' + 'À';
+        text[i] = text[i] - '\xE0' + '\xC0';
       //printf("- %d %c\n", tr, text[i]);
     }
     text.erase(len);
@@ -158,5 +158,5 @@ static void on_player_text(int playerid, std::string& text)
 
 INIT
 {
-  REGISTER_CB(on_player_text);
+  REGISTER_CALLBACK(on_player_text, -100000, &on_player_text); // first
 }

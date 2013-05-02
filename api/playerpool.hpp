@@ -2,23 +2,43 @@
 #define API_PLAYERPOOL_HPP
 
 #include "config.h"
-#include <set>
+#include <string>
 #include <map>
 #include <algorithm>
+#include <array>
+
+#include <boost/cstdint.hpp>
 
 #include "util/utils.h"
 #include "util/singleton.hpp"
+#include "util/arraylist.hpp"
+
+#include "num_players.hpp"
 
 namespace api {
 //
+// player constant info
 
+struct player_info
+{
+    int id = -1;
+    boost::uint32_t ipv4 = 0u;
+    std::string name;
+
+    void update();
+    std::string get_ip();
+};
+
+
+
+// ----------------
 class active_players
 {
 private:
   typedef std::map<int, util::walltime_t> playertimes_t;
   playertimes_t ptime;
 
-  const int timeout; // time player not updating so he is not active
+  const int timeout; // if the player is not updating he is not active
 public:
 
   explicit active_players(int timeout_ = 2) : timeout(timeout_) {}
@@ -79,41 +99,49 @@ private:
   }
 };
 
+
+
+
 // ----------------
 class players : public util::singleton<players>
 {
   // singleton
 private:
-  typedef std::set<int> playerids_t;
-  typedef playerids_t::iterator player_iter_t;
+  typedef util::arraylist<NUM_PLAYERS> playerids_t;
   playerids_t playerids;
+  int total_players = 0;
+
+  std::array<player_info, NUM_PLAYERS> info; // players info
 
   active_players active;
-  
+public:
+  typedef playerids_t::iterator iterator;
+  typedef playerids_t::const_iterator const_iterator;
+
 public:
   
   inline bool is_connected(int playerid) const
   {
-    player_iter_t it = playerids.find(playerid);
-    return(it != playerids.end());
+    //player_iter_t it = playerids.find(playerid);
+    //return(it != playerids.end());
+      if(playerid < 0 || playerid >= NUM_PLAYERS)
+          throw std::runtime_error("wrong plid");
+      return playerids.get(playerid);
   }
   
   inline std::size_t count() const
   {
-    return(playerids.size());
+      return(total_players);
   }
   inline std::size_t size() const
   {
-    return count();
+      return count();
   }
-  
-  template <typename T>
-  inline void for_each(T func) const
+  inline bool empty() const
   {
-    if(!playerids.empty())
-      std::for_each(playerids.begin(), playerids.end(), func);
+      return playerids.empty();
   }
-  
+
   inline playerids_t& get()
   {
     return playerids;
@@ -122,22 +150,50 @@ public:
   {
     return playerids;
   }
+
+  inline int next(int playerid)
+  {
+      return playerids.next(playerid);
+  }
+
   
   // internal
   inline void add(int playerid)
   {
-    playerids.insert(playerid);
+    if(playerids.set(playerid))
+    {
+        info[playerid].id = playerid;
+        info[playerid].update();
+        total_players++;
+    }
   }
   inline void remove(int playerid)
   {
-    playerids.erase(playerid);
+    if(playerids.unset(playerid))
+    {
+        total_players--;
+    }
   }
 
-  active_players * get_active()
+  inline active_players& get_active()
   {
-    return &active;
+    return active;
   }
-  
+
+  inline player_info& get_info(int id)
+  {
+      return info.at(id);
+  }
+
+  inline const_iterator begin() const
+  {
+      return playerids.begin();
+  }
+  inline const_iterator end() const
+  {
+      return playerids.end();
+  }
+
 };
 
 

@@ -8,3 +8,4 @@ callgrind.out.*
 gmon.out
 Makefile
 *.mk
+*.user

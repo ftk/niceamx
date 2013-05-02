@@ -12,79 +12,38 @@
 //#include "basic_signal.hpp"
 #include "util/singleton.hpp"
 
-#ifndef BOOST_NO_VARIADIC_TEMPLATES 
 #include "signal.hpp"
-#else
-#include <boost/signals2.hpp>
-#endif
 
 #include "timers.hpp"
 
 
 #include <boost/preprocessor/cat.hpp>
+#include <boost/preprocessor.hpp>
 
 #include <string>
 
-#ifndef BOOST_NO_VARIADIC_TEMPLATES 
-#define SIGNALS_SIGNAL_TYPE signals::signal
-#define SIGNALS_SIGNAL_WRAPPER(...) SIGNALS_SIGNAL_TYPE<  __VA_ARGS__ >
-#define SIGNALS_SIGNAL_SIMPLE_WRAPPER(...) signals::signal_simple < __VA_ARGS__ >
-#else
-#define SIGNALS_SIGNAL_TYPE boost::signals2::signal
-#define SIGNALS_SIGNAL_WRAPPER(...) SIGNALS_SIGNAL_TYPE< void ( __VA_ARGS__ ) >
-#define SIGNALS_SIGNAL_SIMPLE_WRAPPER(...) SIGNALS_SIGNAL_WRAPPER( __VA_ARGS__ )
-#endif
 
 
-#ifdef __GNUC__ // supports __attribute__((constructor))
-// unsafe (?)
-//#define HAS_CONSTRUCTOR
-//#define CONSTRUCTOR __attribute__((constructor))
-#endif
 
 
 namespace signals
 {
 
-    /*
-    // initbox --------------------------------------------------------
-    class init_container_t : public SIGNALS_SIGNAL_WRAPPER()//basic_container_t<void (*)()>
-    {
-
-    public:
-
-	init_container_t() {}
-
-    };*/
-
 
     // mainbox -------------------------------------------------------
     class box_t : public util::singleton<box_t>
     {
-      
-    private:
-	// singleton
-        //static box_t * instance;
-
-    protected:
-        //box_t() {}
 
     public:
-        //static box_t * get_instance();
-	//static void rm_instance();
+    #define SIGNAL(name,...) signals::signal<__VA_ARGS__> name;
+
+    #include "events.inl"
+
+    #undef SIGNAL
 
     public:
-	#define SIG(...) SIGNALS_SIGNAL_WRAPPER( __VA_ARGS__ )
+      signals::signal_funptr<> init_container;
 
-	#include "events.inl"
-        
-    #undef SIG
-
-    public:
-      #ifndef HAS_CONSTRUCTOR
-      SIGNALS_SIGNAL_SIMPLE_WRAPPER() init_container;
-      #endif
-      
     public:
       /*
       timer_container_t timer100;
@@ -94,6 +53,9 @@ namespace signals
       
       timers_container_t timers;
       
+
+    public:
+      void clear();
     };
 
 }
@@ -101,25 +63,19 @@ namespace signals
 
 #define MAINBOX (signals::box_t::get_instance())
 
-#define GET_CALLBACK(cb) (MAINBOX->cb) // returns signal object ( for internal use )
 
-// very simple signal library replacement
-#define INVOKE_CALLBACK(cb,...) GET_CALLBACK(cb)(__VA_ARGS__) //MAINBOX->cb(__VA_ARGS__)
+#define INVOKE_CALLBACK(cb,...) (MAINBOX->cb(__VA_ARGS__)) //MAINBOX->cb(__VA_ARGS__)
 
-#ifdef HAS_CONSTRUCTOR
-#define INVOKE_INIT() (static_cast<void>(0)) // do nothing
-#define INITBOX 
-#else
-#define INVOKE_INIT() ((*INITBOX)())
+
+#define INVOKE_INIT() ((MAINBOX->init_container)())
 #define INITBOX (&(MAINBOX->init_container))
-#endif
 
 
-#define SIGNALS_LOCAL_FN static // do not export
 
-
+// register init callback
 #define REGISTER_MODULE(f) \
-SIGNALS_LOCAL_FN const bool BOOST_PP_CAT(_is_registered_, __LINE__) = (INITBOX->connect(f), true) \
+    static volatile const bool BOOST_PP_CAT(_is_registered_, __LINE__) = \
+    (REGISTER_CALLBACK(init_container, f), true) \
 /* */
 /*
  * Usage:
@@ -127,24 +83,19 @@ SIGNALS_LOCAL_FN const bool BOOST_PP_CAT(_is_registered_, __LINE__) = (INITBOX->
  * * REGISTER_MODULE(&func);
  */
 
-#ifdef HAS_CONSTRUCTOR
+
+// create and register callback to init_container
 #define INIT \
-CONSTRUCTOR SIGNALS_LOCAL_FN void BOOST_PP_CAT(_init_func_, __LINE__)(); \
-CONSTRUCTOR SIGNALS_LOCAL_FN void BOOST_PP_CAT(_init_func_, __LINE__)() \
-/* */
-#else
-#define INIT \
-SIGNALS_LOCAL_FN void BOOST_PP_CAT(_init_func_, __LINE__)(); \
+static void BOOST_PP_CAT(_init_func_, __LINE__)(); \
 REGISTER_MODULE(BOOST_PP_CAT(&_init_func_, __LINE__)); \
-SIGNALS_LOCAL_FN void BOOST_PP_CAT(_init_func_, __LINE__)() \
+static void BOOST_PP_CAT(_init_func_, __LINE__)() \
 /* */
-#endif
 /*
  * Usage: INIT { code(); }
  */
 
-#define REGISTER_CALLBACK(cb,fn) \
-MAINBOX->cb.connect(fn) \
+#define REGISTER_CALLBACK(cb,...) \
+MAINBOX->cb.connect(__VA_ARGS__) \
 /* */
 
 #define REGISTER_CB(cb) REGISTER_CALLBACK(cb, &cb) // register callback with the same name

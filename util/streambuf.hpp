@@ -1,12 +1,16 @@
 #ifndef UTIL_STREAMBUF_HPP
 #define UTIL_STREAMBUF_HPP
 
-#include <streambuf>
-#include <ostream>
+//#include <streambuf>
+//#include <ostream>
+
+#include <boost/iostreams/concepts.hpp>  // sink
+#include <boost/iostreams/stream.hpp>
+#include <string>
 
 namespace util {
 //
-
+/*
 class streambuf : public std::streambuf
 {
 protected:
@@ -64,10 +68,54 @@ public:
     s << arg;
     return(s);
   }
+};*/
+
+
+using boost::iostreams::sink;
+using boost::iostreams::stream;
+
+class line_sink : public sink
+{
+protected:
+    std::string buffer;
+public:
+
+    line_sink()
+    {
+        buffer.reserve(128);
+    }
+    std::streamsize write(const char* s, std::streamsize n)
+    {
+        const char * pstr = s, * pend = s + n, * pprev = s;
+
+        while(pstr != pend)
+        {
+            if(*pstr == '\n')
+            {
+                buffer.append(pprev, pstr);
+                if(!buffer.empty())
+                {
+                    call();
+                    buffer.clear();
+                }
+                pprev = pstr + 1;
+            }
+            pstr++;
+        }
+
+        if(pprev != pend)
+            buffer.append(pprev, pend);
+        return n;
+    }
+protected:
+    virtual void call() = 0;
 };
 
 
-}
+
+
+
+} // util
 
 #endif
 

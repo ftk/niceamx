@@ -1,8 +1,8 @@
 #include "signals.hpp"
 #include "util/utils.h"
 #include "util/notify.h"
-#include "destruct.h"
 #include "util/log.h"
+
 
 #include "api/cmd2.hpp"
 #include "api/pipes.hpp"
@@ -15,6 +15,7 @@
 int main()
 {
   srand(time(NULL));
+  util::register_logger(&util::logger_stdout);
   INVOKE_INIT();
   MAINBOX->plugin_load();
   
@@ -26,11 +27,10 @@ int main()
   while(false)
   {
     util::sleep(5);
-    MAINBOX->timers.proccess(5);
+    MAINBOX->timers();
     
     //isend = true;
   }
   MAINBOX->plugin_unload();
-  INVOKE_DESTRUCTOR();
   return 0;
 }

@@ -1,0 +1,13 @@
+
+gconfig_server "version" "version"
+
+ifeq "version" "u2ce" execfile data/united.txt
+ifneq "version" "u2ce" execfile data/other.txt
+
+
+#native GetServerVarAsString sSi version ~ 256
+
+#native SetGameModeText s hahaha
+
+#native GetWeaponName iSi 40 ~ 256
+

@@ -5,9 +5,10 @@
 #define  __attribute__(x)  /* nothing */
 #endif
 
-#define attribute(...) __attribute__((__VA_ARGS__))
+#define _attribute(...) __attribute__(__VA_ARGS__)
 
-#define PURE __attribute__((const)) // pure function
-#define NORETURN __attribute__((noreturn))
+#define PURE _attribute((const)) // pure function
+#define NORETURN _attribute((noreturn))
+#define INLINE _attribute((always_inline)) inline
 
 #endif

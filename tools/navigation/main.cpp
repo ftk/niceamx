@@ -10,6 +10,8 @@
 #include <fstream>
 #include <list>
 
+#include <cstring>
+
 bool read_coords(std::istream& s, double& x, double& y, double& z)
 {
   s >> x;
@@ -28,7 +30,9 @@ void write_coords(std::ostream& s, double x, double y, double z)
 void write_path(std::ostream& s, const path_t& path)
 {
   for(vertex i : path)
+  {
     write_coords(s, i.x, i.y, i.z);
+  }
 }
 
 int main(int argc, const char * argv[])
@@ -47,6 +51,17 @@ int main(int argc, const char * argv[])
   }
   std::cout << g.v_size() << " nodes and " << g.e_size() << " edges parsed" << std::endl;
   
+  if(argc > 3 && !strcmp(argv[3], "export"))
+  {
+  	std::ofstream out("navigation.out");
+  	for(auto& it : g.vertices())
+  	//for(int i = 0; i < g.adj_list().size(); i++)
+  	{
+  		//auto tail = g.adj_list()[i].front().tail;
+  		write_coords(out, it.x, it.y, it.z);
+  	}
+  	return 0;
+  }
   
   /*
   auto t = g.find_nearest(-200., -200., 0.);

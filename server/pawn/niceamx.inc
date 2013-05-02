@@ -43,4 +43,4 @@ native _PlayerClickPlayer(playerid, clickedplayerid, source);
 native _UnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat);
 native _PlayerTakeDamage(playerid, issuerid, Float:amount, weaponid);
 native _PlayerGiveDamage(playerid, damagedid, Float:amount, weaponid);
-
+native _PlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ);

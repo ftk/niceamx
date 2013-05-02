@@ -57,8 +57,9 @@ class fordbellman;
 
 class graph
 {
-private:
+public:
   typedef std::list<adjacent_edge> adjacency_list;
+private:
   std::map<vertex, adjacency_list> list;
   
   std::vector<vertex> V;
@@ -136,6 +137,16 @@ public:
   size_t e_size() const
   {
     return E.size();
+  }
+  
+  const std::vector<vertex>& vertices() const
+  {
+  	return V;
+  }
+  
+  const std::vector<vertex>& adj_list() const
+  {
+    return list;
   }
   
   friend class fordbellman;

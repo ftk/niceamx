@@ -4,6 +4,7 @@
 #include "config.h"
 #include "util/utils.h"
 #include "util/singleton.hpp"
+#include "util/hash.hpp"
 
 #include <functional>
 #include <map>
@@ -39,7 +40,7 @@ namespace cmdflag
 typedef util::hash_t cmdhash_t;
 inline cmdhash_t cmdhash(const std::string& name)
 {
-    return util::hash(name);
+    return util::hash_rt_nocase(name.c_str());
 }
 
 struct command_t
@@ -52,11 +53,12 @@ struct command_t
     handler_t handler;
 };
 
-class commands2 : public util::singleton<commands2>
+class commands : public util::singleton<commands>
 {
   // singleton
 
 private:
+//public:
   typedef std::multimap<cmdhash_t, command_t> commands_t;
   commands_t cmds;
 public:
@@ -65,6 +67,17 @@ public:
   {
       cmds.insert(std::make_pair(cmdhash(cmd.name), cmd));
   }
+  inline void add(cmdhash_t hash, const command_t& cmd)
+  {
+      cmds.insert(std::make_pair(hash, cmd));
+      //cmds.emplace(hash, cmd);
+  }
+
+  /*template <typename... Args>
+  inline void emplace(Args&&... args)
+  {
+      cmds.emplace(args...);
+  }*/
 
   bool execute_line(int pipe, unsigned flags, const std::string& line);
   
@@ -80,15 +93,22 @@ public:
 class parser
 {
 private:
-	char str[256];
-	char * parts[32];
-	char part_type[32];
-	int num_parts;
+    enum
+    {
+        MAX_PARTS = 32,
+        MAX_STRING = 256
+    };
+    char str[MAX_STRING];
+    char * parts[MAX_PARTS];
+    char part_type[MAX_PARTS];
+    int num_parts = 0;
 public:
-	bool error;
+
+
+    bool error = true;
 	
-	parser() : num_parts(0), error(true) {}
-	parser(const char * format, const std::string& params) : num_parts(0), error(true)
+    parser() {}
+    parser(const char * format, const std::string& params)
 	{
 		parse(format, params.c_str());
 	}
@@ -101,7 +121,7 @@ public:
 		return num_parts;
 	}
 	
-	const char * get_string(int idx)
+    const char * get_string(int idx)
 	{
 		if(idx < 0 || idx >= num_parts)
 			return "";
@@ -148,7 +168,7 @@ public:
 private:
 	inline void add_part(char * p, char t)
 	{
-		if(num_parts < 32)
+        if(num_parts < MAX_PARTS)
 		{
 			part_type[num_parts] = t;
 			parts[num_parts++] = p;
@@ -161,9 +181,13 @@ private:
 } //
 
 /* */
-#define COMMANDBOX (api::commands2::get_instance())
-#define REGISTER_COMMAND2(name,flags,...) ((COMMANDBOX)->add({name,flags,(__VA_ARGS__)}))
+#define COMMANDBOX (api::commands::get_instance())
+#define REGISTER_COMMAND2(name,flags,...) ((COMMANDBOX)->add(util::const_test<util::const_hash_nocase(name)>::value, {name,flags,(__VA_ARGS__)}))
+#define REGISTER_COMMAND(name,flags,...) REGISTER_COMMAND2(name,flags,(__VA_ARGS__))
+
+#define REGISTER_COMMAND_RT(name,flags,...) ((COMMANDBOX)->add({name,flags,(__VA_ARGS__)}))
 
 #define INVOKE_COMMANDS(pipe,flags,str) (COMMANDBOX->execute_line(pipe, flags, str))
+
 
 #endif

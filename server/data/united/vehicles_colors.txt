@@ -1,0 +1,218 @@
+vehicle_info 400 "Landstalker" 4 1 123 1 113 1 101 1 75 1 62 1 40 1 36 1 
+vehicle_info 401 "Bravura" 41 41 47 47 52 52 66 66 74 74 87 87 91 91 113 113 
+vehicle_info 402 "Buffalo" 10 10 13 13 22 22 30 30 39 39 90 90 98 98 110 110 
+vehicle_info 403 "Linerunner" 36 1 37 1 30 1 28 1 25 1 40 1 101 1 113 1 
+vehicle_info 404 "Perrenial" 113 39 119 50 123 92 109 100 101 101 95 105 83 110 66 25 
+vehicle_info 405 "Sentinel" 11 1 24 1 36 1 40 1 75 1 91 1 123 1 4 1 
+vehicle_info 406 "Dumper" 1 1 
+vehicle_info 407 "Firetruck" 3 1 3 63 36 1 
+vehicle_info 408 "Trashmaster" 26 26 
+vehicle_info 409 "Stretch" 1 1 
+vehicle_info 410 "Manana" 4 1 9 1 10 1 25 1 36 1 40 1 45 1 84 1 
+vehicle_info 411 "Infernus" 12 1 64 1 123 1 116 1 112 1 106 1 80 1 75 1 
+vehicle_info 412 "Voodoo" 9 1 10 8 11 1 25 8 27 1 29 8 30 1 37 8 
+vehicle_info 413 "Pony" 87 1 88 1 91 1 105 1 109 1 119 1 4 1 25 1 
+vehicle_info 414 "Mule" 25 1 28 1 43 1 67 1 72 1 9 1 95 1 24 1 
+vehicle_info 415 "Cheetah" 20 1 25 1 36 1 40 1 62 1 75 1 92 1 0 1 
+vehicle_info 416 "Ambulance" 1 3 63 3 63 36 1 0 
+vehicle_info 417 "Leviathan" 
+vehicle_info 418 "Moonbeam" 119 119 117 227 114 114 108 108 95 95 81 81 61 61 41 41 
+vehicle_info 419 "Esperanto" 45 75 47 76 33 75 13 76 54 75 69 76 59 75 87 76 
+vehicle_info 420 "Taxi" 6 1 
+vehicle_info 421 "Washington" 4 1 13 1 25 1 30 1 36 1 40 1 75 1 95 1 
+vehicle_info 422 "Bobcat" 96 25 97 25 101 25 111 31 113 36 83 57 67 59 
+vehicle_info 423 "Mr Whoopee" 1 16 1 56 1 17 1 53 1 5 1 35 
+vehicle_info 424 "BF Injection" 1 0 2 2 3 2 3 6 6 16 15 30 24 53 35 61 
+vehicle_info 425 "Hunter" 43 0 
+vehicle_info 426 "Premier" 37 37 42 42 53 53 62 62 7 7 10 10 11 11 15 15 
+vehicle_info 427 "Enforcer" 0 1 36 63 3 63 
+vehicle_info 428 "Securicar" 4 75 
+vehicle_info 429 "Banshee" 12 12 13 13 14 14 1 2 2 1 1 3 3 1 10 10 
+vehicle_info 430 "Predator" 46 26 
+vehicle_info 431 "Bus" 71 59 75 59 92 72 47 74 55 83 59 83 71 87 82 87 
+vehicle_info 432 "Rhino" 43 0 
+vehicle_info 433 "Barracks" 43 0 
+vehicle_info 434 "Hotknife" 1 1 12 12 2 2 6 6 4 4 46 46 53 53 
+vehicle_info 435 "Trailer 1" 1 1 
+vehicle_info 436 "Previon" 83 1 87 1 92 1 95 1 109 1 119 45 11 1 
+vehicle_info 437 "Coach" 54 7 79 7 87 7 95 16 98 20 105 20 123 20 125 21 
+vehicle_info 438 "Cabbie" 6 76 
+vehicle_info 439 "Stallion" 57 8 8 17 43 21 54 38 67 8 37 78 65 79 25 78 
+vehicle_info 440 "Rumpo" 34 34 32 32 20 20 110 110 66 66 84 84 118 118 121 121 
+vehicle_info 441 "RC Bandit" 2 96 79 42 82 54 67 86 126 96 70 96 110 54 67 98 
+vehicle_info 442 "Romero" 0 0 11 105 25 109 36 0 40 36 75 36 0 36 0 109 
+vehicle_info 443 "Packer" 4 1 20 1 24 1 25 1 36 1 40 1 54 1 84 1 
+vehicle_info 444 "Monster" 32 36 32 42 32 53 32 66 32 14 32 32 
+vehicle_info 445 "Admiral" 34 34 35 35 37 37 39 39 41 41 43 43 45 45 47 47 
+vehicle_info 446 "Squalo" 
+vehicle_info 447 "Seasparrow" 75 2 
+vehicle_info 448 "Pizzaboy" 3 6 
+vehicle_info 449 "Tram" 1 74 
+vehicle_info 450 "Trailer 2" 1 1 
+vehicle_info 451 "Turismo" 123 123 125 125 36 36 16 16 18 18 46 46 61 61 75 75 
+vehicle_info 452 "Speeder" 1 3 1 5 1 16 1 22 1 35 1 44 1 53 1 57 
+vehicle_info 453 "Reefer" 56 56 
+vehicle_info 454 "Tropic" 26 26 
+vehicle_info 455 "Flatbed" 84 15 84 58 84 31 32 74 43 31 1 31 77 31 32 74 
+vehicle_info 456 "Yankee" 84 63 91 63 102 65 105 72 110 93 121 93 12 95 23 1 
+vehicle_info 457 "Caddy" 58 1 2 1 63 1 18 1 32 1 45 1 13 1 34 1 
+vehicle_info 458 "Solair" 91 1 101 1 109 1 113 1 4 1 25 1 30 1 36 1 
+vehicle_info 459 "Berkley's RC Van" 26 26 28 28 44 44 51 51 57 57 72 72 106 106 112 112 
+vehicle_info 460 "Skimmer" 1 3 1 9 1 18 1 30 17 23 46 23 46 32 57 34 
+vehicle_info 461 "PCJ-600" 36 1 37 1 43 1 53 1 61 1 75 1 79 1 88 1 
+vehicle_info 462 "Faggio" 12 12 13 13 14 14 1 2 2 1 1 3 3 1 10 10 
+vehicle_info 463 "Freeway" 79 79 84 84 7 7 11 11 19 19 22 22 36 36 53 53 
+vehicle_info 464 "RC Baron" 14 75 
+vehicle_info 465 "RC Raider" 14 75 
+vehicle_info 466 "Glendale" 67 76 68 76 78 76 2 76 16 76 18 76 25 76 45 88 
+vehicle_info 467 "Oceanic" 51 1 58 8 60 1 68 8 2 1 13 8 22 1 36 8 
+vehicle_info 468 "Sanchez" 6 6 46 46 53 53 3 3 
+vehicle_info 469 "Sparrow" 1 3 
+vehicle_info 470 "Patriot" 43 0 
+vehicle_info 471 "Quad" 120 117 103 111 120 114 74 91 120 112 74 83 120 113 66 71 
+vehicle_info 472 "Coastguard" 56 15 56 53 
+vehicle_info 473 "Dinghy" 56 15 56 53 
+vehicle_info 474 "Hermes" 97 1 81 1 105 1 110 1 91 1 74 1 84 1 83 1 
+vehicle_info 475 "Sabre" 2 39 9 39 17 1 21 1 33 0 37 0 41 29 56 29 
+vehicle_info 476 "Rustler" 6 7 7 6 1 6 89 91 119 117 103 102 77 87 71 77 
+vehicle_info 477 "ZR-350" 92 1 94 1 101 1 121 1 0 1 22 1 36 1 75 1 
+vehicle_info 478 "Walton" 72 1 66 1 59 1 45 1 40 1 39 1 35 1 20 1 
+vehicle_info 479 "Regina" 27 36 59 36 60 35 55 41 54 31 49 23 45 32 40 29 
+vehicle_info 480 "Comet" 73 45 12 12 2 2 6 6 4 4 46 46 53 53 
+vehicle_info 481 "BMX" 1 1 3 3 6 6 46 46 65 9 14 1 12 9 26 1 
+vehicle_info 482 "Burrito" 41 41 48 48 52 52 64 64 71 71 85 85 10 10 62 62 
+vehicle_info 483 "Camper" 
+vehicle_info 484 "Marquis" 12 35 50 32 40 26 66 36 
+vehicle_info 485 "Baggage" 1 73 1 74 1 75 1 76 1 77 1 78 1 79 
+vehicle_info 486 "Dozer" 1 1 
+vehicle_info 487 "Maverick" 26 14 29 42 26 57 54 29 26 3 3 29 12 39 74 35 
+vehicle_info 488 "News Chopper" 2 26 2 29 
+vehicle_info 489 "Rancher" 13 118 14 123 120 123 112 120 84 110 76 102 36 63 
+vehicle_info 490 "FBI Rancher" 0 0 36 63 
+vehicle_info 491 "Virgo" 40 65 71 72 52 66 64 72 30 72 60 72 36 63 
+vehicle_info 492 "Greenwood" 30 26 77 26 81 27 24 55 28 56 49 59 52 69 71 107 
+vehicle_info 493 "Jetmax" 36 13 
+vehicle_info 494 "Hotring" 36 117 36 13 42 30 42 33 54 36 75 79 92 101 98 109 
+vehicle_info 495 "Sandking" 123 124 119 122 118 117 116 115 114 108 101 106 88 99 5 6 
+vehicle_info 496 "Blista Compact" 74 72 66 72 53 56 37 19 22 22 20 20 9 14 0 0 
+vehicle_info 497 "Police Maverick" 0 1 
+vehicle_info 498 "Boxville" 11 123 13 120 20 117 24 112 27 107 36 105 37 107 43 93 
+vehicle_info 499 "Benson" 109 25 109 32 112 32 10 32 30 44 32 52 84 66 84 69 
+vehicle_info 500 "Mesa" 75 84 40 84 40 110 28 119 25 119 21 119 13 119 4 119 
+vehicle_info 501 "RC Goblin" 14 75 
+vehicle_info 502 "Hotring Racer A" 7 94 36 88 51 75 53 75  58 67 75 67 75 61 79 62 
+vehicle_info 503 "Hotring Racer B" 83 66 87 74 87 75 98 83 101 100 103 101 117 116 123 36 
+vehicle_info 504 "Bloodring Banger" 51 39 57 38 45 29 34 9 65 9 14 1 12 9 26 1 
+vehicle_info 505 "Rancher" 13 118 14 123 120 123 112 120 84 110 76 102 
+vehicle_info 506 "Super GT" 3 3 6 6 7 7 52 52 76 76 
+vehicle_info 507 "Elegant" 37 37 42 42 53 53 62 62 7 7 10 10 11 11 15 15 
+vehicle_info 508 "Journey" 1 1 
+vehicle_info 509 "Bike" 7 1 74 1 61 1 16 1 25 1 30 1 36 1 53 1 
+vehicle_info 510 "Mountain Bike" 43 43 46 46 39 39 28 28 16 16 6 6 5 5 2 2 
+vehicle_info 511 "Beagle" 3 90 4 90 7 68 8 66 12 60 27 97 34 51 37 51 
+vehicle_info 512 "Cropdust" 17 39 15 123 32 112 45 88 52 71 57 67 61 96 96 96 
+vehicle_info 513 "Stunt" 38 51 21 36 21 34 30 34 54 34 55 20 48 18 51 6 3 64 
+vehicle_info 514 "Tanker" 10 1 25 1 28 1 36 1 40 1 54 1 75 1 113 1 
+vehicle_info 515 "Roadtrain" 13 76 24 77 63 78 42 76 54 77 39 78 11 76 62 77 
+vehicle_info 516 "Nebula" 116 1 119 1 122 1 4 1 9 1 24 1 27 1 36 1 
+vehicle_info 517 "Majestic" 37 36 36 36 40 36 43 41 47 41 51 72 54 75 55 84 
+vehicle_info 518 "Buccaneer" 2 39 9 39 17 1 21 1 33 0 37 0 41 29 56 29 
+vehicle_info 519 "Shamal" 1 1 
+vehicle_info 520 "Hydra" 
+vehicle_info 521 "FCR-900" 74 74 75 13 87 118 92 3 115 118 25 118 36 0 118 118 
+vehicle_info 522 "NRG-500" 1 1 36 63 3 6 
+vehicle_info 523 "HPV1000" 
+vehicle_info 524 "Cement Truck" 
+vehicle_info 525 "Tow Truck" 1 1 17 20 18 20 22 30 36 43 44 51 52 54 
+vehicle_info 526 "Fortune" 2 39 9 39 17 1 21 1 33 0 37 0 41 29 56 29 
+vehicle_info 527 "Cadrona" 52 1 53 1 66 1 75 1 76 1 81 1 95 1 109 1 
+vehicle_info 528 "FBI Truck" 
+vehicle_info 529 "Willard" 37 37 42 42 53 53 62 62 7 7 10 10 11 11 15 15 
+vehicle_info 530 "Forklift" 110 1 111 1 112 1 114 1 119 1 122 1 4 1 13 1 
+vehicle_info 531 "Tractor" 2 35 36 2 51 53 91 2 11 22 40 35 
+vehicle_info 532 "Combine" 
+vehicle_info 533 "Feltzer" 73 1 74 1 75 1 77 1 79 1 83 1 84 1 91 1 
+vehicle_info 534 "Remington" 37 37 42 42 53 53 62 62 7 7 10 10 11 11 15 15 
+vehicle_info 535 "Slamvan" 3 1 28 1 31 1 55 1 66 1 97 1 123 1 118 1 
+vehicle_info 536 "Blade" 9 1 12 1 26 96 30 96 32 1 37 1 57 96 71 96 
+vehicle_info 537 "Freight" 1 1 
+vehicle_info 538 "Streak" 1 1 
+vehicle_info 539 "Vortex" 96 67 86 70 79 74 70 86 61 98 75 75 75 91 
+vehicle_info 540 "Vincent" 37 37 42 42 53 53 62 62 7 7 10 10 11 11 15 15 
+vehicle_info 541 "Bullet" 51 1 58 8 60 1 68 8 2 1 13 8 22 1 36 8 
+vehicle_info 542 "Clover" 13 118 24 118 31 93 32 92 45 92 113 92 119 113 122 113 
+vehicle_info 543 "Sadler" 76 8 32 8 43 8 67 8 11 11 8 90 2 2 83 13 
+vehicle_info 544 "Firetruck LA" 3 1 3 64 36 63 
+vehicle_info 545 "Hustler" 50 1 47 1 44 96 40 96 39 1 30 1 28 96 9 96 
+vehicle_info 546 "Intruder" 62 37 78 38 2 62 3 87 2 78 113 78 119 62 7 78 
+vehicle_info 547 "Primo" 122 1 123 1 125 1 10 1 24 1 37 1 55 1 66 1 
+vehicle_info 548 "Cargobob" 1 1 
+vehicle_info 549 "Tampa" 74 39 72 39 75 39 79 39 83 36 84 36 89 35 91 35 
+vehicle_info 550 "Sunrise" 37 37 42 42 53 53 62 62 7 7 10 10 11 11 15 15 
+vehicle_info 551 "Merit" 67 1 72 1 75 1 83 1 91 1 101 1 109 1 20 1 
+vehicle_info 552 "Utility" 56 56 49 49 26 124 
+vehicle_info 553 "Nevada" 38 9 55 23 61 74 71 87 91 87 98 114 102 119 111 3 
+vehicle_info 554 "Yosemite" 53 32 15 32 45 32 34 30 65 32 14 32 12 32 43 32 
+vehicle_info 555 "Windsor" 51 1 58 1 60 1 68 1 2 1 13 1 22 1 36 1 
+vehicle_info 556 "Monster A" 1 1 0 0 
+vehicle_info 557 "Monster B" 1 1 0 0 
+vehicle_info 558 "Uranus" 112 1 116 1 117 1 24 1 30 1 35 1 36 1 40 1 
+vehicle_info 559 "Jester" 51 1 58 8 60 1 68 8 2 1 13 8 22 1 36 8 
+vehicle_info 560 "Sultan" 52 39 9 39 17 1 21 1 33 0 37 0 41 29 56 29 
+vehicle_info 561 "Stratum" 57 8 8 17 43 21 54 38 67 8 37 78 65 79 25 78 
+vehicle_info 562 "Elegy" 36 1 35 1 17 1 11 1 116 1 113 1 101 1 92 1 
+vehicle_info 563 "Raindance" 1 6 
+vehicle_info 564 "RC Tiger" 
+vehicle_info 565 "Flash" 37 37 42 42 53 53 62 62 7 7 10 10 11 11 15 15 
+vehicle_info 566 "Tahoma" 109 1 30 8 95 1 84 8 83 1 72 8 71 1 52 8 36 63 
+vehicle_info 567 "Savanna" 97 96 88 64 90 96 93 64 97 96 99 81 102 114 114 1 
+vehicle_info 568 "Bandito" 2 39 9 39 17 1 21 1 33 0 37 0 41 29 56 29 
+vehicle_info 569 "Freight Flat" 
+vehicle_info 570 "Streak Carriage" 1 1 
+vehicle_info 571 "Kart" 2 35 36 2 51 53 91 2 11 22 40 35 
+vehicle_info 572 "Mower" 94 1 101 1 116 1 117 1 4 1 25 1 30 1 37 1 
+vehicle_info 573 "Duneride" 91 38 115 43 85 6 79 7 78 8 77 18 79 18 86 24 
+vehicle_info 574 "Sweeper" 26 26 11 26 
+vehicle_info 575 "Broadway" 12 1 19 96 31 64 25 96 38 1 51 96 57 1 66 96 
+vehicle_info 576 "Tornado" 67 1 68 96 72 1 74 8 75 96 76 8 79 1 84 96 
+vehicle_info 577 "AT-400" 1 3 8 7 8 10 8 16 23 31 40 44 
+vehicle_info 578 "DFT-30" 1 1 
+vehicle_info 579 "Huntley" 37 37 42 42 53 53 62 62 7 7 10 10 11 11 15 15 
+vehicle_info 580 "Stafford" 92 92 81 81 67 67 66 66 61 61 53 53 51 51 47 47 36 36 
+vehicle_info 581 "BF-400" 54 1 58 1 66 1 72 1 75 1 87 1 101 1 36 1 
+vehicle_info 582 "Newsvan" 41 10 41 20 49 11 56 123 110 113 112 116 114 118 119 101 
+vehicle_info 583 "Tug" 1 1 
+vehicle_info 584 "Trailer 3" 1 1 
+vehicle_info 585 "Emperor" 37 37 42 42 53 53 62 62 7 7 10 10 11 11 15 15 
+vehicle_info 586 "Wayfarer" 119 1 122 1 8 1 10 1 13 1 25 1 27 1 32 1 
+vehicle_info 587 "Euros" 36 1 40 1 43 1 53 1 72 1 75 1 95 1 101 1 
+vehicle_info 588 "Hotdog" 1 1 3 5 
+vehicle_info 589 "Club" 37 37 31 31 23 23 22 22 7 7 124 124 114 114 112 112 
+vehicle_info 590 "Freight Carriage" 
+vehicle_info 591 "Trailer 3" 1 1 
+vehicle_info 592 "Andromada" 1 1 
+vehicle_info 593 "Dodo" 51 1 58 8 60 1 68 8 2 1 13 8 22 1 36 8 
+vehicle_info 594 "RC Cam" 
+vehicle_info 595 "Launch" 112 20 
+vehicle_info 596 "Police Car (LCPD)" 0 1 36 63 10 64 
+vehicle_info 597 "Police Car (VCPD)" 16 1 0 1 36 63 
+vehicle_info 598 "Police Car (LVPD)" 0 1 36 63 
+vehicle_info 599 "Police Ranger" 0 1 36 63 
+vehicle_info 600 "Picador" 81 8 32 8 43 8 67 8 11 11 8 90 2 2 83 13 25 11 
+vehicle_info 601 "S.W.A.T. Van" 1 1 
+vehicle_info 602 "Alpha" 58 1 69 1 75 77 18 1 32 1 45 45 13 1 34 1 
+vehicle_info 603 "Phoenix" 58 1 69 1 75 77 18 1 32 1 45 45 13 1 34 1 3 63 3 1 0 1 36 1 
+vehicle_info 604 "Glendale" 67 76 68 76 78 76 2 76 16 76 18 76 25 76 45 88 
+vehicle_info 605 "Sadler" 61 8 32 8 43 8 67 8 11 11 8 90 2 2 83 13 
+vehicle_info 606 "Luggage Trailer A" 
+vehicle_info 607 "Luggage Trailer B" 
+vehicle_info 608 "Stair Trailer" 1 1 
+vehicle_info 609 "Boxville" 36 36 
+vehicle_info 610 "Farm Plow" 
+vehicle_info 611 "Utility Trailer" 
+vehicle_info 612 "Diablo Stallion" 0 1 0 0 
+vehicle_info 613 "613" 
+vehicle_info 614 "614" 
+vehicle_info 615 "615" 
+vehicle_info 616 "616" 
+vehicle_info 617 "617" 

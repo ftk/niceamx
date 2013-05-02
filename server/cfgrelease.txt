@@ -1,0 +1,21 @@
+echo Executing Server Config...
+lanmode 0
+rcon_password changeme1
+maxplayers 15
+port 8904
+hostname SA-MP 0.3 Server
+mapname GTA
+gamemode0 niceamx
+filterscripts rcon
+plugins niceamx.so
+announce 0
+query 1
+weburl ---
+maxnpc 0
+onfoot_rate 40
+incar_rate 40
+weapon_rate 40
+stream_distance 400.0
+stream_rate 1000
+output 1
+sleep 5

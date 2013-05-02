@@ -15,1129 +15,1622 @@ namespace pawn
   };
 }
 
+typedef int cell;
+
+#define START() /***/
+#define CALL_NATIVE(m,...) std::cout << BOOST_PP_STRINGIZE(f) << std::endl
+#define CALL_NATIVE_R(m,...) ((std::cout << BOOST_PP_STRINGIZE(f) << std::endl),1)
 
 namespace native
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // a_objects.inc
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    int create_object (int model_id, float x, float y, float z, float rx, float ry, float rz, float draw_distance)
+    int create_object (int model_id, float x, float y, float z, float rx, float ry, float rz, float draw_distance) 
     {
-        DEBUG_NATIVE(/*f*/create_object, /*p*/model_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  rx SEPARATOR  ry SEPARATOR  rz SEPARATOR  draw_distance);
-        return(0);
+        START();
+        
+        cell _R; return (int) CALL_NATIVE_R(create_object, model_id, x, y, z, rx, ry, rz, draw_distance);
     }
-    void set_object_pos (int object_id, float x, float y, float z)
+    void set_object_pos (int object_id, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/set_object_pos, /*p*/object_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(set_object_pos, object_id, x, y, z);
     }
-    void get_object_pos (int object_id, float& x, float& y, float& z)
+    void get_object_pos (int object_id, float& x, float& y, float& z) 
     {
-
-        DEBUG_NATIVE(/*f*/get_object_pos, /*p*/object_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(get_object_pos, object_id, x, y, z);
     }
-    void set_object_rot (int object_id, float rx, float ry, float rz)
+    void set_object_rot (int object_id, float rx, float ry, float rz) 
     {
-        DEBUG_NATIVE(/*f*/set_object_rot, /*p*/object_id SEPARATOR  rx SEPARATOR  ry SEPARATOR  rz);
+        START();
+        
+        CALL_NATIVE(set_object_rot, object_id, rx, ry, rz);
     }
-    void get_object_rot (int object_id, float& rx, float& ry, float& rz)
+    void get_object_rot (int object_id, float& rx, float& ry, float& rz) 
     {
-        DEBUG_NATIVE(/*f*/get_object_rot, /*p*/object_id SEPARATOR  rx SEPARATOR  ry SEPARATOR  rz);
+        START();
+        
+        CALL_NATIVE(get_object_rot, object_id, rx, ry, rz);
     }
-    bool is_valid_object (int object_id)
+    bool is_valid_object (int object_id) 
     {
-        DEBUG_NATIVE(/*f*/is_valid_object, /*p*/object_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_valid_object, object_id);
     }
-    void destroy_object (int object_id)
+    void destroy_object (int object_id) 
     {
-        DEBUG_NATIVE(/*f*/destroy_object, /*p*/object_id);
+        START();
+        
+        CALL_NATIVE(destroy_object, object_id);
     }
-    void move_object (int object_id, float x, float y, float z, float speed)
+    void move_object (int object_id, float x, float y, float z, float speed) 
     {
-        DEBUG_NATIVE(/*f*/move_object, /*p*/object_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  speed);
+        START();
+        
+        CALL_NATIVE(move_object, object_id, x, y, z, speed);
     }
-    void stop_object (int object_id)
+    void stop_object (int object_id) 
     {
-        DEBUG_NATIVE(/*f*/stop_object, /*p*/object_id);
+        START();
+        
+        CALL_NATIVE(stop_object, object_id);
     }
-    int create_player_object (int player_id, int model_id, float x, float y, float z, float rx, float ry, float rz, float draw_distance)
+    int create_player_object (int player_id, int model_id, float x, float y, float z, float rx, float ry, float rz, float draw_distance) 
     {
-        DEBUG_NATIVE(/*f*/create_player_object, /*p*/player_id SEPARATOR  model_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  rx SEPARATOR  ry SEPARATOR  rz SEPARATOR  draw_distance);
-        return(0);
+        START();
+        
+        cell _R; return (int) CALL_NATIVE_R(create_player_object, player_id, model_id, x, y, z, rx, ry, rz, draw_distance);
     }
-    void set_player_object_pos (int player_id, int object_id, float x, float y, float z)
+    void set_player_object_pos (int player_id, int object_id, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/set_player_object_pos, /*p*/player_id SEPARATOR  object_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(set_player_object_pos, player_id, object_id, x, y, z);
     }
-    void get_player_object_pos (int player_id, int object_id, float& x, float& y, float& z)
+    void get_player_object_pos (int player_id, int object_id, float& x, float& y, float& z) 
     {
-        DEBUG_NATIVE(/*f*/get_player_object_pos, /*p*/player_id SEPARATOR  object_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(get_player_object_pos, player_id, object_id, x, y, z);
     }
-    void set_player_object_rot (int player_id, int object_id, float rx, float ry, float rz)
+    void set_player_object_rot (int player_id, int object_id, float rx, float ry, float rz) 
     {
-        DEBUG_NATIVE(/*f*/set_player_object_rot, /*p*/player_id SEPARATOR  object_id SEPARATOR  rx SEPARATOR  ry SEPARATOR  rz);
+        START();
+        
+        CALL_NATIVE(set_player_object_rot, player_id, object_id, rx, ry, rz);
     }
-    void get_player_object_rot (int player_id, int object_id, float& rx, float& ry, float& rz)
+    void get_player_object_rot (int player_id, int object_id, float& rx, float& ry, float& rz) 
     {
-        DEBUG_NATIVE(/*f*/get_player_object_rot, /*p*/player_id SEPARATOR  object_id SEPARATOR  rx SEPARATOR  ry SEPARATOR  rz);
+        START();
+        
+        CALL_NATIVE(get_player_object_rot, player_id, object_id, rx, ry, rz);
     }
-    bool is_valid_player_object (int player_id, int object_id)
+    bool is_valid_player_object (int player_id, int object_id) 
     {
-        DEBUG_NATIVE(/*f*/is_valid_player_object, /*p*/player_id SEPARATOR  object_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_valid_player_object, player_id, object_id);
     }
-    void destroy_player_object (int player_id, int object_id)
+    void destroy_player_object (int player_id, int object_id) 
     {
-        DEBUG_NATIVE(/*f*/destroy_player_object, /*p*/player_id SEPARATOR  object_id);
+        START();
+        
+        CALL_NATIVE(destroy_player_object, player_id, object_id);
     }
-    void move_player_object (int player_id, int object_id, float x, float y, float z, float speed)
+    void move_player_object (int player_id, int object_id, float x, float y, float z, float speed) 
     {
-        DEBUG_NATIVE(/*f*/move_player_object, /*p*/player_id SEPARATOR  object_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  speed);
+        START();
+        
+        CALL_NATIVE(move_player_object, player_id, object_id, x, y, z, speed);
     }
-    void stop_player_object (int player_id, int object_id)
+    void stop_player_object (int player_id, int object_id) 
     {
-        DEBUG_NATIVE(/*f*/stop_player_object, /*p*/player_id SEPARATOR  object_id);
+        START();
+        
+        CALL_NATIVE(stop_player_object, player_id, object_id);
     }
-    void attach_object_to_player (int object_id, int player_id, float offset_x, float offset_y, float offset_z, float offset_rx, float offset_ry, float offset_rz)
+    void attach_object_to_player (int object_id, int player_id, float offset_x, float offset_y, float offset_z, float offset_rx, float offset_ry, float offset_rz) 
     {
-        DEBUG_NATIVE(/*f*/attach_object_to_player, /*p*/object_id SEPARATOR  player_id SEPARATOR  offset_x SEPARATOR  offset_y SEPARATOR  offset_z SEPARATOR  offset_rx SEPARATOR  offset_ry SEPARATOR  offset_rz);
+        START();
+        
+        CALL_NATIVE(attach_object_to_player, object_id, player_id, offset_x, offset_y, offset_z, offset_rx, offset_ry, offset_rz);
     }
-    void attach_player_object_to_player (int object_player_id, int object_id, int attach_player_id, float offset_x, float offset_y, float offset_z, float offset_rx, float offset_ry, float offset_rz)
+    void attach_player_object_to_player (int object_player_id, int object_id, int attach_player_id, float offset_x, float offset_y, float offset_z, float offset_rx, float offset_ry, float offset_rz) 
     {
-        DEBUG_NATIVE(/*f*/attach_player_object_to_player, /*p*/object_player_id SEPARATOR  object_id SEPARATOR  attach_player_id SEPARATOR  offset_x SEPARATOR  offset_y SEPARATOR  offset_z SEPARATOR  offset_rx SEPARATOR  offset_ry SEPARATOR  offset_rz);
+        START();
+        
+        CALL_NATIVE(attach_player_object_to_player, object_player_id, object_id, attach_player_id, offset_x, offset_y, offset_z, offset_rx, offset_ry, offset_rz);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // a_players.inc
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Player
-    void set_spawn_info (int player_id, int team_id, int skin_id, float x, float y, float z, float rz, int weapon_id1, int weapon_ammo1, int weapon_id2, int weapon_ammo2, int weapon_id3, int weapon_ammo3)
+    void set_spawn_info (int player_id, int team_id, int skin_id, float x, float y, float z, float rz, int weapon_id1, int weapon_ammo1, int weapon_id2, int weapon_ammo2, int weapon_id3, int weapon_ammo3) 
     {
-        DEBUG_NATIVE(/*f*/set_spawn_info, /*p*/player_id SEPARATOR  team_id SEPARATOR  skin_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  rz SEPARATOR  weapon_id1 SEPARATOR  weapon_ammo1 SEPARATOR  weapon_id2 SEPARATOR  weapon_ammo2 SEPARATOR  weapon_id3 SEPARATOR  weapon_ammo3);
+        START();
+        
+        CALL_NATIVE(set_spawn_info, player_id, team_id, skin_id, x, y, z, rz, weapon_id1, weapon_ammo1, weapon_id2, weapon_ammo2, weapon_id3, weapon_ammo3);
     }
-    void spawn_player (int player_id)
+    void spawn_player (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/spawn_player, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(spawn_player, player_id);
     }
 
     // Player info
-    void set_player_pos (int player_id, float x, float y, float z)
+    void set_player_pos (int player_id, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/set_player_pos, /*p*/player_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(set_player_pos, player_id, x, y, z);
     }
-    void set_player_pos_findz (int player_id, float x, float y, float z)
+    void set_player_pos_findz (int player_id, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/set_player_pos_findz, /*p*/player_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(set_player_pos_findz, player_id, x, y, z);
     }
-    void get_player_pos (int player_id, float& x, float& y, float& z)
+    void get_player_pos (int player_id, float& x, float& y, float& z) 
     {
-        DEBUG_NATIVE(/*f*/get_player_pos, /*p*/player_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(get_player_pos, player_id, x, y, z);
     }
-    void set_player_facing_angle (int player_id, float rz)
+    void set_player_facing_angle (int player_id, float rz) 
     {
-        DEBUG_NATIVE(/*f*/set_player_facing_angle, /*p*/player_id SEPARATOR  rz);
+        START();
+        
+        CALL_NATIVE(set_player_facing_angle, player_id, rz);
     }
-    float get_player_facing_angle (int player_id)
+    float get_player_facing_angle (int player_id) 
     {
-        float rz(0.f);
-        DEBUG_NATIVE(/*f*/get_player_facing_angle, /*p*/player_id SEPARATOR  rz);
+        START();
+        float rz;
+        
+        CALL_NATIVE(get_player_facing_angle, player_id, rz);
         return rz;
     }
-    bool is_player_in_range_of_point (int player_id, float range, float x, float y, float z)
+    bool is_player_in_range_of_point (int player_id, float range, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/is_player_in_range_of_point, /*p*/player_id SEPARATOR  range SEPARATOR  x SEPARATOR  y SEPARATOR  z);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_in_range_of_point, player_id, range, x, y, z);
     }
-    bool is_player_streamed_in (int player_id, int for_player_id)
+    bool is_player_streamed_in (int player_id, int for_player_id) 
     {
-        DEBUG_NATIVE(/*f*/is_player_streamed_in, /*p*/player_id SEPARATOR  for_player_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_streamed_in, player_id, for_player_id);
     }
-    void set_player_interior (int player_id, int interior_id)
+    void set_player_interior (int player_id, int interior_id) 
     {
-        DEBUG_NATIVE(/*f*/set_player_interior, /*p*/player_id SEPARATOR  interior_id);
+        START();
+        
+        CALL_NATIVE(set_player_interior, player_id, interior_id);
     }
-    int get_player_interior (int player_id)
+    int get_player_interior (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_interior, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_interior, player_id);
     }
-    void set_player_health (int player_id, float health)
+    void set_player_health (int player_id, float health) 
     {
-        DEBUG_NATIVE(/*f*/set_player_health, /*p*/player_id SEPARATOR  health);
+        START();
+        
+        CALL_NATIVE(set_player_health, player_id, health);
     }
-    float get_player_health (int player_id)
+    float get_player_health (int player_id) 
     {
-        float rezult(0.f);
-        DEBUG_NATIVE(/*f*/get_player_health, /*p*/player_id SEPARATOR  rezult);
+        START();
+        float rezult;
+        
+        CALL_NATIVE(get_player_health, player_id, rezult);
         return rezult;
     }
-    void set_player_armour (int player_id, float armour)
+    void set_player_armour (int player_id, float armour) 
     {
-        DEBUG_NATIVE(/*f*/set_player_armour, /*p*/player_id SEPARATOR  armour);
+        START();
+        
+        CALL_NATIVE(set_player_armour, player_id, armour);
     }
-    float get_player_armour (int player_id)
+    float get_player_armour (int player_id) 
     {
-        float rezult(0.f);
-        DEBUG_NATIVE(/*f*/get_player_armour, /*p*/player_id SEPARATOR  rezult);
+        START();
+        float rezult;
+        
+        CALL_NATIVE(get_player_armour, player_id, rezult);
         return rezult;
     }
-    void set_player_ammo (int player_id, int weapon_slot, int ammo)
+    void set_player_ammo (int player_id, int weapon_slot, int ammo) 
     {
-        DEBUG_NATIVE(/*f*/set_player_ammo, /*p*/player_id SEPARATOR  weapon_slot SEPARATOR  ammo);
+        START();
+        
+        CALL_NATIVE(set_player_ammo, player_id, weapon_slot, ammo);
     }
-    int get_player_ammo (int player_id)
+    int get_player_ammo (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_ammo, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_ammo, player_id);
     }
-    weapon_state get_player_weapon_state (int player_id)
+    weapon_state get_player_weapon_state (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_weapon_state, /*p*/player_id);
-        return weapon_state(0);
+        START();
+        
+        cell _R; return static_cast<weapon_state>(CALL_NATIVE_R(get_player_weapon_state, player_id));
     }
-    void set_player_team (int player_id, int team_id)
+    void set_player_team (int player_id, int team_id) 
     {
-        DEBUG_NATIVE(/*f*/set_player_team, /*p*/player_id SEPARATOR  team_id);
+        START();
+        
+        CALL_NATIVE(set_player_team, player_id, team_id);
     }
-    int get_player_team (int player_id)
+    int get_player_team (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_team, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_team, player_id);
     }
-    void set_player_score (int player_id, int score)
+    void set_player_score (int player_id, int score) 
     {
-        DEBUG_NATIVE(/*f*/set_player_score, /*p*/player_id SEPARATOR  score);
+        START();
+        
+        CALL_NATIVE(set_player_score, player_id, score);
     }
-    int get_player_score (int player_id)
+    int get_player_score (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_score, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_score, player_id);
     }
-    int get_player_drunk_level (int player_id)
+    int get_player_drunk_level (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_drunk_level, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_drunk_level, player_id);
     }
-    void set_player_drunk_level (int player_id, int level)
+    void set_player_drunk_level (int player_id, int level) 
     {
-        DEBUG_NATIVE(/*f*/set_player_drunk_level, /*p*/player_id SEPARATOR  level);
+        START();
+        
+        CALL_NATIVE(set_player_drunk_level, player_id, level);
     }
-    void set_player_color (int player_id, unsigned color)
+    void set_player_color (int player_id, unsigned color) 
     {
-        DEBUG_NATIVE(/*f*/set_player_color, /*p*/player_id SEPARATOR  color);
+        START();
+        
+        CALL_NATIVE(set_player_color, player_id, color);
     }
-    unsigned get_player_color (int player_id)
+    unsigned get_player_color (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_color, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_color, player_id);
     }
-    void set_player_skin (int player_id, int skin_id)
+    void set_player_skin (int player_id, int skin_id) 
     {
-        DEBUG_NATIVE(/*f*/set_player_skin, /*p*/player_id SEPARATOR  skin_id);
+        START();
+        
+        CALL_NATIVE(set_player_skin, player_id, skin_id);
     }
-    int get_player_skin (int player_id)
+    int get_player_skin (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_skin, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_skin, player_id);
     }
-    void give_player_weapon (int player_id, int weapon_id, int weapon_ammo)
+    void give_player_weapon (int player_id, int weapon_id, int weapon_ammo) 
     {
-        DEBUG_NATIVE(/*f*/give_player_weapon, /*p*/player_id SEPARATOR  weapon_id SEPARATOR  weapon_ammo);
+        START();
+        
+        CALL_NATIVE(give_player_weapon, player_id, weapon_id, weapon_ammo);
     }
-    void reset_player_weapons (int player_id)
+    void reset_player_weapons (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/reset_player_weapons, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(reset_player_weapons, player_id);
     }
-    void set_player_armed_weapon (int player_id, int weapon_id)
+    void set_player_armed_weapon (int player_id, int weapon_id) 
     {
-        DEBUG_NATIVE(/*f*/set_player_armed_weapon, /*p*/player_id SEPARATOR  weapon_id);
+        START();
+        
+        CALL_NATIVE(set_player_armed_weapon, player_id, weapon_id);
     }
-    void get_player_weapon_data (int player_id, int slot, int& weapon_id, int& weapon_ammo)
+    void get_player_weapon_data (int player_id, int slot, int& weapon_id, int& weapon_ammo) 
     {
-        DEBUG_NATIVE(/*f*/get_player_weapon_data, /*p*/player_id SEPARATOR  slot SEPARATOR  weapon_id SEPARATOR  weapon_ammo);
+        START();
+        
+        CALL_NATIVE(get_player_weapon_data, player_id, slot, weapon_id, weapon_ammo);
     }
-    void give_player_money (int player_id, int money)
+    void give_player_money (int player_id, int money) 
     {
-        DEBUG_NATIVE(/*f*/give_player_money, /*p*/player_id SEPARATOR  money);
+        START();
+        
+        CALL_NATIVE(give_player_money, player_id, money);
     }
-    void reset_player_money (int player_id)
+    void reset_player_money (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/reset_player_money, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(reset_player_money, player_id);
     }
-    int set_player_name (int player_id, std::string const& name)
+    int set_player_name (int player_id, std::string const& name) 
     {
-        DEBUG_NATIVE(/*f*/set_player_name, /*p*/player_id SEPARATOR  name);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(set_player_name, player_id, name);
     }
-    int get_player_money (int player_id)
+    int get_player_money (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_money, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_money, player_id);
     }
-    player_state get_player_state (int player_id)
+    player_state get_player_state (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_state, /*p*/player_id);
-        return player_state(0);
+        START();
+        
+        cell _R; return static_cast<player_state>(CALL_NATIVE_R(get_player_state, player_id));
     }
-    std::string get_player_ip (int player_id)
+    std::string get_player_ip (int player_id) 
     {
-        std::string rezult = "";
-        DEBUG_NATIVE(/*f*/get_player_ip, /*p*/player_id SEPARATOR  rezult SEPARATOR  pawn::string_len::val);
+        START();
+        std::string rezult;
+        
+        CALL_NATIVE(get_player_ip, player_id, rezult, pawn::string_len::val);
         return rezult;
     }
-    int get_player_ping (int player_id)
+    int get_player_ping (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_ping, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_ping, player_id);
     }
-    int get_player_weapon (int player_id)
+    int get_player_weapon (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_weapon, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_weapon, player_id);
     }
-    void get_player_keys (int player_id, int& keys, int& updown, int& leftright)
+    void get_player_keys (int player_id, int& keys, int& updown, int& leftright) 
     {
-        DEBUG_NATIVE(/*f*/get_player_keys, /*p*/player_id SEPARATOR  keys SEPARATOR  updown SEPARATOR  leftright);
+        START();
+        
+        CALL_NATIVE(get_player_keys, player_id, keys, updown, leftright);
     }
-    std::string get_player_name (int player_id)
+    std::string get_player_name (int player_id) 
     {
-        std::string rezult = "";
-        DEBUG_NATIVE(/*f*/get_player_name, /*p*/player_id SEPARATOR  rezult SEPARATOR  pawn::string_len::val);
+        START();
+        std::string rezult;
+        
+        CALL_NATIVE(get_player_name, player_id, rezult, pawn::string_len::val);
         return rezult;
     }
-    void set_player_time (int player_id, int hour, int minute)
+    void set_player_time (int player_id, int hour, int minute) 
     {
-        DEBUG_NATIVE(/*f*/set_player_time, /*p*/player_id SEPARATOR  hour SEPARATOR  minute);
+        START();
+        
+        CALL_NATIVE(set_player_time, player_id, hour, minute);
     }
-    void get_player_time (int player_id, int& hour, int& minute)
+    void get_player_time (int player_id, int& hour, int& minute) 
     {
-        DEBUG_NATIVE(/*f*/get_player_time, /*p*/player_id SEPARATOR  hour SEPARATOR  minute);
+        START();
+        
+        CALL_NATIVE(get_player_time, player_id, hour, minute);
     }
-    void toggle_player_clock (int player_id, int toggle)
+    void toggle_player_clock (int player_id, int toggle) 
     {
-        DEBUG_NATIVE(/*f*/toggle_player_clock, /*p*/player_id SEPARATOR  toggle);
+        START();
+        
+        CALL_NATIVE(toggle_player_clock, player_id, toggle);
     }
-    void set_player_weather (int player_id, int weather)
+    void set_player_weather (int player_id, int weather) 
     {
-        DEBUG_NATIVE(/*f*/set_player_weather, /*p*/player_id SEPARATOR  weather);
+        START();
+        
+        CALL_NATIVE(set_player_weather, player_id, weather);
     }
-    void force_class_selection (int player_id)
+    void force_class_selection (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/force_class_selection, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(force_class_selection, player_id);
     }
-    void set_player_wanted_level (int player_id, int level)
+    void set_player_wanted_level (int player_id, int level) 
     {
-        DEBUG_NATIVE(/*f*/set_player_wanted_level, /*p*/player_id SEPARATOR  level);
+        START();
+        
+        CALL_NATIVE(set_player_wanted_level, player_id, level);
     }
-    int get_player_wanted_level (int player_id)
+    int get_player_wanted_level (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_wanted_level, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_wanted_level, player_id);
     }
-    void set_player_fighting_style (int player_id, fight_style style)
+    void set_player_fighting_style (int player_id, fight_style style) 
     {
-        DEBUG_NATIVE(/*f*/set_player_fighting_style, /*p*/player_id SEPARATOR  style);
+        START();
+        
+        CALL_NATIVE(set_player_fighting_style, player_id, style);
     }
-    fight_style get_player_fighting_style (int player_id)
+    fight_style get_player_fighting_style (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_fighting_style, /*p*/player_id);
-        return fight_style(0);
+        START();
+        
+        cell _R; return static_cast<fight_style>(CALL_NATIVE_R(get_player_fighting_style, player_id));
     }
-    void set_player_velocity (int player_id, float x, float y, float z)
+    void set_player_velocity (int player_id, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/set_player_velocity, /*p*/player_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(set_player_velocity, player_id, x, y, z);
     }
-    void get_player_velocity (int player_id, float& x, float& y, float& z)
+    void get_player_velocity (int player_id, float& x, float& y, float& z) 
     {
-        DEBUG_NATIVE(/*f*/get_player_velocity, /*p*/player_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(get_player_velocity, player_id, x, y, z);
     }
-    void play_crime_report_for_player (int player_id, int suspect_id, int crime_id)
+    void play_crime_report_for_player (int player_id, int suspect_id, int crime_id) 
     {
-        DEBUG_NATIVE(/*f*/play_crime_report_for_player, /*p*/player_id SEPARATOR  suspect_id SEPARATOR  crime_id);
+        START();
+        
+        CALL_NATIVE(play_crime_report_for_player, player_id, suspect_id, crime_id);
     }
-    void set_player_shop_name (int player_id, std::string const& shop_name)
+    void set_player_shop_name (int player_id, std::string const& shop_name) 
     {
-        DEBUG_NATIVE(/*f*/set_player_shop_name, /*p*/player_id SEPARATOR  shop_name);
+        START();
+        
+        CALL_NATIVE(set_player_shop_name, player_id, shop_name);
     }
-    void set_player_skill_level (int player_id, weapon_skill skill, int level)
+    void set_player_skill_level (int player_id, weapon_skill skill, int level) 
     {
-        DEBUG_NATIVE(/*f*/set_player_skill_level, /*p*/player_id SEPARATOR  skill SEPARATOR  level);
+        START();
+        
+        CALL_NATIVE(set_player_skill_level, player_id, skill, level);
     }
-    int get_player_surfing_vehicle_id (int player_id)
+    int get_player_surfing_vehicle_id (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_surfing_vehicle_id, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_surfing_vehicle_id, player_id);
     }
 #ifdef _03B
-    void set_player_holding_object (int player_id, int model_id, bones bone_id, float offset_x, float offset_y, float offset_z, float rx, float ry, float rz)
+    void set_player_holding_object (int player_id, int model_id, bones bone_id, float offset_x, float offset_y, float offset_z, float rx, float ry, float rz) 
     {
-        DEBUG_NATIVE(/*f*/set_player_holding_object, /*p*/player_id SEPARATOR  model_id SEPARATOR  bone_id SEPARATOR  offset_x SEPARATOR  offset_y SEPARATOR  offset_z SEPARATOR  rx SEPARATOR  ry SEPARATOR  rz);
+        START();
+        
+        CALL_NATIVE(set_player_holding_object, player_id, model_id, bone_id, offset_x, offset_y, offset_z, rx, ry, rz);
     }
-    void stop_player_holding_object (int player_id)
+    void stop_player_holding_object (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/stop_player_holding_object, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(stop_player_holding_object, player_id);
     }
-    bool is_player_holding_object (int player_id)
+    bool is_player_holding_object (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/is_player_holding_object, /*p*/player_id);
-        return(0);
-    }
-#endif
-#ifdef _03C
-    void set_player_attached_object (int player_id, int index, int model_id, bones bone_id, float offset_x, float offset_y, float offset_z, float rx, float ry, float rz, float sx, float sy, float sz)
-    {
-        DEBUG_NATIVE(/*f*/set_player_attached_object,
-		     /*p*/player_id SEPARATOR index SEPARATOR model_id SEPARATOR  bone_id SEPARATOR  offset_x SEPARATOR  offset_y SEPARATOR  offset_z SEPARATOR  rx SEPARATOR  ry SEPARATOR  rz SEPARATOR sx SEPARATOR  sy SEPARATOR  sz);
-    }
-    void remove_player_attached_object (int player_id, int index)
-    {
-        DEBUG_NATIVE(/*f*/remove_player_attached_object, /*p*/player_id SEPARATOR index);
-    }
-    bool is_player_attached_object_slot_used (int player_id, int index)
-    {
-        DEBUG_NATIVE(/*f*/is_player_attached_object_slot_used_t, /*p*/player_id SEPARATOR index);
-        return(0);
-    }
-    void attach_object_to_vehicle (int vehicle_id, int model_id, float offset_x, float offset_y, float offset_z, float rx, float ry, float rz)
-    {
-        DEBUG_NATIVE(/*f*/attach_object_to_vehicle,
-		     /*p*/player_id SEPARATOR index SEPARATOR model_id SEPARATOR  bone_id SEPARATOR  offset_x SEPARATOR  offset_y SEPARATOR  offset_z SEPARATOR  rx SEPARATOR  ry SEPARATOR  rz);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_holding_object, player_id);
     }
 #endif
-
-
-    void set_player_chat_bubble (int player_id, std::string const& text, unsigned int color, float draw_distance, int expire_time)
+	// 0.3c
+#if 0 // todo
+    void set_player_attached_object (int player_id, int index, int model_id, bones bone_id, float offset_x, float offset_y, float offset_z, float rx, float ry, float rz, float sx, float sy, float sz, int materialcolor1, int materialcolor2)
     {
-        DEBUG_NATIVE(/*f*/set_player_chat_bubble, /*p*/player_id SEPARATOR  text SEPARATOR  color SEPARATOR  draw_distance SEPARATOR  expire_time);
+        START();
+        
+        CALL_NATIVE(set_player_attached_object, player_id,index model_id, bone_id, offset_x, offset_y, offset_z, rx, ry, rz, sx, sy, sz, materialcolor1, materialcolor2);
+    }
+#endif
+    void remove_player_attached_object (int player_id, int index) 
+    {
+        START();
+        
+        CALL_NATIVE(remove_player_attached_object, player_id, index);
+    }
+    bool is_player_attached_object_slot_used (int player_id, int index) 
+    {
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_attached_object_slot_used, player_id, index);
+    }
+    void attach_object_to_vehicle (int object_id, int vehicle_id, float offset_x, float offset_y, float offset_z, float rx, float ry, float rz)
+    {
+        START();
+        
+        CALL_NATIVE(attach_object_to_vehicle, object_id, vehicle_id, offset_x, offset_y, offset_z, rx, ry, rz);
+    }
+    // /0.3c
+
+
+    void set_player_chat_bubble (int player_id, std::string const& text, unsigned int color, float draw_distance, int expire_time) 
+    {
+        START();
+        
+        CALL_NATIVE(set_player_chat_bubble, player_id, text, color, draw_distance, expire_time);
     }
 
     // Player controls
-    void put_player_in_vehicle (int player_id, int vehicle_id, int seat_id)
+    void put_player_in_vehicle (int player_id, int vehicle_id, int seat_id) 
     {
-        DEBUG_NATIVE(/*f*/put_player_in_vehicle, /*p*/player_id SEPARATOR  vehicle_id SEPARATOR  seat_id);
+        START();
+        
+        CALL_NATIVE(put_player_in_vehicle, player_id, vehicle_id, seat_id);
     }
-    int get_player_vehicle_id (int player_id)
+    int get_player_vehicle_id (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_vehicle_id, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_vehicle_id, player_id);
     }
-    int get_player_vehicle_seat (int player_id)
+    int get_player_vehicle_seat (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_vehicle_seat, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; CALL_NATIVE_R(get_player_vehicle_seat, player_id);
+        return _R >= 8 ? -1 : _R;
     }
-    void remove_player_from_vehicle (int player_id)
+    void remove_player_from_vehicle (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/remove_player_from_vehicle, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(remove_player_from_vehicle, player_id);
     }
-    void toggle_player_controllable (int player_id, bool is_unfreeze)
+    void toggle_player_controllable (int player_id, bool is_unfreeze) 
     {
-        DEBUG_NATIVE(/*f*/toggle_player_controllable, /*p*/player_id SEPARATOR  is_unfreeze);
+        START();
+        
+        CALL_NATIVE(toggle_player_controllable, player_id, is_unfreeze);
     }
-    void player_play_sound (int player_id, int sound_id, float x, float y, float z)
+    void player_play_sound (int player_id, int sound_id, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/player_play_sound, /*p*/player_id SEPARATOR  sound_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(player_play_sound, player_id, sound_id, x, y, z);
     }
-    void apply_animation (int player_id, std::string const& anim_lib, std::string const& anim_name, float delta, int loop, int lock_x, int lock_y, int freeze, int time, int forcesync)
+    void apply_animation (int player_id, std::string const& anim_lib, std::string const& anim_name, float delta, int loop, int lock_x, int lock_y, int freeze, int time, int forcesync) 
     {
-        DEBUG_NATIVE(/*f*/apply_animation, /*p*/player_id SEPARATOR  anim_lib SEPARATOR  anim_name SEPARATOR  delta SEPARATOR  loop SEPARATOR  lock_x SEPARATOR  lock_y SEPARATOR  freeze SEPARATOR  time SEPARATOR  forcesync);
+        START();
+        
+        CALL_NATIVE(apply_animation, player_id, anim_lib, anim_name, delta, loop, lock_x, lock_y, freeze, time, forcesync);
     }
-    void clear_animations (int player_id, int forcesync)
+    void clear_animations (int player_id, int forcesync) 
     {
-        DEBUG_NATIVE(/*f*/clear_animations, /*p*/player_id SEPARATOR  forcesync);
+        START();
+        
+        CALL_NATIVE(clear_animations, player_id, forcesync);
     }
-    int get_player_animation_index (int player_id)
+    int get_player_animation_index (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_animation_index, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_animation_index, player_id);
     }
-    void get_animation_name (int index, std::string& anim_lib, std::string& anim_name)
+    void get_animation_name (int index, std::string& anim_lib, std::string& anim_name) 
     {
-        DEBUG_NATIVE(/*f*/get_animation_name, /*p*/index SEPARATOR  anim_lib SEPARATOR  pawn::string_len::val SEPARATOR  anim_name SEPARATOR  pawn::string_len::val);
+        START();
+        
+        CALL_NATIVE(get_animation_name, index, anim_lib, pawn::string_len::val, anim_name, pawn::string_len::val);
     }
-    special_action get_player_special_action (int player_id)
+    special_action get_player_special_action (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_special_action, /*p*/player_id);
-        return special_action(0);
+        START();
+        
+        cell _R; return static_cast<special_action>(CALL_NATIVE_R(get_player_special_action, player_id));
     }
-    void set_player_special_action (int player_id, special_action action_id)
+    void set_player_special_action (int player_id, special_action action_id) 
     {
-        DEBUG_NATIVE(/*f*/set_player_special_action, /*p*/player_id SEPARATOR  action_id);
+        START();
+        
+        CALL_NATIVE(set_player_special_action, player_id, action_id);
     }
 
     // Player world/map related
-    void set_player_checkpoint (int player_id, float x, float y, float z, float size)
+    void set_player_checkpoint (int player_id, float x, float y, float z, float size) 
     {
-        DEBUG_NATIVE(/*f*/set_player_checkpoint, /*p*/player_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  size);
+        START();
+        
+        CALL_NATIVE(set_player_checkpoint, player_id, x, y, z, size);
     }
-    void disable_player_checkpoint (int player_id)
+    void disable_player_checkpoint (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/disable_player_checkpoint, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(disable_player_checkpoint, player_id);
     }
-    void set_player_race_checkpoint (int player_id, int type_id, float x, float y, float z, float next_x, float next_y, float next_z, float size)
+    void set_player_race_checkpoint (int player_id, int type_id, float x, float y, float z, float next_x, float next_y, float next_z, float size) 
     {
-        DEBUG_NATIVE(/*f*/set_player_race_checkpoint, /*p*/player_id SEPARATOR  type_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  next_x SEPARATOR  next_y SEPARATOR  next_z SEPARATOR  size);
+        START();
+        
+        CALL_NATIVE(set_player_race_checkpoint, player_id, type_id, x, y, z, next_x, next_y, next_z, size);
     }
-    void disable_player_race_checkpoint (int player_id)
+    void disable_player_race_checkpoint (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/disable_player_race_checkpoint, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(disable_player_race_checkpoint, player_id);
     }
-    void set_player_world_bounds (int player_id, float x_max, float x_min, float y_max, float y_min)
+    void set_player_world_bounds (int player_id, float x_max, float x_min, float y_max, float y_min) 
     {
-        DEBUG_NATIVE(/*f*/set_player_world_bounds, /*p*/player_id SEPARATOR  x_max SEPARATOR  x_min SEPARATOR  y_max SEPARATOR  y_min);
+        START();
+        
+        CALL_NATIVE(set_player_world_bounds, player_id, x_max, x_min, y_max, y_min);
     }
-    void set_player_marker_for_player (int player_id, int show_player_id, unsigned color)
+    void set_player_marker_for_player (int player_id, int show_player_id, unsigned color) 
     {
-        DEBUG_NATIVE(/*f*/set_player_marker_for_player, /*p*/player_id SEPARATOR  show_player_id SEPARATOR  color);
+        START();
+        
+        CALL_NATIVE(set_player_marker_for_player, player_id, show_player_id, color);
     }
-    void show_player_name_tag_for_player (int player_id, int show_player_id, bool show)
+    void show_player_name_tag_for_player (int player_id, int show_player_id, bool show) 
     {
-        DEBUG_NATIVE(/*f*/show_player_name_tag_for_player, /*p*/player_id SEPARATOR  show_player_id SEPARATOR  show);
+        START();
+        
+        CALL_NATIVE(show_player_name_tag_for_player, player_id, show_player_id, show);
     }
-    void set_player_mapicon (int player_id, int icon_id, float x, float y, float z, int markertype, unsigned color)
+    void set_player_mapicon (int player_id, int icon_id, float x, float y, float z, int markertype, unsigned color) 
     {
-        DEBUG_NATIVE(/*f*/set_player_mapicon, /*p*/player_id SEPARATOR  icon_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  markertype SEPARATOR  color);
+        START();
+        
+        CALL_NATIVE(set_player_mapicon, player_id, icon_id, x, y, z, markertype, color);
     }
-    void remove_player_mapicon (int player_id, int icon_id)
+    void remove_player_mapicon (int player_id, int icon_id) 
     {
-        DEBUG_NATIVE(/*f*/remove_player_mapicon, /*p*/player_id SEPARATOR  icon_id);
+        START();
+        
+        CALL_NATIVE(remove_player_mapicon, player_id, icon_id);
     }
-    void allow_player_teleport (int player_id, bool allow)
+    void allow_player_teleport (int player_id, bool allow) 
     {
-        DEBUG_NATIVE(/*f*/allow_player_teleport, /*p*/player_id SEPARATOR  allow);
+        START();
+        
+        CALL_NATIVE(allow_player_teleport, player_id, allow);
     }
-
+    
     // Player camera
-    void set_player_camera_pos (int player_id, float x, float y, float z)
+    void set_player_camera_pos (int player_id, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/set_player_camera_pos, /*p*/player_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(set_player_camera_pos, player_id, x, y, z);
     }
-    void set_player_camera_look_at (int player_id, float x, float y, float z)
+    int set_player_camera_look_at (int player_id, float x, float y, float z, camera_cut cut) 
     {
-        DEBUG_NATIVE(/*f*/set_player_camera_look_at, /*p*/player_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(set_player_camera_look_at, player_id, x, y, z);
+        return 1;
     }
-    void set_camera_behind_player (int player_id)
+    void set_camera_behind_player (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/set_camera_behind_player, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(set_camera_behind_player, player_id);
     }
-    void get_player_camera_pos (int player_id, float& x, float& y, float& z)
+    void get_player_camera_pos (int player_id, float& x, float& y, float& z) 
     {
-        DEBUG_NATIVE(/*f*/get_player_camera_pos, /*p*/player_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(get_player_camera_pos, player_id, x, y, z);
     }
 
-    void get_player_camera_front_vector (int player_id, float& x, float& y, float& z)
+    void get_player_camera_front_vector (int player_id, float& x, float& y, float& z) 
     {
-        DEBUG_NATIVE(/*f*/get_player_camera_front_vector, /*p*/player_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(get_player_camera_front_vector, player_id, x, y, z);
     }
 
     // Player conditionals
-    bool is_player_connected (int player_id)
+    bool is_player_connected (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/is_player_connected, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_connected, player_id);
     }
-    bool is_player_in_vehicle (int player_id, int vehicle_id)
+    bool is_player_in_vehicle (int player_id, int vehicle_id) 
     {
-        DEBUG_NATIVE(/*f*/is_player_in_vehicle, /*p*/player_id SEPARATOR  vehicle_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_in_vehicle, player_id, vehicle_id);
     }
-    bool is_player_in_any_vehicle (int player_id)
+    bool is_player_in_any_vehicle (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/is_player_in_any_vehicle, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_in_any_vehicle, player_id);
     }
-    bool is_player_in_checkpoint (int player_id)
+    bool is_player_in_checkpoint (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/is_player_in_checkpoint, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_in_checkpoint, player_id);
     }
-    bool is_player_in_race_checkpoint (int player_id)
+    bool is_player_in_race_checkpoint (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/is_player_in_race_checkpoint, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_in_race_checkpoint, player_id);
     }
 
     // Virtual Worlds
-    void set_player_virtual_world (int player_id, int world_id)
+    void set_player_virtual_world (int player_id, int world_id) 
     {
-        DEBUG_NATIVE(/*f*/set_player_virtual_world, /*p*/player_id SEPARATOR  world_id);
+        START();
+        
+        CALL_NATIVE(set_player_virtual_world, player_id, world_id);
     }
-    int get_player_virtual_world (int player_id)
+    int get_player_virtual_world (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_virtual_world, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_virtual_world, player_id);
     }
 
     // Insane Stunts
-    void enable_stunt_bonus_for_player (int player_id, bool enable)
+    void enable_stunt_bonus_for_player (int player_id, bool enable) 
     {
-        DEBUG_NATIVE(/*f*/enable_stunt_bonus_for_player, /*p*/player_id SEPARATOR  enable);
+        START();
+        
+        CALL_NATIVE(enable_stunt_bonus_for_player, player_id, enable);
     }
-    void enable_stunt_bonus_for_all (bool enable)
+    void enable_stunt_bonus_for_all (bool enable) 
     {
-        DEBUG_NATIVE(/*f*/enable_stunt_bonus_for_all, /*p*/enable);
+        START();
+        
+        CALL_NATIVE(enable_stunt_bonus_for_all, enable);
     }
 
     // Spectating
-    void toggle_player_spectating (int player_id, bool toggle)
+    void toggle_player_spectating (int player_id, bool toggle) 
     {
-        DEBUG_NATIVE(/*f*/toggle_player_spectating, /*p*/player_id SEPARATOR  toggle);
+        START();
+        
+        CALL_NATIVE(toggle_player_spectating, player_id, toggle);
     }
-    void player_spectate_player (int player_id, int target_player_id, spectate_mode mode)
+    void player_spectate_player (int player_id, int target_player_id, spectate_mode mode) 
     {
-        DEBUG_NATIVE(/*f*/player_spectate_player, /*p*/player_id SEPARATOR  target_player_id SEPARATOR  mode);
+        START();
+        
+        CALL_NATIVE(player_spectate_player, player_id, target_player_id, mode);
     }
-    void player_spectate_vehicle (int player_id, int target_vehicle_id, spectate_mode mode)
+    void player_spectate_vehicle (int player_id, int target_vehicle_id, spectate_mode mode) 
     {
-        DEBUG_NATIVE(/*f*/player_spectate_vehicle, /*p*/player_id SEPARATOR  target_vehicle_id SEPARATOR  mode);
+        START();
+        
+        CALL_NATIVE(player_spectate_vehicle, player_id, target_vehicle_id, mode);
     }
-
+    
     // Recording for NPC playback
-    void start_recording_player_data (int player_id, player_recording_type record_type, std::string const& record_name)
+    void start_recording_player_data (int player_id, player_recording_type record_type, std::string const& record_name) 
     {
-        DEBUG_NATIVE(/*f*/start_recording_player_data, /*p*/player_id SEPARATOR  record_type SEPARATOR  record_name);
+        START();
+        
+        CALL_NATIVE(start_recording_player_data, player_id, record_type, record_name);
     }
-    void stop_recording_player_data (int player_id)
+    void stop_recording_player_data (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/stop_recording_player_data, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(stop_recording_player_data, player_id);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // a_samp.inc
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Util
-    void send_client_message (int player_id, unsigned color, std::string const& message)
+    void send_client_message (int player_id, unsigned color, std::string const& message) 
     {
-        DEBUG_NATIVE(/*f*/send_client_message, /*p*/player_id SEPARATOR  color SEPARATOR  message);
+        START();
+        
+        CALL_NATIVE(send_client_message, player_id, color, message);
     }
-    void send_player_message_to_player (int player_id, int sender_id, std::string const& message)
+    void send_player_message_to_player (int player_id, int sender_id, std::string const& message) 
     {
-        DEBUG_NATIVE(/*f*/send_player_message_to_player, /*p*/player_id SEPARATOR  sender_id SEPARATOR  message);
+        START();
+        
+        CALL_NATIVE(send_player_message_to_player, player_id, sender_id, message);
     }
-    void send_death_message (int killer_id, int killed_id, int weapon_id)
+    void send_death_message (int killer_id, int killed_id, int weapon_id) 
     {
-        DEBUG_NATIVE(/*f*/send_death_message, /*p*/killer_id SEPARATOR  killed_id SEPARATOR  weapon_id);
+        START();
+        
+        CALL_NATIVE(send_death_message, killer_id, killed_id, weapon_id);
     }
-    void game_text_for_player (int player_id, std::string const& string, int time, int style)
+    void game_text_for_player (int player_id, std::string const& string, int time, int style) 
     {
-        DEBUG_NATIVE(/*f*/game_text_for_player, /*p*/player_id SEPARATOR  string SEPARATOR  time SEPARATOR  style);
+        START();
+        
+        CALL_NATIVE(game_text_for_player, player_id, string, time, style);
     }
-    int get_max_players ()
+    int get_max_players () 
     {
-        DEBUG_NATIVE(/*f*/get_max_players, /*p*/"");
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_max_players, );
     }
 
     // Game
-    void set_game_mode_text (std::string const& text)
+    void set_game_mode_text (std::string const& text) 
     {
-        DEBUG_NATIVE(/*f*/set_game_mode_text, /*p*/text);
+        START();
+        
+        CALL_NATIVE(set_game_mode_text, text);
     }
-    void set_team_count (int count)
+    void set_team_count (int count) 
     {
-        DEBUG_NATIVE(/*f*/set_team_count, /*p*/count);
+        START();
+        
+        CALL_NATIVE(set_team_count, count);
     }
-    int add_player_class (int skin_id, float x, float y, float z, float rz, int weapon_id1, int weapon_ammo1, int weapon_id2, int weapon_ammo2, int weapon_id3, int weapon_ammo3)
+    int add_player_class (int skin_id, float x, float y, float z, float rz, int weapon_id1, int weapon_ammo1, int weapon_id2, int weapon_ammo2, int weapon_id3, int weapon_ammo3) 
     {
-        DEBUG_NATIVE(/*f*/add_player_class, /*p*/skin_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  rz SEPARATOR  weapon_id1 SEPARATOR  weapon_ammo1 SEPARATOR  weapon_id2 SEPARATOR  weapon_ammo2 SEPARATOR  weapon_id3 SEPARATOR  weapon_ammo3);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(add_player_class, skin_id, x, y, z, rz, weapon_id1, weapon_ammo1, weapon_id2, weapon_ammo2, weapon_id3, weapon_ammo3);
     }
-    int add_player_class_ex (int team_id, int skin_id, float x, float y, float z, float rz, int weapon_id1, int weapon_ammo1, int weapon_id2, int weapon_ammo2, int weapon_id3, int weapon_ammo3)
+    int add_player_class_ex (int team_id, int skin_id, float x, float y, float z, float rz, int weapon_id1, int weapon_ammo1, int weapon_id2, int weapon_ammo2, int weapon_id3, int weapon_ammo3) 
     {
-        DEBUG_NATIVE(/*f*/add_player_class_ex, /*p*/team_id SEPARATOR  skin_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  rz SEPARATOR  weapon_id1 SEPARATOR  weapon_ammo1 SEPARATOR  weapon_id2 SEPARATOR  weapon_ammo2 SEPARATOR  weapon_id3 SEPARATOR  weapon_ammo3);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(add_player_class_ex, team_id, skin_id, x, y, z, rz, weapon_id1, weapon_ammo1, weapon_id2, weapon_ammo2, weapon_id3, weapon_ammo3);
     }
-    void add_static_vehicle (int model_id, float x, float y, float z, float rz, int color_id1, int color_id2)
+    void add_static_vehicle (int model_id, float x, float y, float z, float rz, int color_id1, int color_id2) 
     {
-        DEBUG_NATIVE(/*f*/add_static_vehicle, /*p*/model_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  rz SEPARATOR  color_id1 SEPARATOR  color_id2);
+        START();
+        
+        CALL_NATIVE(add_static_vehicle, model_id, x, y, z, rz, color_id1, color_id2);
     }
-    int add_static_vehicle_ex (int model_id, float x, float y, float z, float rz, int color_id1, int color_id2, int respawn_delay)
+    int add_static_vehicle_ex (int model_id, float x, float y, float z, float rz, int color_id1, int color_id2, int respawn_delay) 
     {
-        DEBUG_NATIVE(/*f*/add_static_vehicle_ex, /*p*/model_id SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  rz SEPARATOR  color_id1 SEPARATOR  color_id2 SEPARATOR  respawn_delay);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(add_static_vehicle_ex, model_id, x, y, z, rz, color_id1, color_id2, respawn_delay);
     }
-    void add_static_pickup (int model_id, int type, float x, float y, float z, int virtual_world)
+    void add_static_pickup (int model_id, int type, float x, float y, float z, int virtual_world) 
     {
-        DEBUG_NATIVE(/*f*/add_static_pickup, /*p*/model_id SEPARATOR  type SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  virtual_world);
+        START();
+        
+        CALL_NATIVE(add_static_pickup, model_id, type, x, y, z, virtual_world);
     }
-    int create_pickup (int model_id, int type, float x, float y, float z, int virtual_world)
+    int create_pickup (int model_id, int type, float x, float y, float z, int virtual_world) 
     {
-        DEBUG_NATIVE(/*f*/create_pickup, /*p*/model_id SEPARATOR  type SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  virtual_world);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(create_pickup, model_id, type, x, y, z, virtual_world);
     }
-    void destroy_pickup (int pickup_id)
+    void destroy_pickup (int pickup_id) 
     {
-        DEBUG_NATIVE(/*f*/destroy_pickup, /*p*/pickup_id);
+        START();
+        
+        CALL_NATIVE(destroy_pickup, pickup_id);
     }
-    void show_name_tags (bool is_show)
+    void show_name_tags (bool is_show) 
     {
-        DEBUG_NATIVE(/*f*/show_name_tags, /*p*/is_show);
+        START();
+        
+        CALL_NATIVE(show_name_tags, is_show);
     }
-    void show_player_markers (player_markers_mode mode)
+    void show_player_markers (player_markers_mode mode) 
     {
-        DEBUG_NATIVE(/*f*/show_player_markers, /*p*/mode);
+        START();
+        
+        CALL_NATIVE(show_player_markers, mode);
     }
-    void gamemode_exit ()
+    void gamemode_exit () 
     {
-        DEBUG_NATIVE(/*f*/gamemode_exit, /*p*/"");
+        START();
+        
+        CALL_NATIVE(gamemode_exit, );
     }
-    void set_world_time (int hour)
+    void set_world_time (int hour) 
     {
-        DEBUG_NATIVE(/*f*/set_world_time, /*p*/hour);
+        START();
+        
+        CALL_NATIVE(set_world_time, hour);
     }
-    std::string get_weapon_name (int weapon_id)
+    std::string get_weapon_name (int weapon_id) 
     {
-        std::string rezult = "";
-        DEBUG_NATIVE(/*f*/get_weapon_name, /*p*/weapon_id SEPARATOR  rezult SEPARATOR  pawn::string_len::val);
+        START();
+        std::string rezult;
+        
+        CALL_NATIVE(get_weapon_name, weapon_id, rezult, pawn::string_len::val);
         return rezult;
     }
-    void enable_tire_popping (bool is_enable)
+    void enable_tire_popping (bool is_enable) 
     {
-        DEBUG_NATIVE(/*f*/enable_tire_popping, /*p*/is_enable);
+        START();
+        
+        CALL_NATIVE(enable_tire_popping, is_enable);
     }
-    void allow_interior_weapons (bool is_allow)
+    void allow_interior_weapons (bool is_allow) 
     {
-        DEBUG_NATIVE(/*f*/allow_interior_weapons, /*p*/is_allow);
+        START();
+        
+        CALL_NATIVE(allow_interior_weapons, is_allow);
     }
-    void set_weather (int weather_id)
+    void set_weather (int weather_id) 
     {
-        DEBUG_NATIVE(/*f*/set_weather, /*p*/weather_id);
+        START();
+        
+        CALL_NATIVE(set_weather, weather_id);
     }
-    void set_gravity (float gravity)
+    void set_gravity (float gravity) 
     {
-        DEBUG_NATIVE(/*f*/set_gravity, /*p*/gravity);
+        START();
+        
+        CALL_NATIVE(set_gravity, gravity);
     }
-    void allow_admin_teleport (bool is_allow)
+    void allow_admin_teleport (bool is_allow) 
     {
-        DEBUG_NATIVE(/*f*/allow_admin_teleport, /*p*/is_allow);
+        START();
+        
+        CALL_NATIVE(allow_admin_teleport, is_allow);
     }
-    void set_death_drop_amount (int amount)
+    void set_death_drop_amount (int amount) 
     {
-        DEBUG_NATIVE(/*f*/set_death_drop_amount, /*p*/amount);
+        START();
+        
+        CALL_NATIVE(set_death_drop_amount, amount);
     }
-    void create_explosion (float x, float y, float z, int type, float radius)
+    void create_explosion (float x, float y, float z, int type, float radius) 
     {
-        DEBUG_NATIVE(/*f*/create_explosion, /*p*/x SEPARATOR  y SEPARATOR  z SEPARATOR  type SEPARATOR  radius);
+        START();
+        
+        CALL_NATIVE(create_explosion, x, y, z, type, radius);
     }
-    void enable_zone_names (bool is_enable)
+    void enable_zone_names (bool is_enable) 
     {
-        DEBUG_NATIVE(/*f*/enable_zone_names, /*p*/is_enable);
+        START();
+        
+        CALL_NATIVE(enable_zone_names, is_enable);
     }
-    void use_player_ped_anims ()
+    void use_player_ped_anims () 
     {
-        DEBUG_NATIVE(/*f*/use_player_ped_anims, /*p*/"");
+        START();
+        
+        CALL_NATIVE(use_player_ped_anims, );
     }
-    void disable_interior_enter_exits ()
+    void disable_interior_enter_exits () 
     {
-        DEBUG_NATIVE(/*f*/disable_interior_enter_exits, /*p*/"");
+        START();
+        
+        CALL_NATIVE(disable_interior_enter_exits, );
     }
-    void set_name_tag_draw_distance (float distance)
+    void set_name_tag_draw_distance (float distance) 
     {
-        DEBUG_NATIVE(/*f*/set_name_tag_draw_distance, /*p*/distance);
+        START();
+        
+        CALL_NATIVE(set_name_tag_draw_distance, distance);
     }
-    void disable_name_tag_los ()
+    void disable_name_tag_los () 
     {
-        DEBUG_NATIVE(/*f*/disable_name_tag_los, /*p*/"");
+        START();
+        
+        CALL_NATIVE(disable_name_tag_los, );
     }
-    void limit_global_chat_radius (float chat_radius)
+    void limit_global_chat_radius (float chat_radius) 
     {
-        DEBUG_NATIVE(/*f*/limit_global_chat_radius, /*p*/chat_radius);
+        START();
+        
+        CALL_NATIVE(limit_global_chat_radius, chat_radius);
     }
-    void limit_player_marker_radius (float marker_radius)
+    void limit_player_marker_radius (float marker_radius) 
     {
-        DEBUG_NATIVE(/*f*/limit_player_marker_radius, /*p*/marker_radius);
+        START();
+        
+        CALL_NATIVE(limit_player_marker_radius, marker_radius);
     }
 
     // Npc
-    void connect_npc (std::string const& name, std::string const& script)
+    void connect_npc (std::string const& name, std::string const& script) 
     {
-        DEBUG_NATIVE(/*f*/connect_npc, /*p*/name SEPARATOR  script);
+        START();
+        
+        CALL_NATIVE(connect_npc, name, script);
     }
-    bool is_player_npc (int player_id)
+    bool is_player_npc (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/is_player_npc, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_npc, player_id);
     }
 
     // Admin
-    bool is_player_admin (int player_id)
+    bool is_player_admin (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/is_player_admin, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_player_admin, player_id);
     }
-    void kick (int player_id)
+    void kick (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/kick, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(kick, player_id);
     }
-    void ban (int player_id)
+    void ban (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/ban, /*p*/player_id);
+        START();
+        
+        CALL_NATIVE(ban, player_id);
     }
-    void ban_ex (int player_id, std::string const& reason)
+    void ban_ex (int player_id, std::string const& reason) 
     {
-        DEBUG_NATIVE(/*f*/ban_ex, /*p*/player_id SEPARATOR  reason);
+        START();
+        
+        CALL_NATIVE(ban_ex, player_id, reason);
     }
-    void send_rcon_command (std::string const& command)
+    void send_rcon_command (std::string const& command) 
     {
-        DEBUG_NATIVE(/*f*/send_rcon_command, /*p*/command);
+        START();
+        
+        CALL_NATIVE(send_rcon_command, command);
     }
-    std::string get_server_var_as_string (std::string const& var_name)
+    std::string get_server_var_as_string (std::string const& var_name) 
     {
+        START();
         std::string rezult;
-        DEBUG_NATIVE(/*f*/get_server_var_as_string, /*p*/var_name SEPARATOR  rezult SEPARATOR  pawn::string_len::val);
+        
+        CALL_NATIVE(get_server_var_as_string, var_name, rezult, pawn::string_len::val);
         return rezult;
     }
-    int get_server_var_as_int (std::string const& var_name)
+    int get_server_var_as_int (std::string const& var_name) 
     {
-        DEBUG_NATIVE(/*f*/get_server_var_as_int, /*p*/var_name);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_server_var_as_int, var_name);
     }
-    bool get_server_var_as_bool (std::string const& var_name)
+    bool get_server_var_as_bool (std::string const& var_name) 
     {
-        DEBUG_NATIVE(/*f*/get_server_var_as_bool, /*p*/var_name);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(get_server_var_as_bool, var_name);
     }
 
     // Menu
-    int create_menu (std::string const& title, int columns, float x, float y, float col1width, float col2width)
+    int create_menu (std::string const& title, int columns, float x, float y, float col1width, float col2width) 
     {
-        DEBUG_NATIVE(/*f*/create_menu, /*p*/title SEPARATOR  columns SEPARATOR  x SEPARATOR  y SEPARATOR  col1width SEPARATOR  col2width);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(create_menu, title, columns, x, y, col1width, col2width);
     }
-    void destroy_menu (int menu_id)
+    void destroy_menu (int menu_id) 
     {
-        DEBUG_NATIVE(/*f*/destroy_menu, /*p*/menu_id);
+        START();
+        
+        CALL_NATIVE(destroy_menu, menu_id);
     }
-    void add_menu_item (int menu_id, int column, std::string const& text)
+    void add_menu_item (int menu_id, int column, std::string const& text) 
     {
-        DEBUG_NATIVE(/*f*/add_menu_item, /*p*/menu_id SEPARATOR  column SEPARATOR  text);
+        START();
+        
+        CALL_NATIVE(add_menu_item, menu_id, column, text);
     }
-    void set_menu_column_header (int menu_id, int column, std::string const& header)
+    void set_menu_column_header (int menu_id, int column, std::string const& header) 
     {
-        DEBUG_NATIVE(/*f*/set_menu_column_header, /*p*/menu_id SEPARATOR  column SEPARATOR  header);
+        START();
+        
+        CALL_NATIVE(set_menu_column_header, menu_id, column, header);
     }
-    void show_menu_for_player (int menu_id, int player_id)
+    void show_menu_for_player (int menu_id, int player_id) 
     {
-        DEBUG_NATIVE(/*f*/show_menu_for_player, /*p*/menu_id SEPARATOR  player_id);
+        START();
+        
+        CALL_NATIVE(show_menu_for_player, menu_id, player_id);
     }
-    void hide_menu_for_player (int menu_id, int player_id)
+    void hide_menu_for_player (int menu_id, int player_id) 
     {
-        DEBUG_NATIVE(/*f*/hide_menu_for_player, /*p*/menu_id SEPARATOR  player_id);
+        START();
+        
+        CALL_NATIVE(hide_menu_for_player, menu_id, player_id);
     }
-    bool is_valid_menu (int menu_id)
+    bool is_valid_menu (int menu_id) 
     {
-        DEBUG_NATIVE(/*f*/is_valid_menu, /*p*/menu_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_valid_menu, menu_id);
     }
-    void disable_menu (int menu_id)
+    void disable_menu (int menu_id) 
     {
-        DEBUG_NATIVE(/*f*/disable_menu, /*p*/menu_id);
+        START();
+        
+        CALL_NATIVE(disable_menu, menu_id);
     }
-    void disable_menu_row (int menu_id, int row)
+    void disable_menu_row (int menu_id, int row) 
     {
-        DEBUG_NATIVE(/*f*/disable_menu_row, /*p*/menu_id SEPARATOR  row);
+        START();
+        
+        CALL_NATIVE(disable_menu_row, menu_id, row);
     }
-    int get_player_menu (int player_id)
+    int get_player_menu (int player_id) 
     {
-        DEBUG_NATIVE(/*f*/get_player_menu, /*p*/player_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_menu, player_id);
     }
 
     // Text Draw
-    int textdraw_create (float x, float y, std::string const& text)
+    int textdraw_create (float x, float y, std::string const& text) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_create, /*p*/x SEPARATOR  y SEPARATOR  text);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(textdraw_create, x, y, text);
     }
-    void textdraw_destroy (int text_id)
+    void textdraw_destroy (int text_id) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_destroy, /*p*/text_id);
+        START();
+        
+        CALL_NATIVE(textdraw_destroy, text_id);
     }
-    void textdraw_letter_size (int text_id, float x, float y)
+    void textdraw_letter_size (int text_id, float x, float y) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_letter_size, /*p*/text_id SEPARATOR  x SEPARATOR  y);
+        START();
+        
+        CALL_NATIVE(textdraw_letter_size, text_id, x, y);
     }
-    void textdraw_text_size (int text_id, float x, float y)
+    void textdraw_text_size (int text_id, float x, float y) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_text_size, /*p*/text_id SEPARATOR  x SEPARATOR  y);
+        START();
+        
+        CALL_NATIVE(textdraw_text_size, text_id, x, y);
     }
-    void textdraw_alignment (int text_id, int alignment)
+    void textdraw_alignment (int text_id, int alignment) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_alignment, /*p*/text_id SEPARATOR  alignment);
+        START();
+        
+        CALL_NATIVE(textdraw_alignment, text_id, alignment);
     }
-    void textdraw_color (int text_id, unsigned color)
+    void textdraw_color (int text_id, unsigned color) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_color, /*p*/text_id SEPARATOR  color);
+        START();
+        
+        CALL_NATIVE(textdraw_color, text_id, color);
     }
-    void textdraw_use_box (int text_id, int use)
+    void textdraw_use_box (int text_id, int use) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_use_box, /*p*/text_id SEPARATOR  use);
+        START();
+        
+        CALL_NATIVE(textdraw_use_box, text_id, use);
     }
-    void textdraw_box_color (int text_id, unsigned color)
+    void textdraw_box_color (int text_id, unsigned color) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_box_color, /*p*/text_id SEPARATOR  color);
+        START();
+        
+        CALL_NATIVE(textdraw_box_color, text_id, color);
     }
-    void textdraw_set_shadow (int text_id, int size)
+    void textdraw_set_shadow (int text_id, int size) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_set_shadow, /*p*/text_id SEPARATOR  size);
+        START();
+        
+        CALL_NATIVE(textdraw_set_shadow, text_id, size);
     }
-    void textdraw_set_outline (int text_id, int size)
+    void textdraw_set_outline (int text_id, int size) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_set_outline, /*p*/text_id SEPARATOR  size);
+        START();
+        
+        CALL_NATIVE(textdraw_set_outline, text_id, size);
     }
-    void textdraw_background_color (int text_id, unsigned color)
+    void textdraw_background_color (int text_id, unsigned color) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_background_color, /*p*/text_id SEPARATOR  color);
+        START();
+        
+        CALL_NATIVE(textdraw_background_color, text_id, color);
     }
-    void textdraw_font (int text_id, int font)
+    void textdraw_font (int text_id, int font) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_font, /*p*/text_id SEPARATOR  font);
+        START();
+        
+        CALL_NATIVE(textdraw_font, text_id, font);
     }
-    void textdraw_set_proportional (int text_id, bool set)
+    void textdraw_set_proportional (int text_id, bool set) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_set_proportional, /*p*/text_id SEPARATOR  set);
+        START();
+        
+        CALL_NATIVE(textdraw_set_proportional, text_id, set);
     }
-    void textdraw_show_for_player (int player_id, int text_id)
+    void textdraw_show_for_player (int player_id, int text_id) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_show_for_player, /*p*/player_id SEPARATOR  text_id);
+        START();
+        
+        CALL_NATIVE(textdraw_show_for_player, player_id, text_id);
     }
-    void textdraw_hide_for_player (int player_id, int text_id)
+    void textdraw_hide_for_player (int player_id, int text_id) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_hide_for_player, /*p*/player_id SEPARATOR  text_id);
+        START();
+        
+        CALL_NATIVE(textdraw_hide_for_player, player_id, text_id);
     }
-    void textdraw_set_string (int text_id, std::string const& text)
+    void textdraw_set_string (int text_id, std::string const& text) 
     {
-        DEBUG_NATIVE(/*f*/textdraw_set_string, /*p*/text_id SEPARATOR  text);
+        START();
+        
+        CALL_NATIVE(textdraw_set_string, text_id, text);
     }
 
     // Gang Zones
-    int gangzone_create (float minx, float miny, float maxx, float maxy)
+    int gangzone_create (float minx, float miny, float maxx, float maxy) 
     {
-        DEBUG_NATIVE(/*f*/gangzone_create, /*p*/minx SEPARATOR  miny SEPARATOR  maxx SEPARATOR  maxy);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(gangzone_create, minx, miny, maxx, maxy);
     }
-    void gangzone_destroy (int zone_id)
+    void gangzone_destroy (int zone_id) 
     {
-        DEBUG_NATIVE(/*f*/gangzone_destroy, /*p*/zone_id);
+        START();
+        
+        CALL_NATIVE(gangzone_destroy, zone_id);
     }
-    void gangzone_show_for_player (int player_id, int zone_id, unsigned int color)
+    void gangzone_show_for_player (int player_id, int zone_id, unsigned int color) 
     {
-        DEBUG_NATIVE(/*f*/gangzone_show_for_player, /*p*/player_id SEPARATOR  zone_id SEPARATOR  color);
+        START();
+        
+        CALL_NATIVE(gangzone_show_for_player, player_id, zone_id, color);
     }
-    void gangzone_hide_for_player (int player_id, int zone_id)
+    void gangzone_hide_for_player (int player_id, int zone_id) 
     {
-        DEBUG_NATIVE(/*f*/gangzone_hide_for_player, /*p*/player_id SEPARATOR  zone_id);
+        START();
+        
+        CALL_NATIVE(gangzone_hide_for_player, player_id, zone_id);
     }
-    void gangzone_flash_for_player (int player_id, int zone_id, unsigned int flashcolor)
+    void gangzone_flash_for_player (int player_id, int zone_id, unsigned int flashcolor) 
     {
-        DEBUG_NATIVE(/*f*/gangzone_flash_for_player, /*p*/player_id SEPARATOR  zone_id SEPARATOR  flashcolor);
+        START();
+        
+        CALL_NATIVE(gangzone_flash_for_player, player_id, zone_id, flashcolor);
     }
-    void gangzone_stop_flash_for_player (int player_id, int zone_id)
+    void gangzone_stop_flash_for_player (int player_id, int zone_id) 
     {
-        DEBUG_NATIVE(/*f*/gangzone_stop_flash_for_player, /*p*/player_id SEPARATOR  zone_id);
+        START();
+        
+        CALL_NATIVE(gangzone_stop_flash_for_player, player_id, zone_id);
     }
 
     // Global 3D Text Labels
-    int create_3dtextlabel (std::string const& text, unsigned int color, float x, float y, float z, float draw_distance, int world, bool is_test_los)
+    int create_3dtextlabel (std::string const& text, unsigned int color, float x, float y, float z, float draw_distance, int world, bool is_test_los) 
     {
-        DEBUG_NATIVE(/*f*/create_3dtextlabel, /*p*/text SEPARATOR  color SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  draw_distance SEPARATOR  world SEPARATOR  is_test_los);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(create_3dtextlabel, text, color, x, y, z, draw_distance, world, is_test_los);
     }
-    void delete_3dtextlabel (int text3d_id)
+    void delete_3dtextlabel (int text3d_id) 
     {
-        DEBUG_NATIVE(/*f*/delete_3dtextlabel, /*p*/text3d_id);
+        START();
+        
+        CALL_NATIVE(delete_3dtextlabel, text3d_id);
     }
-    void attach_3dtextlabel_to_player (int text3d_id, int player_id, float offset_x, float offset_y, float offset_z)
+    void attach_3dtextlabel_to_player (int text3d_id, int player_id, float offset_x, float offset_y, float offset_z) 
     {
-        DEBUG_NATIVE(/*f*/attach_3dtextlabel_to_player, /*p*/text3d_id SEPARATOR  player_id SEPARATOR  offset_x SEPARATOR  offset_y SEPARATOR  offset_z);
+        START();
+        
+        CALL_NATIVE(attach_3dtextlabel_to_player, text3d_id, player_id, offset_x, offset_y, offset_z);
     }
-    void attach_3dtextlabel_to_vehicle (int text3d_id, int vehicle_id, float offset_x, float offset_y, float offset_z)
+    void attach_3dtextlabel_to_vehicle (int text3d_id, int vehicle_id, float offset_x, float offset_y, float offset_z) 
     {
-        DEBUG_NATIVE(/*f*/attach_3dtextlabel_to_vehicle, /*p*/text3d_id SEPARATOR  vehicle_id SEPARATOR  offset_x SEPARATOR  offset_y SEPARATOR  offset_z);
+        START();
+        
+        CALL_NATIVE(attach_3dtextlabel_to_vehicle, text3d_id, vehicle_id, offset_x, offset_y, offset_z);
     }
-    void update_3dtextlabel_text (int text3d_id, unsigned int color, std::string const& text)
+    void update_3dtextlabel_text (int text3d_id, unsigned int color, std::string const& text) 
     {
-        DEBUG_NATIVE(/*f*/update_3dtextlabel_text, /*p*/text3d_id SEPARATOR  color SEPARATOR  text);
+        START();
+        
+        CALL_NATIVE(update_3dtextlabel_text, text3d_id, color, text);
     }
 
     // Per-player 3D Text Labels
-    int create_player3dtextlabel (int player_id, std::string const& text, unsigned int color, float x, float y, float z, float draw_distance, int attached_player_id, int attached_vehicle_id, bool is_test_los)
+    int create_player3dtextlabel (int player_id, std::string const& text, unsigned int color, float x, float y, float z, float draw_distance, int attached_player_id, int attached_vehicle_id, bool is_test_los) 
     {
-        DEBUG_NATIVE(/*f*/create_player3dtextlabel, /*p*/player_id SEPARATOR  text SEPARATOR  color SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  draw_distance SEPARATOR  attached_player_id SEPARATOR  attached_vehicle_id SEPARATOR  is_test_los);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(create_player3dtextlabel, player_id, text, color, x, y, z, draw_distance, attached_player_id, attached_vehicle_id, is_test_los);
     }
-    void delete_player3dtextlabel (int player_id, int playertext3d_id)
+    void delete_player3dtextlabel (int player_id, int playertext3d_id) 
     {
-        DEBUG_NATIVE(/*f*/delete_player3dtextlabel, /*p*/player_id SEPARATOR  playertext3d_id);
+        START();
+        
+        CALL_NATIVE(delete_player3dtextlabel, player_id, playertext3d_id);
     }
-    void update_player3dtextlabel_text (int player_id, int playertext3d_id, unsigned int color, std::string const& text)
+    void update_player3dtextlabel_text (int player_id, int playertext3d_id, unsigned int color, std::string const& text) 
     {
-        DEBUG_NATIVE(/*f*/update_player3dtextlabel_text, /*p*/player_id SEPARATOR  playertext3d_id SEPARATOR  color SEPARATOR  text);
+        START();
+        
+        CALL_NATIVE(update_player3dtextlabel_text, player_id, playertext3d_id, color, text);
     }
 
     // Player GUI Dialog
-    void show_player_dialog (int player_id, int dialog_id, dialog_style style, std::string const& caption, std::string const& info, std::string const& button_ok, std::string const& button_cancel)
+    void show_player_dialog (int player_id, int dialog_id, dialog_style style, std::string const& caption, std::string const& info, std::string const& button_ok, std::string const& button_cancel) 
     {
-        DEBUG_NATIVE(/*f*/show_player_dialog, /*p*/player_id SEPARATOR  dialog_id SEPARATOR  style SEPARATOR  caption SEPARATOR  info SEPARATOR  button_ok SEPARATOR  button_cancel);
+        START();
+        
+        CALL_NATIVE(show_player_dialog, player_id, dialog_id, style, caption, info, button_ok, button_cancel);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // a_vehicles.inc
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Vehicle
-    int create_vehicle (int vehicle_model, float x, float y, float z, float rz, int color_id1, int color_id2, int respawn_delay)
+    int create_vehicle (int vehicle_model, float x, float y, float z, float rz, int color_id1, int color_id2, int respawn_delay) 
     {
-        DEBUG_NATIVE(/*f*/create_vehicle, /*p*/vehicle_model SEPARATOR  x SEPARATOR  y SEPARATOR  z SEPARATOR  rz SEPARATOR  color_id1 SEPARATOR  color_id2 SEPARATOR  respawn_delay);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(create_vehicle, vehicle_model, x, y, z, rz, color_id1, color_id2, respawn_delay);
     }
-    void destroy_vehicle (int vehicle_id)
+    void destroy_vehicle (int vehicle_id) 
     {
-        DEBUG_NATIVE(/*f*/destroy_vehicle, /*p*/vehicle_id);
+        START();
+        
+        CALL_NATIVE(destroy_vehicle, vehicle_id);
     }
-    bool is_vehicle_streamed_in (int vehicle_id, int for_player_id)
+    bool is_vehicle_streamed_in (int vehicle_id, int for_player_id) 
     {
-        DEBUG_NATIVE(/*f*/is_vehicle_streamed_in, /*p*/vehicle_id SEPARATOR  for_player_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_vehicle_streamed_in, vehicle_id, for_player_id);
     }
-    void get_vehicle_pos (int vehicle_id, float& x, float& y, float& z)
+    void get_vehicle_pos (int vehicle_id, float& x, float& y, float& z) 
     {
-        DEBUG_NATIVE(/*f*/get_vehicle_pos, /*p*/vehicle_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(get_vehicle_pos, vehicle_id, x, y, z);
     }
-    void set_vehicle_pos (int vehicle_id, float x, float y, float z)
+    void set_vehicle_pos (int vehicle_id, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/set_vehicle_pos, /*p*/vehicle_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(set_vehicle_pos, vehicle_id, x, y, z);
     }
-    float get_vehicle_zangle (int vehicle_id)
+    float get_vehicle_zangle (int vehicle_id) 
     {
-        float rz(0.f);
-        DEBUG_NATIVE(/*f*/get_vehicle_zangle, /*p*/vehicle_id SEPARATOR  rz);
+        START();
+        float rz;
+        
+        CALL_NATIVE(get_vehicle_zangle, vehicle_id, rz);
         return rz;
     }
-    void get_vehicle_rotation_quat (int vehicle_id, float& w, float& x, float& y, float& z)
+    void get_vehicle_rotation_quat (int vehicle_id, float& w, float& x, float& y, float& z) 
     {
-        DEBUG_NATIVE(/*f*/get_vehicle_rotation_quat, /*p*/vehicle_id SEPARATOR  w SEPARATOR  x SEPARATOR  y SEPARATOR  x);
+        START();
+        
+        CALL_NATIVE(get_vehicle_rotation_quat, vehicle_id, w, x, y, z);
     }
-    void set_vehicle_zangle (int vehicle_id, float rz)
+    void set_vehicle_zangle (int vehicle_id, float rz) 
     {
-        DEBUG_NATIVE(/*f*/set_vehicle_zangle, /*p*/vehicle_id SEPARATOR  rz);
+        START();
+        
+        CALL_NATIVE(set_vehicle_zangle, vehicle_id, rz);
     }
-    void set_vehicle_params_for_player (int vehicle_id, int player_id, bool objective, bool doorslocked)
+    void set_vehicle_params_for_player (int vehicle_id, int player_id, bool objective, bool doorslocked) 
     {
-        DEBUG_NATIVE(/*f*/set_vehicle_params_for_player, /*p*/vehicle_id SEPARATOR  player_id SEPARATOR  objective SEPARATOR  doorslocked);
+        START();
+        
+        CALL_NATIVE(set_vehicle_params_for_player, vehicle_id, player_id, objective, doorslocked);
     }
-    void set_vehicle_to_respawn (int vehicle_id)
+    void set_vehicle_to_respawn (int vehicle_id) 
     {
-        DEBUG_NATIVE(/*f*/set_vehicle_to_respawn, /*p*/vehicle_id);
+        START();
+        
+        CALL_NATIVE(set_vehicle_to_respawn, vehicle_id);
     }
-    void link_vehicle_to_interior (int vehicle_id, int interior_id)
+    void link_vehicle_to_interior (int vehicle_id, int interior_id) 
     {
-        DEBUG_NATIVE(/*f*/link_vehicle_to_interior, /*p*/vehicle_id SEPARATOR  interior_id);
+        START();
+        
+        CALL_NATIVE(link_vehicle_to_interior, vehicle_id, interior_id);
     }
-    void add_vehicle_component (int vehicle_id, int component_id)
+    void add_vehicle_component (int vehicle_id, int component_id) 
     {
-        DEBUG_NATIVE(/*f*/add_vehicle_component, /*p*/vehicle_id SEPARATOR  component_id);
+        START();
+        
+        CALL_NATIVE(add_vehicle_component, vehicle_id, component_id);
     }
-    void remove_vehicle_component (int vehicle_id, int component_id)
+    void remove_vehicle_component (int vehicle_id, int component_id) 
     {
-        DEBUG_NATIVE(/*f*/remove_vehicle_component, /*p*/vehicle_id SEPARATOR  component_id);
+        START();
+        
+        CALL_NATIVE(remove_vehicle_component, vehicle_id, component_id);
     }
-    void change_vehicle_color (int vehicle_id, int color_id1, int color_id2)
+    void change_vehicle_color (int vehicle_id, int color_id1, int color_id2) 
     {
-        DEBUG_NATIVE(/*f*/change_vehicle_color, /*p*/vehicle_id SEPARATOR  color_id1 SEPARATOR  color_id2);
+        START();
+        
+        CALL_NATIVE(change_vehicle_color, vehicle_id, color_id1, color_id2);
     }
-    void change_vehicle_paintjob (int vehicle_id, int paintjob_id)
+    void change_vehicle_paintjob (int vehicle_id, int paintjob_id) 
     {
-        DEBUG_NATIVE(/*f*/change_vehicle_paintjob, /*p*/vehicle_id SEPARATOR  paintjob_id);
+        START();
+        
+        CALL_NATIVE(change_vehicle_paintjob, vehicle_id, paintjob_id);
     }
-    void set_vehicle_health (int vehicle_id, float health)
+    void set_vehicle_health (int vehicle_id, float health) 
     {
-        DEBUG_NATIVE(/*f*/set_vehicle_health, /*p*/vehicle_id SEPARATOR  health);
+        START();
+        
+        CALL_NATIVE(set_vehicle_health, vehicle_id, health);
     }
-    float get_vehicle_health (int vehicle_id)
+    float get_vehicle_health (int vehicle_id) 
     {
-        float health(0.f);
-        DEBUG_NATIVE(/*f*/get_vehicle_health, /*p*/vehicle_id SEPARATOR  health);
+        START();
+        float health;
+        
+        CALL_NATIVE(get_vehicle_health, vehicle_id, health);
         return health;
     }
-    void attach_trailer_to_vehicle (int trailer_id, int vehicle_id)
+    void attach_trailer_to_vehicle (int trailer_id, int vehicle_id) 
     {
-        DEBUG_NATIVE(/*f*/attach_trailer_to_vehicle, /*p*/trailer_id SEPARATOR  vehicle_id);
+        START();
+        
+        CALL_NATIVE(attach_trailer_to_vehicle, trailer_id, vehicle_id);
     }
-    void detach_trailer_from_vehicle (int vehicle_id)
+    void detach_trailer_from_vehicle (int vehicle_id) 
     {
-        DEBUG_NATIVE(/*f*/detach_trailer_from_vehicle, /*p*/vehicle_id);
+        START();
+        
+        CALL_NATIVE(detach_trailer_from_vehicle, vehicle_id);
     }
-    bool is_trailer_attached_to_vehicle (int vehicle_id)
+    bool is_trailer_attached_to_vehicle (int vehicle_id) 
     {
-        DEBUG_NATIVE(/*f*/is_trailer_attached_to_vehicle, /*p*/vehicle_id);
-        return(0);
+        START();
+        
+        cell _R; return 0 != CALL_NATIVE_R(is_trailer_attached_to_vehicle, vehicle_id);
     }
-    int get_vehicle_trailer (int vehicle_id)
+    int get_vehicle_trailer (int vehicle_id) 
     {
-        DEBUG_NATIVE(/*f*/get_vehicle_trailer, /*p*/vehicle_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_vehicle_trailer, vehicle_id);
     }
-    void set_vehicle_number_plate (int vehicle_id, std::string const& numberplate)
+    void set_vehicle_number_plate (int vehicle_id, std::string const& numberplate) 
     {
-        DEBUG_NATIVE(/*f*/set_vehicle_number_plate, /*p*/vehicle_id SEPARATOR  numberplate);
+        START();
+        
+        CALL_NATIVE(set_vehicle_number_plate, vehicle_id, numberplate);
     }
-    int get_vehicle_model (int vehicle_id)
+    int get_vehicle_model (int vehicle_id) 
     {
-        DEBUG_NATIVE(/*f*/get_vehicle_model, /*p*/vehicle_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_vehicle_model, vehicle_id);
     }
-    int get_vehicle_component_in_slot (int vehicle_id, carmod_type slot)
+    int get_vehicle_component_in_slot (int vehicle_id, carmod_type slot) 
     {
-        DEBUG_NATIVE(/*f*/get_vehicle_component_in_slot, /*p*/vehicle_id SEPARATOR  slot);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_vehicle_component_in_slot, vehicle_id, slot);
     }
-    carmod_type get_vehicle_component_type (int component_id)
+    carmod_type get_vehicle_component_type (int component_id) 
     {
-        DEBUG_NATIVE(/*f*/get_vehicle_component_type, /*p*/component_id);
-        return carmod_type(0);
+        START();
+        
+        cell _R; return static_cast<carmod_type>(CALL_NATIVE_R(get_vehicle_component_type, component_id));
     }
-    void repair_vehicle (int vehicle_id)
+    void repair_vehicle (int vehicle_id) 
     {
-        DEBUG_NATIVE(/*f*/repair_vehicle, /*p*/vehicle_id);
+        START();
+        
+        CALL_NATIVE(repair_vehicle, vehicle_id);
     }
-    void get_vehicle_velocity (int vehicle_id, float& x, float& y, float& z)
+    void get_vehicle_velocity (int vehicle_id, float& x, float& y, float& z) 
     {
-        DEBUG_NATIVE(/*f*/get_vehicle_velocity, /*p*/vehicle_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(get_vehicle_velocity, vehicle_id, x, y, z);
     }
-    void set_vehicle_velocity (int vehicle_id, float x, float y, float z)
+    void set_vehicle_velocity (int vehicle_id, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/set_vehicle_velocity, /*p*/vehicle_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(set_vehicle_velocity, vehicle_id, x, y, z);
     }
-    void set_vehicle_angular_velocity (int vehicle_id, float x, float y, float z)
+    void set_vehicle_angular_velocity (int vehicle_id, float x, float y, float z) 
     {
-        DEBUG_NATIVE(/*f*/set_vehicle_angular_velocity, /*p*/vehicle_id SEPARATOR  x SEPARATOR  y SEPARATOR  z);
+        START();
+        
+        CALL_NATIVE(set_vehicle_angular_velocity, vehicle_id, x, y, z);
     }
-    void get_vehicle_damage_status (int vehicle_id, int& panels, int& doors, int& lights, int& tires)
+    void get_vehicle_damage_status (int vehicle_id, int& panels, int& doors, int& lights, int& tires) 
     {
-        DEBUG_NATIVE(/*f*/get_vehicle_damage_status, /*p*/vehicle_id SEPARATOR  panels SEPARATOR  doors SEPARATOR  lights SEPARATOR  tires);
+        START();
+        
+        CALL_NATIVE(get_vehicle_damage_status, vehicle_id, panels, doors, lights, tires);
     }
-    void update_vehicle_damage_status (int vehicle_id, int panels, int doors, int lights, int tires)
+    void update_vehicle_damage_status (int vehicle_id, int panels, int doors, int lights, int tires) 
     {
-        DEBUG_NATIVE(/*f*/update_vehicle_damage_status, /*p*/vehicle_id SEPARATOR  panels SEPARATOR  doors SEPARATOR  lights SEPARATOR  tires);
+        START();
+        
+        CALL_NATIVE(update_vehicle_damage_status, vehicle_id, panels, doors, lights, tires);
     }
 
     // Virtual Worlds
-    void set_vehicle_virtual_world (int vehicle_id, int world_id)
+    void set_vehicle_virtual_world (int vehicle_id, int world_id) 
     {
-        DEBUG_NATIVE(/*f*/set_vehicle_virtual_world, /*p*/vehicle_id SEPARATOR  world_id);
+        START();
+        
+        CALL_NATIVE(set_vehicle_virtual_world, vehicle_id, world_id);
     }
-    int get_vehicle_virtual_world (int vehicle_id)
+    int get_vehicle_virtual_world (int vehicle_id) 
     {
-        DEBUG_NATIVE(/*f*/get_vehicle_virtual_world, /*p*/vehicle_id);
-        return(0);
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_vehicle_virtual_world, vehicle_id);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Недокументированные возможности
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    std::string get_serial (int player_id)
+    std::string get_serial (int player_id) 
     {
-        std::string rezult = "";
-        DEBUG_NATIVE(/*f*/get_serial, /*p*/player_id SEPARATOR  rezult SEPARATOR  pawn::string_len::val);
+        START();
+        std::string rezult;
+        
+        CALL_NATIVE(gpci, player_id, rezult, pawn::string_len::val);
         return rezult;
+    }
+    
+    /***  0.3e ***/
+	void manual_vehicle_engine_and_lights ()
+	{
+		START();
+        
+		CALL_NATIVE(manual_vehicle_engine_and_lights, );  
+	}
+	void set_vehicle_params_ex (int vehicleid, int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective)
+	{
+		START();
+		
+		CALL_NATIVE(set_vehicle_params_ex, vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);  
+	}
+	void get_vehicle_params_ex (int vehicleid, int& engine, int& lights, int& alarm, int& doors, int& bonnet, int& boot, int& objective)
+	{
+		START();
+		
+		CALL_NATIVE(get_vehicle_params_ex, vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);  
+	}
+	void get_vehicle_model_info (int vehiclemodel, int infotype, float& X, float& Y, float& Z)
+	{
+		START();
+		
+		CALL_NATIVE(get_vehicle_model_info, vehiclemodel, infotype, X, Y, Z);  
+	}
+
+    int get_player_target_player (int playerid)
+    {
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_target_player, playerid);
+    }
+    int play_audio_stream_for_player (int playerid, const std::string& url, float posX, float posY, float posZ, float distance, int usepos)
+    {
+        START();
+        
+        cell _R; return CALL_NATIVE_R(play_audio_stream_for_player, playerid, url, posX, posY, posZ, distance, usepos);
+    }
+    int stop_audio_stream_for_player (int playerid)
+    {
+        START();
+        
+        cell _R; return CALL_NATIVE_R(stop_audio_stream_for_player, playerid);
+    }
+    int get_player_surfing_object_id (int playerid)
+    {
+        START();
+        
+        cell _R; return CALL_NATIVE_R(get_player_surfing_object_i_d, playerid);
+    }
+    int remove_building_for_player (int playerid, int modelid, float fX, float fY, float fZ, float fRadius)
+    {
+        START();
+        
+        cell _R; return CALL_NATIVE_R(remove_building_for_player, playerid, modelid, fX, fY, fZ, fRadius);
     }
 
 }

@@ -2,6 +2,7 @@
 #define PAWN_MARSHALING_AMX_HPP
 #include "SDK/amx/amx.h"
 #include <string>
+#include <cstddef>
 #include <vector>
 
 namespace pawn {
@@ -22,17 +23,17 @@ namespace pawn {
     };
 
     class marh_amx_t {
-    private:
-        std::string const name;
     protected:
+    	std::string const name;
+
         AMX* amx;
         AMX_NATIVE fn;
 
-        marh_amx_t(std::string const& name, marh_collection_t& marh_collection): name(name), amx(0), fn(0) 
+        marh_amx_t(std::string const& name, marh_collection_t& marh_collection): name(name), amx(NULL), fn(NULL) 
         {
           marh_collection.add(this);
         }
-        marh_amx_t(std::string const& name) : name(name), amx(0), fn(0) 
+        marh_amx_t(std::string const& name) : name(name), amx(NULL), fn(NULL) 
         {}
 
     public:
@@ -67,7 +68,7 @@ namespace pawn {
 
             // Proceed with locating the memory address for this function;
             AMX_HEADER *hdr = (AMX_HEADER *)amx->base;
-            unsigned int call_addr = (unsigned int)((AMX_FUNCSTUB *)
+            std::ptrdiff_t call_addr = (std::ptrdiff_t)((AMX_FUNCSTUB *)
                 ((char *)(hdr) + (hdr)->natives + hdr->defsize * index))->address;
 
 

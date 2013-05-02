@@ -2,7 +2,7 @@ TEMPLATE = lib
 CONFIG += plugin
 CONFIG -= qt
 
-DEFINES += WIN32
+DEFINES += WIN32 OVERTIMER_DISABLE
 
 SOURCES += $$files(../system/*.cpp)
 SOURCES += $$files(../system/pawn/*.cpp)
@@ -15,8 +15,10 @@ SOURCES += $$files(../modules/*.cpp)
 HEADERS += $$files(../system/*.h)
 HEADERS += $$files(../system/pawn/*.h)
 HEADERS += $$files(../system/SDK/*.h)
+HEADERS += $$files(../system/SDK/amx/*.h)
 
 HEADERS += $$files(../util/*.h)
+HEADERS += $$files(../util/config/*.h)
 HEADERS += $$files(../api/*.h)
 HEADERS += $$files(../modules/*.h)
 
@@ -35,6 +37,10 @@ INCLUDEPATH += ../system
 INCLUDEPATH += ../../boost-trunk/
 
 QMAKE_CXXFLAGS += -std=c++11
+QMAKE_LFLAGS_PLUGIN += -Wl,--enable-stdcall-fixup -Wl,--kill-at
+
+DEF_FILE = win/plugin.def
+
 
 
 

@@ -109,6 +109,8 @@ declarations_cc = []
 
 funcs = []
 
+pawncalls = []
+
 with open("diff.inc", "r") as f:
 	for line in f:
 		line = line[2:]
@@ -129,21 +131,27 @@ with open("diff.inc", "r") as f:
 		
 		declarations.append(decl + ";" + " // " + line.strip())
 		
-		real = decl + "\n{\n\t" + "START();\n\t" + "DEBUG_NATIVE(/*f*/" + method_n + ", /*p*/"
-		
-		for p in params:
-			real += p
-			if p != params[len(params)-1]:
-				real += " SEPARATOR  "
-		
-		real += ");\n\t"
-		
-		real += "return " + method_n + "_t.call(" + stringize(params) + ");  \n}"
+		real = decl + "\n{\n\t" + "START();\n\t"
+		real += "cell _R; CALL_NATIVE_R(" + method_n + ",  " + stringize(params) + ");\n}"
 		
 		funcs.append(real)
 		
+		pawncall = method + "("
+		for i in types:
+			if "int" in i:
+				pawncall += "vi, "
+			elif "float" in i:
+				pawncall += "vf, "
+			elif "string" in i:
+				pawncall += "vs, "
+			else:
+				pawncall += "vi, "
+		pawncall = pawncall[:-2] + ");"
+		pawncalls.append(pawncall);
+			
+		
 		#print(method_ret, from_camel_case(method))
 		
-for x in marhs_t:
+for x in funcs:
 	print(x)
 
