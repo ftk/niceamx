@@ -7,9 +7,64 @@ namespace util {
 
 
 // to lower/upper case
+constexpr inline bool is_lower_ascii(char c)
+{
+    return c > 0x60 && c < 0x7B;
+}
+constexpr inline bool is_upper_ascii(char c)
+{
+    return c > 0x40 && c < 0x5B;
+}
+// а - я
+constexpr inline bool is_lower_1251_32(unsigned char c)
+{
+    return c > 0xDF;// && c <= 0xFF;
+}
+constexpr inline bool is_upper_1251_32(unsigned char c)
+{
+    return c > 0xBF && c < 0xE0;
+}
+// ё
+constexpr inline bool is_lower_1251_33(unsigned char c)
+{
+    return c == 0xB8;
+}
+constexpr inline bool is_upper_1251_33(unsigned char c)
+{
+    return c == 0xA8;
+}
+
+constexpr inline char to_lower_ascii(char c)
+{
+    return is_upper_ascii(c) ? (c|0x20) : c;
+}
+constexpr inline char to_upper_ascii(char c)
+{
+    return is_lower_ascii(c) ? (c&0xDF) : c;
+}
+
+constexpr inline char to_lower_1251_32(unsigned char c)
+{
+    return is_upper_1251_32(c) ? (c|0x20) : c;
+}
+constexpr inline char to_upper_1251_32(unsigned char c)
+{
+    return is_lower_1251_32(c) ? (c&0xDF) : c;
+}
+
+constexpr inline char to_lower_1251_33(unsigned char c)
+{
+    return is_upper_1251_33(c) ? 0xB8 : c;
+}
+constexpr inline char to_upper_1251_33(unsigned char c)
+{
+    return is_lower_1251_33(c) ? 0xA8 : c;
+}
+
+
 
 //template <typename T>
-constexpr unsigned char to_lower(unsigned char ch)
+constexpr inline unsigned char to_lower(unsigned char ch)
 {
     // supports cp1251 and ascii
     return (ch >= 'A' && ch <= 'Z') ? (ch - 'A' + 'a') :
@@ -19,7 +74,7 @@ constexpr unsigned char to_lower(unsigned char ch)
 }
 
 //template <typename T>
-constexpr unsigned char to_upper(unsigned char ch)
+constexpr inline unsigned char to_upper(unsigned char ch)
 {
     // supports cp1251 and ascii
     return (ch >= 'a' && ch <= 'z') ? (ch - 'a' + 'A') :
@@ -37,23 +92,23 @@ static constexpr hash_t fnv1a_basis = 14695981039346656037ULL;
 static constexpr hash_t fnv1a_prime = 1099511628211ULL;
 
 // compile-time hash helper function
-constexpr hash_t const_hash_one(char c, const char* remain, hash_t value)
+constexpr inline hash_t const_hash_one(char c, const char* remain, hash_t value)
 {
     return c == 0 ? value : const_hash_one(remain[0], remain + 1, (value ^ c) * fnv1a_prime);
 }
 
-constexpr hash_t const_hash_one_nocase(char c, const char* remain, hash_t value)
+constexpr inline hash_t const_hash_one_nocase(char c, const char* remain, hash_t value)
 {
     return c == 0 ? value : const_hash_one_nocase(to_lower(remain[0]), remain + 1, (value ^ c) * fnv1a_prime);
 }
 
 
 // compile-time hash
-constexpr hash_t const_hash(const char * str)
+constexpr inline hash_t const_hash(const char * str)
 {
     return const_hash_one(str[0], str + 1, fnv1a_basis);
 }
-constexpr hash_t const_hash_nocase(const char * str)
+constexpr inline hash_t const_hash_nocase(const char * str)
 {
     return const_hash_one_nocase(to_lower(str[0]), str + 1, fnv1a_basis);
 }
@@ -91,23 +146,6 @@ struct const_test
 	{
 		value = N
 	};
-};
-
-template <typename T>
-struct is_char_cptr
-{
-    enum
-    {
-        value = false
-    };
-};
-template <>
-struct is_char_cptr<const char *>
-{
-    enum
-    {
-        value = true
-    };
 };
 
 

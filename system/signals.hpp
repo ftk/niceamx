@@ -18,7 +18,7 @@
 
 
 #include <boost/preprocessor/cat.hpp>
-#include <boost/preprocessor.hpp>
+//#include <boost/preprocessor.hpp>
 
 #include <string>
 
@@ -33,6 +33,10 @@ namespace signals
     // mainbox -------------------------------------------------------
     class box_t : public util::singleton<box_t>
     {
+    private:
+        box_t();
+        ~box_t();
+        friend class util::singleton<box_t>;
 
     public:
     #define SIGNAL(name,...) signals::signal<__VA_ARGS__> name;
@@ -42,20 +46,16 @@ namespace signals
     #undef SIGNAL
 
     public:
-      signals::signal_funptr<> init_container;
+        signals::signal_funptr<> init_container;
 
     public:
-      /*
-      timer_container_t timer100;
-      timer_container_t timer500;
-      timer_container_t timer1000;
-      */
       
-      timers_container_t timers;
+        timers_container_t timers;
       
 
     public:
-      void clear();
+        void clear();
+        bool empty() const;
     };
 
 }
@@ -74,7 +74,7 @@ namespace signals
 
 // register init callback
 #define REGISTER_MODULE(f) \
-    static volatile const bool BOOST_PP_CAT(_is_registered_, __LINE__) = \
+    static const bool BOOST_PP_CAT(_is_registered_, __LINE__) = \
     (REGISTER_CALLBACK(init_container, f), true) \
 /* */
 /*

@@ -13,7 +13,7 @@ namespace pawn {
 typedef void (*logprintf_t)(char const* format, ...);
 extern logprintf_t logprintf;
 
-void logprint(std::string const& log_str);
+void logprint(std::string log_str);
 
 /*
 class log_t : public std::ostream

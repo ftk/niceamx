@@ -16,13 +16,15 @@
 
 #include "plugin.h"
 
+#include "hooks.h"
+
 //typedef std::list<AMX*> amxs_t;
 //static amxs_t amxs;
 
 
 namespace pawn
 {
-	AMX * gamemode;
+    AMX * gamemode = NULL;
 }
 
 
@@ -34,23 +36,30 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports()
 //Загрузка плагина
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void** ppData) 
 {
+    ::srand((unsigned)::time(NULL));
+
     //pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
     pawn::init_amx_funcs(reinterpret_cast<void **>(ppData[PLUGIN_DATA_AMX_EXPORTS]));
     
-    pawn::logprintf = reinterpret_cast<pawn::logprintf_t>(reinterpret_cast<std::ptrdiff_t>(ppData[PLUGIN_DATA_LOGPRINTF]));
+    pawn::logprintf = util::ptr_cast<pawn::logprintf_t>(ppData[PLUGIN_DATA_LOGPRINTF]);
+
+    if(!pawn::is_hooked_logprintf())
+        pawn::rehook_logprintf();
     
-    srand((unsigned)time(NULL));
     
     util::register_logger(&util::logger_rotational);
-#ifdef _DEBUG
-    util::register_logger(&pawn::logger_serverlog);
+#if defined(_DEBUG) || defined(WIN32)
+    if(!pawn::is_hooked_logprintf())
+        util::register_logger(&pawn::logger_serverlog); // will cause inf loop if hooked
+    else
+        util::register_logger(&util::logger_stdout);
 #endif
     util::log_msg_nofmt("plugin/load", "Initializing...");
     
     //INITBOX->execute();
     INVOKE_INIT();
 
-    pawn::logprint("  Initialized.");
+    util::log_msg_nofmt("plugin/load", "Initializing done");
 
     MAINBOX->plugin_load();
 
@@ -62,6 +71,10 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload()
 {
     // Вызываем обработчик события
     MAINBOX->plugin_unload();
+
+    if(pawn::is_hooked_logprintf())
+        pawn::rehook_logprintf();
+
 
     pawn::logprint("  Unloaded.");
     pawn::logprintf = 0;
@@ -105,3 +118,11 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick()
     ++ticks;
     return;
 }
+/*
+INIT
+{
+    REGISTER_CALLBACK(on_game_mode_init, -1000000, []()
+    {
+        pawn::gamemode =
+    });
+}*/

@@ -10,7 +10,7 @@
 
 namespace api {
 
-static bool gconfig_cmd(int pipe, const std::string& params)
+static void gconfig_cmd(api::cmdinfo_t info)
 {
 	/*
 	char paramname[128], val[128];
@@ -19,26 +19,23 @@ static bool gconfig_cmd(int pipe, const std::string& params)
 	*/
 	
 	const char * paramname, * val;
-	parser p("*ss?r", params);
+    parser_cmd p("s?r", info);
 	paramname = p.get_string(0);
 	val = p.get_string(1);
 	
 	if(val[0])
 	{
 		CONFIGBOX->set(paramname, val);
-		send_pipe_msgf(pipe, "%s = %s", paramname, val);
+        send_pipe_msgf(info.caller, "%s = %s", paramname, val);
 	}
 	else if(CONFIGBOX->exists(paramname))
 	{
-		send_pipe_msgf(pipe, "%s = %s", paramname, CONFIGBOX->get(paramname).c_str());
+        send_pipe_msgf(info.caller, "%s = %s", paramname, CONFIGBOX->get(paramname).c_str());
 	}
 	else
-		send_pipe_msgf(pipe, "no such param %s", paramname);
-	
-	
-	return true;
+        send_pipe_msgf(info.caller, "no such param %s", paramname);
 }
-static bool gconfig_server(int pipe, const std::string& params)
+static void gconfig_server(api::cmdinfo_t info)
 {
 	/*
 	char paramname[128], val[128];
@@ -47,84 +44,68 @@ static bool gconfig_server(int pipe, const std::string& params)
 	*/
 	
     const char * paramname, * servervar;
-    parser p("*sss", params);
+    parser p("ss", info);
 	paramname = p.get_string(0);
     servervar = p.get_string(1);
 
     auto val = native::get_server_var_as_string(servervar);
 
     CONFIGBOX->set(paramname, val);
-    send_pipe_msgf(pipe, "%s = %s", paramname, val.c_str());
-	return true;
+    send_pipe_msgf(info.caller, "%s = %s", paramname, val.c_str());
 }
 
 
-static bool gconfig_unset(int /*pipe*/, const std::string& params)
+static void gconfig_unset(api::cmdinfo_t info)
 {
-	const char * paramname;
-	parser p("*sr", params);
-	if(p.error)
-		return false;
-	paramname = p.get_string(0);
+    parser_cmd p("r", info);
+    auto paramname = p.get_string(0);
 	
 	if(CONFIGBOX->exists(paramname))
 	{
 		CONFIGBOX->unset(paramname);
 	}
-	
-	return true;
 }
 
-static bool gconfig_ifeq(int pipe, const std::string& params)
+static void gconfig_ifeq(api::cmdinfo_t info)
 {
-	parser p("sssr", params);
-	if(p.error)
-		return false;
+    parser_cmd p("ssr", info);
 	
-	const char * lval, * rval, * cmdname;
+    const char * lval, * rval;
 	
-	cmdname = p.get_string(0);
-	lval = p.get_string(1);
-	rval = p.get_string(2);
+    lval = p.get_string(0);
+    rval = p.get_string(1);
 	
-	bool inverse = !strcmp(cmdname, "ifneq"); // ifeq - if equal, ifneq - if not equal
+    bool inverse = info.name == "ifneq"; // ifeq - if equal, ifneq - if not equal
 	
 	if(CONFIGBOX->exists(lval))
 	{
 		if((CONFIGBOX->get(lval) == rval) ^ inverse)
-			INVOKE_COMMANDS(pipe, cmdflag::CONFIG, p.get_string(3));
+            INVOKE_COMMANDS(info.caller, info.flags, p.get_string(2));
 	}
 	else if(inverse)
 	{
-		INVOKE_COMMANDS(pipe, cmdflag::CONFIG, p.get_string(3));
+        INVOKE_COMMANDS(info.caller, info.flags, p.get_string(2));
 	}
 	else
 	{
 		//send_pipe_msgf(pipe, "No such param: %s", paramname);
 	}
-	
-	return true;
 }
 
-static bool gconfig_ifdef(int pipe, const std::string& params)
+static void gconfig_ifdef(api::cmdinfo_t info)
 {
-	parser p("ssr", params);
-	if(p.error)
-		return false;
+    parser_cmd p("sr", info);
 	
-	const char * param, * cmdname;
+    const char * param;
 	
-	cmdname = p.get_string(0);
-	param = p.get_string(1);
+    param = p.get_string(0);
 	
-	bool inverse = !strcmp(cmdname, "ifndef"); // ifdef - if defined, ifndef - if not defined
+    bool inverse = info.name == "ifndef"; // ifdef - if defined, ifndef - if not defined
 	
 	if(CONFIGBOX->exists(param) ^ inverse)
 	{
-		INVOKE_COMMANDS(pipe, cmdflag::CONFIG, p.get_string(2));
-	}
-	
-	return true;
+        INVOKE_COMMANDS(info.caller, info.flags, p.get_string(1));
+    }
 }
 
 INIT
@@ -136,6 +117,34 @@ INIT
     REGISTER_COMMAND("ifneq", cmdflag::CONFIG, &gconfig_ifeq);
     REGISTER_COMMAND("ifdef", cmdflag::CONFIG, &gconfig_ifdef);
     REGISTER_COMMAND("ifndef", cmdflag::CONFIG, &gconfig_ifdef);
+
+    REGISTER_COMMAND("gconfig_xargs", cmdflag::CONFIG | cmdflag::ADMIN | cmdflag::RCON, [](api::cmdinfo_t info)
+    {
+        api::parser_cmd p("s?s+", info);
+        std::string cmdline;
+
+        for(std::size_t i = 0; i < p.size(); i++)
+        {
+            if(i) cmdline += ' ';
+            auto arg = p.get_string(i);
+            if(*arg == '$')
+            {
+                // substitute
+                cmdline += CONFIGBOX->get(arg+1); // omit $
+            }
+            else
+            {
+                cmdline += arg;
+            }
+        }
+        INVOKE_COMMANDS(info.caller, info.flags, cmdline);
+    });
+    /* Usage:
+     *  gconfig var1 123
+     *  gconfig var2 456
+     *  gconfig_xargs echo $var1 $var2
+     * 123 456
+     */
 }
 
 

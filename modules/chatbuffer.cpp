@@ -5,8 +5,9 @@
 #include <string>
 
 #include "signals.hpp"
+#include "pawn/natives.h"
 
-
+#include "util/utils.h"
 
 static boost::circular_buffer<std::string> global_chat(10);
 
@@ -25,7 +26,11 @@ INIT
     
     REGISTER_CALLBACK(on_player_text, 100000, ([](int player, std::string& text)
     {
-        global_chat.push_back(PLAYERBOX->get_info(player).name + ": " + text);
+    	char buf[128];
+        snprintf(buf, util::arrayof(buf), "{%06X}%s: {FFFFFF}%s",
+                 PLAYERBOX->get_info(player).color,
+                 PLAYERBOX->get_info(player).name.c_str(), text.c_str());
+        global_chat.push_back(buf);
     }));
     // execute first
 
@@ -34,6 +39,8 @@ INIT
         for(const auto& it : global_chat)
             api::send_pipe_msg(player, it);
     }));
+
+
 }
 
 

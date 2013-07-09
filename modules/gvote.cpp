@@ -21,7 +21,7 @@ void show_gvote_dialog(int playerid)
     }), playerid, "title", gvotes.join('\n'), "Y", "N");
 }*/
 
-bool vote_option::execute_command(int pipe, int flags)
+bool vote_option::execute_command(int pipe, unsigned flags)
 {
     return INVOKE_COMMANDS(pipe, flags, this->cmd);
 }
@@ -29,20 +29,19 @@ bool vote_option::execute_command(int pipe, int flags)
 
 INIT
 {
-    REGISTER_CALLBACK(plugin_load, ([](){ if(!gvotes) gvotes = new vote_container; }));
+    if(!gvotes) gvotes = new vote_container;
+    //REGISTER_CALLBACK(plugin_load, ([](){ if(!gvotes) gvotes = new vote_container; }));
     REGISTER_CALLBACK(plugin_unload, ([](){ if(gvotes) delete gvotes; gvotes = NULL; }));
 
     using namespace api::cmdflag;
-    REGISTER_COMMAND("gvote_add", CONFIG | RCON | ADMIN, ([](int /*pipe*/, const std::string& params)
+    REGISTER_COMMAND("gvote_add", CONFIG | RCON | ADMIN, ([](api::cmdinfo_t info)
     {
-        api::parser p("*ssr", params);
+        api::parser_cmd p("sr", info);
         gvotes->add({p.get_string(0), p.get_string(1)});
-        return true;
     }));
-    REGISTER_COMMAND("gvote_clear", CONFIG | RCON | ADMIN, ([](int /*pipe*/, const std::string&)
+    REGISTER_COMMAND("gvote_clear", CONFIG | RCON | ADMIN, ([](api::cmdinfo_t)
     {
         gvotes->clear();
-        return true;
     }));
 }
 

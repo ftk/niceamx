@@ -1,9 +1,12 @@
 
 gconfig_server "version" "version"
 
+gconfig_xargs echo the version is $version
+
 ifeq "version" "u2ce" execfile data/united.txt
 ifneq "version" "u2ce" execfile data/other.txt
 
+execfile data/tdm/tdm.txt
 
 #native GetServerVarAsString sSi version ~ 256
 

@@ -5,7 +5,8 @@
 
 #include <array>
 
-#include "pawn/natives.h"
+
+#include "util/singleton.hpp"
 
 class basic_gamemode
 {
@@ -40,6 +41,40 @@ public:
 
 
 };
+
+class gamemodes : public util::singleton<gamemodes>
+{
+    friend class util::singleton<gamemodes>;
+    api::array_players<basic_gamemode *> player_gm;
+
+    gamemodes()
+    {
+        player_gm.fill(NULL);
+    }
+public:
+    void join(int playerid, basic_gamemode * gm)
+    {
+        if(player_gm[playerid] && player_gm[playerid]->is_connected(playerid))
+            player_gm[playerid]->part(playerid);
+        gm->join(playerid);
+        player_gm[playerid] = gm;
+    }
+    void part(int playerid, basic_gamemode * gm = NULL) // null - part from any gm
+    {
+        if(gm && player_gm[playerid] != gm)
+            return;
+        if(player_gm[playerid] && player_gm[playerid]->is_connected(playerid))
+            player_gm[playerid]->part(playerid);
+        player_gm[playerid] = NULL;
+    }
+    
+    basic_gamemode * get_gamemode(int playerid)
+    {
+    	return player_gm.at(playerid);
+    }
+};
+
+#define GAMEMODESBOX (gamemodes::get_instance())
 
 
 #endif

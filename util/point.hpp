@@ -32,6 +32,7 @@ struct point2d_base
   const point2d_base &operator /=(const point2d_base &v) { x /= v.x; y /= v.y; return *this; }
 
   bool operator ==(const point2d_base &v) const { return x == v.x && y == v.y; }
+  bool operator !=(const point2d_base &v) const { return !(*this == v); }
 
   operator const T* () { return &x; }
 };
@@ -63,7 +64,9 @@ struct point3d_base
   const point3d_base &operator /=(const point3d_base &v) { x /= v.x; y /= v.y; z /= v.z; return *this; }
 
   bool operator ==(const point3d_base &v) const { return x == v.x && y == v.y && z == v.z; }
+  bool operator !=(const point3d_base &v) const { return !(*this == v); }
 };
+
 
 template <typename T>
 struct point4d_base
@@ -92,7 +95,7 @@ struct point4d_base
   const point4d_base &operator /=(const point4d_base &v) { x /= v.x; y /= v.y; z /= v.z; w /= v.w; return *this; }
 
   bool operator ==(const point4d_base &v) const { return x == v.x && y == v.y && z == v.z && w == v.w; } //TODO: do this with an eps instead
-
+  bool operator !=(const point4d_base &v) const { return !(*this == v); }
 
 };
 

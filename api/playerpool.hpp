@@ -15,8 +15,15 @@
 
 #include "num_players.hpp"
 
+
 namespace api {
 //
+
+// exceptions
+
+class bad_player {};
+
+
 // player constant info
 
 struct player_info
@@ -24,9 +31,13 @@ struct player_info
     int id = -1;
     boost::uint32_t ipv4 = 0u;
     std::string name;
+    boost::uint32_t color;
 
+    // methods
     void update();
+    void clean(); // sync?
     std::string get_ip();
+    void set_color(boost::uint32_t c);
 };
 
 
@@ -111,10 +122,12 @@ private:
   playerids_t playerids;
   int total_players = 0;
 
-  std::array<player_info, NUM_PLAYERS> info; // players info
 
   active_players active;
 public:
+  std::array<player_info, NUM_PLAYERS> info; // players info
+
+
   typedef playerids_t::iterator iterator;
   typedef playerids_t::const_iterator const_iterator;
 
@@ -125,9 +138,14 @@ public:
     //player_iter_t it = playerids.find(playerid);
     //return(it != playerids.end());
       if(playerid < 0 || playerid >= NUM_PLAYERS)
-          throw std::runtime_error("wrong plid");
+          throw std::runtime_error("playerbox: wrong playerid");
       return playerids.get(playerid);
   }
+  inline bool valid(int playerid) const
+  {
+      return playerids.get(playerid);
+  }
+
   
   inline std::size_t count() const
   {
@@ -171,6 +189,7 @@ public:
   {
     if(playerids.unset(playerid))
     {
+        info[playerid].clean();
         total_players--;
     }
   }
@@ -194,6 +213,34 @@ public:
       return playerids.end();
   }
 
+  
+  int get_player(const char * name);
+  int get_player(const std::string& name)
+  {
+      return get_player(name.c_str());
+  }
+
+
+  int get_player_exact(const char * name)
+  {
+      for(int player : playerids)
+      {
+          if(info[player].name == name)
+              return player;
+      }
+      throw bad_player();
+  }
+  int get_player_exact(const std::string& name)
+  {
+      for(int player : playerids)
+      {
+          if(info[player].name == name)
+              return player;
+      }
+      throw bad_player();
+  }
+
+  int get_player_by_id_or_name(const char * str);
 };
 
 

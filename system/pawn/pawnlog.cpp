@@ -2,20 +2,30 @@
 #include "pawnlog.hpp"
 #include <boost/algorithm/string.hpp>
 #include "util/streambuf.hpp"
+#include "util/log.h"
+
+#include "hooks.h"
 
 namespace pawn {
 
 logprintf_t logprintf = NULL;
 
-void logprint(std::string const& log_str)
+void logprint(std::string log_str)
 {
-	std::string line = boost::replace_all_copy(log_str, "~", " ");
-	if (line.length() > 127)
+#ifdef HOOK_PAWNLOG
+    if(is_hooked_logprintf())
+    {
+        return util::log_msg_nofmt("serverlog/msg/logprint", log_str.c_str());
+    }
+#endif
+    boost::replace_all(log_str, "~", " ");
+    if(log_str.length() > 127)
 	{
-	  line = line.substr(0, 127-3) + "...";
+      log_str.erase(127-3);
+      log_str.append("...");
 	}
 	if(logprintf != NULL)
-	  logprintf("%s", line.c_str());
+      logprintf("%s", log_str.c_str());
 }
 
 

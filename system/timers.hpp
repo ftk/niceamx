@@ -31,18 +31,18 @@ public:
       func_t func;
       bool once;
     public:
-      timer(timeout_t timeout, const func_t& func, bool once = false) :
-        timeout(timeout),
+      timer(timeout_t timeout, func_t func, bool once = false) :
+        trigger(util::get_walltime() + timeout), timeout(timeout),
         func(std::move(func)), once(once)
       {
         assert(timeout > 0L);
-        trigger = util::get_walltime() + timeout;
+        //trigger = util::get_walltime() + timeout;
       }
     //private:
-      timer(walltime_t trigger, timeout_t timeout, const func_t& func) :
+      timer(walltime_t trigger, timeout_t timeout, func_t func, bool once = false) :
         trigger(trigger),
         timeout(timeout),
-        func(std::move(func)), once(false)
+        func(std::move(func)), once(once)
       {
           assert(timeout > 0L);
       }
@@ -72,7 +72,7 @@ private:
 
 public:
 
-    timers_container_t() {}
+    timers_container_t() : slots() {}
 
     inline void connect(const slot_t& tm)
     {
@@ -120,7 +120,7 @@ MAINBOX->BOOST_PP_CAT(timer, ms).connect(fn)
 */
 
 
-#define REGISTER_TIMER(ms,...) (MAINBOX->timers.emplace(ms, (__VA_ARGS__), false))
+#define REGISTER_TIMER(ms,...) (MAINBOX->timers.emplace(ms, __VA_ARGS__))
 #define REGISTER_TIMER_ONCE(ms,...) (MAINBOX->timers.emplace(ms, (__VA_ARGS__), true))
 //#define REGISTER_TIMER(ms,fn) (MAINBOX->timers.connect({ms, fn}))
 //#define REGISTER_TIMER_ONCE(ms,fn) (MAINBOX->timers.connect({ms, fn, true}))

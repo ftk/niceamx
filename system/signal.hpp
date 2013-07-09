@@ -21,7 +21,7 @@ namespace signals {
 class slot_remove {}; // disconnect from signal
 class signal_return // skip invoking other slots
 {
-    int ret;
+    const int ret;
 public:
     signal_return(int ret) : ret(ret) {}
     int get() const { return ret; }
@@ -46,7 +46,7 @@ protected:
 public:
   //signal() : slots() {}
   
-  inline void connect(const slot_t& f)
+  inline void connect(const slot_t& f) // O(1)
   {
     slots.push_front(f);
   }
@@ -120,7 +120,9 @@ class basic_priority_signal : boost::noncopyable
 public:
   static const int arg_num = sizeof...(Args);
 
-  typedef std::pair<long,Slot> slot_t;
+  typedef std::pair<const long,Slot> slot_t;
+
+  typedef typename std::forward_list<slot_t>::iterator connection_type;
 protected:
   std::forward_list<slot_t> slots;
   const int default_return_value;
@@ -128,13 +130,14 @@ protected:
 public:
 
   basic_priority_signal(int ret = 1) : default_return_value(ret) {}
+  ~basic_priority_signal() {}
 
-  inline void connect(const Slot& f)
+  inline connection_type connect(Slot&& f)
   {
-      connect(0L, f);
+      return connect(0L, std::move(f));
   }
 
-  inline void connect(long priority, const Slot& f)
+  inline connection_type connect(long priority, Slot&& f) // O(n)
   {
       auto prev = slots.cbefore_begin(),
               next = slots.cbegin(),
@@ -144,13 +147,12 @@ public:
           // <=
           if(priority < next->first)
           {
-              slots.insert_after(prev, std::make_pair(priority, f));
-              return;
+              return slots.insert_after(prev, std::make_pair(priority, std::move(f)));
           }
           prev = next;
           ++next;
       }
-      slots.insert_after(prev, std::make_pair(priority, f));
+      return slots.insert_after(prev, std::make_pair(priority, std::move(f)));
   }
 
 
@@ -160,7 +162,7 @@ public:
   }
 
   template <typename ... EArgs>
-  inline int operator () (EArgs&&... args)
+  inline int operator () (EArgs&&... args) // O(n)
   {
     if(slots.empty())
       return default_return_value;
@@ -188,9 +190,9 @@ public:
   }
 
 
-  inline basic_priority_signal& operator += (const Slot& slot)
+  inline basic_priority_signal& operator += (Slot&& slot)
   {
-    connect(slot);
+    connect(std::move(slot));
     return(*this);
   }
 public:
@@ -200,6 +202,24 @@ public:
   {
     return slots.empty();
   }
+
+  inline bool disconnect(connection_type con) // O(n)
+  {
+      auto it = slots.cbegin(), end = slots.cend();
+      auto prev = slots.cbefore_begin();
+      while(it != end)
+      {
+          if(it == con)
+          {
+              slots.erase_after(prev);
+              return true;
+          }
+          prev = it;
+          ++it;
+      }
+      return false;
+  }
+
 };
 
 

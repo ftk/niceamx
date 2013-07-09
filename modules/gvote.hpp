@@ -24,7 +24,7 @@ struct vote_option
         return name;
     }
 
-    bool execute_command(int pipe, int flags);
+    bool execute_command(int pipe, unsigned flags);
 };
 
 class vote_container

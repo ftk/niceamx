@@ -4,7 +4,7 @@
 #include <cassert>
 
 #define PRINT(list) for(auto it : list) {std::cout << it << ' ';assert(list[it]);} std::cout << '\n'
-
+/*
 INIT
 {
 	util::arraylist<400> vl;
@@ -44,3 +44,4 @@ INIT
 
 
 
+*/

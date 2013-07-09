@@ -45,17 +45,19 @@ static void signal_handler(int sig)
 
 static void terminate_handler() 
 {
-	fprintf(stderr, "Caught unhandled exception\n", sig);
+	fprintf(stderr, "Caught unhandled exception\n");
 	print_stack();
+	#ifdef __GNUG__
+	__gnu_cxx::__verbose_terminate_handler();
+	#else
 	std::abort();
+	#endif
 }
-
-
 
 INIT
 {
     signal(SIGSEGV, &signal_handler);
-    //signal(SIGABRT, &handler);
+    //signal(SIGABRT, &signal_handler);
     std::set_terminate(&terminate_handler);
 }
 

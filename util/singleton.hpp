@@ -58,6 +58,7 @@ public:
 	}
 protected:
     singleton() {}
+    virtual ~singleton() {}
 
 };
 

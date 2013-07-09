@@ -1,6 +1,5 @@
 #include "signals.hpp"
 #include "util/utils.h"
-#include "util/notify.h"
 #include "util/log.h"
 
 
@@ -22,8 +21,7 @@ int main()
   using namespace api;
   
   //REGISTER_COMMAND2("test")
-  INVOKE_COMMANDS(pipe::LOG, cmdflag::ALL, "gconfig test \"abc def ghi 1\"");
-  INVOKE_COMMANDS(pipe::LOG, cmdflag::ALL, "gconfig test");
+  
   while(false)
   {
     util::sleep(5);

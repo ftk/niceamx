@@ -16,12 +16,10 @@
 
 /* calling natives dynamically */
 
-static bool exec_native(int pipe, const std::string& params)
+static void exec_native(api::cmdinfo_t info)
 {
     // native name format args...
-    api::parser p1("*sss?r", params);
-    if(p1.error)
-        return false;
+    api::parser_cmd p1("ss?r", info);
 
     const char * native_name = p1.get_string(0);
 
@@ -31,8 +29,7 @@ static bool exec_native(int pipe, const std::string& params)
 
     if(!native_fn)
     {
-        api::send_pipe_msgf(pipe, "No such native: %s", native_name);
-        return true;
+        api::send_pipe_msgf(info.caller, "No such native: %s", native_name);
     }
 
     const char * format = p1.get_string(1);
@@ -51,16 +48,16 @@ static bool exec_native(int pipe, const std::string& params)
     //std::list<cell *> addresses;
 
     // precall
-    for(int i = 0; i < p2.size(); i++)
+    for(std::size_t i = 0; i < p2.size(); i++)
     {
         char type = p2.get_type(i);
         if(type == 'd' || type == 'i')
         {
-            cells[i+1] = p2.get_int(i);
+            cells[i+1] = p2.get<int>(i);
         }
         else if(type == 'f')
         {
-            float t = p2.get_float(i);
+            float t = p2.get<float>(i);
             pawn::float_to_cell(&cells[i+1], &t);
         }
         else if(type == 's')
@@ -83,13 +80,13 @@ static bool exec_native(int pipe, const std::string& params)
     cell result = native_fn(amx, cells);
 
     // postcall
-    for(int i = 0; i < p2.size(); i++)
+    for(std::size_t i = 0; i < p2.size(); i++)
     {
         char type = p2.get_type(i);
         cell amx_addr = cells[i+1];
         if(type == 'I')
         {
-            api::send_pipe_msgf(pipe, "I@%d: %d", i, *(pawn::amx_get_addr(amx, amx_addr)));
+            api::send_pipe_msgf(info.caller, "I@%d: %d", i, *(pawn::amx_get_addr(amx, amx_addr)));
             //addresses.pop_front();
         }
         else if(type == 'F')
@@ -97,7 +94,7 @@ static bool exec_native(int pipe, const std::string& params)
             float t;
             pawn::cell_to_float(&t, pawn::amx_get_addr(amx, amx_addr));
 
-            api::send_pipe_msgf(pipe, "F@%d: %f", i, t);
+            api::send_pipe_msgf(info.caller, "F@%d: %f", i, t);
             //addresses.pop_front();
         }
         else if(type == 'S')
@@ -106,7 +103,7 @@ static bool exec_native(int pipe, const std::string& params)
             //amx_GetString(buf, pawn::amx_get_addr(amx, ax_addr), 0, pawn::string_len::val);
 
             pawn::amx_get_string(amx, cells[i+1], buf, pawn::string_len::val);
-            api::send_pipe_msgf(pipe, "S@%d: %s", i, buf);
+            api::send_pipe_msgf(info.caller, "S@%d: %s", i, buf);
             //addresses.pop_front();
         }
 
@@ -118,15 +115,27 @@ static bool exec_native(int pipe, const std::string& params)
     
     float t;
     pawn::cell_to_float(&t, &result);
-    api::send_pipe_msgf(pipe, "Returned: %d (%.2f)", result, t);
-    return true;
+    api::send_pipe_msgf(info.caller, "Returned: %d (%.2f)", result, t);
 }
 
 
 INIT
 {
     using namespace api::cmdflag;
-    REGISTER_COMMAND2("native", ADMIN | RCON | SYSTEM | CONFIG, &exec_native);
+    REGISTER_COMMAND("native", ADMIN | RCON | SYSTEM | CONFIG, &exec_native);
+}
+#else
+#include "samp.h"
+#include "util/log.h"
+#include "api/cmd2.hpp"
+
+INIT
+{
+    using namespace api::cmdflag;
+    REGISTER_COMMAND("native", ADMIN | RCON | SYSTEM | CONFIG, [](api::cmdinfo_t info)
+    {
+    	util::log_msg("cmd/native", "[%d] %s", info.caller, info.line.c_str());
+    });
 }
 
 #endif

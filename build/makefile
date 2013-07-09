@@ -24,31 +24,32 @@ PREFIX = ../server/plugins
 
 # custom configurations
 
+# make config=debug
 config ?= release
 configurations := release debug test
 
-# flags for making plugin (should not be used)
+# flags for making a plugin (not a configuration)
 CXXFLAGS_plugin := $(CXXFLAGS) -fPIC
 LDFLAGS_plugin := $(LDFLAGS) -fPIC -shared -Wl,--no-undefined
 
 # maximum optimization
-CXXFLAGS_release = $(CXXFLAGS_plugin) -O3 -fvisibility=hidden -fvisibility-inlines-hidden -ffunction-sections -fdata-sections -fstrict-aliasing -fmerge-all-constants -fomit-frame-pointer -pedantic -flto -fno-ident -mfpmath=sse -msse3 -march=nocona -fgraphite-identity -floop-interchange -floop-block
-LDFLAGS_release = $(LDFLAGS_plugin) -O3 -s -Wl,--gc-sections -flto
+CXXFLAGS_release = $(CXXFLAGS_plugin) -O3 -fvisibility=internal -ffunction-sections -fdata-sections -fstrict-aliasing -fmerge-all-constants -fomit-frame-pointer -pedantic -flto -fno-ident -mfpmath=both -msse3 -march=core2 -fgraphite-identity -floop-interchange -floop-block
+LDFLAGS_release = $(LDFLAGS_plugin) -O3 -s -Wl,--gc-sections -flto -fno-ident
 # add NDEBUG definition when final version is out
-DEFINES_release = $(DEFINES) OVERTIMER_DISABLE
+DEFINES_release = $(DEFINES)
 
 # minimum optimization
 CXXFLAGS_debug = $(CXXFLAGS_plugin) -O0 -ggdb3 -Wextra -Wno-unused-parameter -fstack-protector-all
 LDFLAGS_debug = $(LDFLAGS_plugin) -ggdb3 -rdynamic
-DEFINES_debug = $(DEFINES) _DEBUG PRINT_OUTCOMING_NATIVES PRINT_INCOMING_CALLBACKS OVERTIMER_DISABLE
+DEFINES_debug = $(DEFINES) _DEBUG PRINT_OUTCOMING_NATIVES PRINT_INCOMING_CALLBACKS
 OUTFILE_debug = niceamx-debug.so
 postfix_debug = .debug
 
 # test build (for valgrind & co)
 OUTFILE_test = niceamx-test
-CXXFLAGS_test = $(CXXFLAGS) -ggdb3 -pedantic -Wextra -Wconversion -pg
+CXXFLAGS_test = $(CXXFLAGS) -ggdb3 -pedantic -Wextra -pg #-Wconversion
 LDFLAGS_test = $(LDFLAGS) -ggdb3 -pg -rdynamic
-DEFINES_test = $(DEFINES) _DEBUG OVERTIMER_ENABLE PRINT_OUTCOMING_NATIVES TEST_MODE
+DEFINES_test = $(DEFINES) _DEBUG PRINT_OUTCOMING_NATIVES TEST_MODE
 SRCS_test = api/*.cpp system/*.cpp util/*.cpp modules/*.cpp tests/*.cpp
 PREFIX_test = ../server
 postfix_test = .test

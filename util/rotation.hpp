@@ -6,19 +6,20 @@
 
 namespace util {
 
-static const double pi = 3.1415926535897932384626433;
-
+static constexpr double pi = 3.1415926535897932384626433;
+static constexpr float pi_f = 3.1415926535897932384626433f;
 //
 template <typename T>
-inline T rad_to_deg(T rad)
+inline constexpr T rad_to_deg(T rad)
 {
   return (rad * (180. / pi));
 }
 template <typename T>
-inline T deg_to_rad(T deg)
+inline constexpr T deg_to_rad(T deg)
 {
-  return (deg * (pi / 180.));
+  return ((deg * pi) / 180.);
 }
+
 
 struct euler;
 struct quaternion;

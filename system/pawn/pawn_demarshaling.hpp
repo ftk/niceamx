@@ -6,6 +6,9 @@
 #include <cassert>
 
 #include "SDK/amx/amx.h"
+#include "SDK/amxinline.h"
+
+#include "util/utils.h"
 
 #ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -23,7 +26,6 @@ namespace pawn {
     public:
         demarh_t(AMX* amx, cell* params)
         {
-            assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
             val = static_cast<T>(params[param_id + 1]);
         }
         T get() const
@@ -39,7 +41,6 @@ namespace pawn {
     public:
         demarh_t(AMX* amx, cell* params)
         {
-            assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
             val = 0 != params[param_id + 1];
         }
         bool get() const
@@ -56,7 +57,6 @@ namespace pawn {
     public:
         demarh_t(AMX* amx, cell* params)
         {
-            assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
             memcpy(&val, &params[param_id + 1], sizeof(float));
         }
         float get() const
@@ -65,18 +65,17 @@ namespace pawn {
         }
     };
     template<int param_id>
-    class demarh_t<param_id, const std::string>
+    class demarh_t<param_id, const std::string&>
     {
         std::string val;
     public:
         demarh_t(AMX* amx, cell* params)
         {
-            assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
             char buff[129];
-            cell* cstr;
 
-            amx_GetAddr(amx, params[param_id + 1], &cstr);
-            amx_GetString(buff, cstr, 0, sizeof(buff)/sizeof(buff[0]));
+            //amx_GetAddr(amx, params[param_id + 1], &cstr);
+            //amx_GetString(buff, cstr, 0, sizeof(buff)/sizeof(buff[0]));
+            amx_get_string(amx, params[param_id + 1], buff, util::arrayof(buff));
             val = std::string(buff);
             
         }
@@ -86,18 +85,16 @@ namespace pawn {
         }
     };
     template<int param_id>
-    class demarh_t<param_id, std::string>
+    class demarh_t<param_id, std::string&>
     {
         std::string val;
-        cell* cstr;
+        cell * cstr;
     public:
         demarh_t(AMX* amx, cell* params)
         {
-            assert(params[0] >= static_cast<cell>(param_id * sizeof(cell)));
             char buff[129];
-
-            amx_GetAddr(amx, params[param_id + 1], &cstr);
-            amx_GetString(buff, cstr, 0, sizeof(buff)/sizeof(buff[0]));
+            cstr = amx_get_addr(amx, params[param_id + 1]);
+            amx_get_string(amx, params[param_id + 1], buff, sizeof(buff)/sizeof(buff[0]));
             val = std::string(buff);
             
         }
@@ -108,6 +105,7 @@ namespace pawn {
             const char * valstr = val.c_str();
             while((*(cstr++) = *(valstr++) & 0x000000FF))
               continue;
+            //amx_set_string(amx, params[param_id + 1], val.data(), val.size());
         }
         
         std::string& get()

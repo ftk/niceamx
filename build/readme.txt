@@ -11,7 +11,7 @@ Warm start:
 
   COMPILERS
   
-Currently supported GCC 4.6 only, but it could be compiled with MSVC10 or MinGW after small fixes
+Currently supported GCC 4.7 and MinGW GCC 4.7, but it could be compiled with MSVC11 after few fixes
 
 
 
@@ -20,7 +20,7 @@ Currently supported GCC 4.6 only, but it could be compiled with MSVC10 or MinGW 
 Linux:
   make all
 FreeBSD:
-  gmake all 'CXX=g++46' 'CC=gcc46'
+  gmake all 'CXX=g++47' 'CC=gcc47'
 Windows/MinGW: TODO
   ./win/configure-mingw
   make -f mingw.mk
@@ -58,33 +58,11 @@ Cross-Compiling (Ubuntu MinGW32 example)
 
   DEFINES
 
-WIN32
+WIN32 -- windows api
 
-NDEBUG -- disable asserts and internal profiler(called "overtimer")
-
-OVERTIMER_ENABLE
-OVERTIMER_DISABLE
-
-MAX_EXEC_TIME=3
-MAX_CB_EXEC_TIME=3 -- if callback runs longer, it will be notified
-MAX_NATIVE_EXEC_TIME=3
-MAX_TIMER_EXEC_TIME=3
+NDEBUG -- disable asserts
 
 PRINT_INCOMING_CALLBACKS -- on_game_mode_init();
 PRINT_OUTCOMING_NATIVES -- add_player_class(1, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0);
 
-THREAD_SLEEP_TIME=5 -- 'sleep' option in server.cfg
-TIMERS_RESOLUTION=100 -- timers resolution
-
-
-
-  
-  TROUBLESHOOTING
-
-If you are getting "ELF file OS ABI invalid" error, do:
-  elfedit --output-osabi=none niceamx.so
-OR (freebsd):
-  brandelf -f 0 niceamx.so
-  
-This will change ELF OS/ABI header to System V
 

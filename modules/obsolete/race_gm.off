@@ -404,6 +404,7 @@ public:
     }
     void part(int playerid)
     {
+    	native::disable_player_race_checkpoint(playerid);
         part_gm(playerid);
         players_states.erase(playerid);
     }
@@ -419,16 +420,16 @@ INIT
 
     REGISTER_CALLBACK(on_game_mode_init, ([gm](){
         native::manual_vehicle_engine_and_lights();
-        INVOKE_COMMANDS(api::pipe::FILE, api::cmdflag::CONFIG, "execfile data/autoexec.txt");
+        //INVOKE_COMMANDS(api::pipe::FILE, api::cmdflag::CONFIG, "execfile data/autoexec.txt");
         gm->new_race();
     }));
 
     REGISTER_CALLBACK(on_player_connect, ([gm](int player){
-        gm->join(player);
+        GAMEMODESBOX->join(player, gm);
     }));
     REGISTER_CALLBACK(on_player_disconnect, ([gm](int player, int){
         if(gm->is_connected(player))
-            gm->part(player);
+            GAMEMODESBOX->part(player);
     }));
     REGISTER_CALLBACK(on_player_spawn, ([gm](int player) {
         if(gm->is_connected(player))

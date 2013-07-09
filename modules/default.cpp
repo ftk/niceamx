@@ -15,11 +15,13 @@
 #define TYPE ""
 #endif
 
+#ifdef NDEBUG
 static api::array_players<int> animation_idx;
+#endif
 
 INIT
 {
-  REGISTER_CALLBACK(on_game_mode_init, []()
+  REGISTER_CALLBACK(on_game_mode_init, 100, []()
   {
     native::set_game_mode_text(__DATE__ " " __TIME__ " " TYPE);
     /*
@@ -28,6 +30,9 @@ INIT
     native::add_player_class(180, 0.f, 0.f, 10.f, 0.f, 0,0, 0,0, 0,0);
     */
     native::use_player_ped_anims();
+    
+    
+    INVOKE_COMMANDS(api::pipe::FILE, api::cmdflag::CONFIG, "execfile data/autoexec.txt");
   });
   /*
   REGISTER_CALLBACK(on_player_request_class, [](int id, int)
@@ -43,10 +48,10 @@ INIT
   
 
   
-  REGISTER_COMMAND2("kill", api::cmdflag::PLAYER, [](int playerid, const std::string&) -> bool
+  REGISTER_COMMAND("kill", api::cmdflag::PLAYER, [](api::cmdinfo_t info)
   {
-    native::set_player_health(playerid, 0.f);
-    return true;
+      assert(info.caller >= 0 && info.caller < native::MAX_PLAYERS);
+      native::set_player_health(info.caller, 0.f);
   });
   REGISTER_CALLBACK(on_player_connect, -100, ([](int playerid)
   {
@@ -70,8 +75,10 @@ INIT
 
   }));
 
+#ifdef NDEBUG
   REGISTER_CALLBACK(on_player_death, 100, ([](int playerid, int /*killer*/, int /*reason*/)
   {
+
       std::string name, lib;
       native::get_animation_name(animation_idx[playerid], lib, name);
       if(lib == "PED")
@@ -80,15 +87,9 @@ INIT
       }
   }));
 
-
-/*
-  REGISTER_TIMER(2000, ([]()
-  {
-  	std::cout << util::get_walltime() << "\n";
-  }));*/
-
   REGISTER_CALLBACK(on_player_update, [](int playerid)
   {
       animation_idx[playerid] = native::get_player_animation_index(playerid);
   });
+#endif
 }

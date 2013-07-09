@@ -20,6 +20,11 @@ void send_client_message(int playerid, unsigned color, const std::string& str)
   native::send_client_message(playerid, color, str);
 }
 
+void send_adaptation_cmd(int playerid, const std::string& cmd)
+{
+    return send_client_message(playerid, 0x01010101u, "$cmd " + cmd);
+}
+
 bool is_vehicle_connected(int vehicle)
 {
     return native::get_vehicle_model(vehicle) != 0;

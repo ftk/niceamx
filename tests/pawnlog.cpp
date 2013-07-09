@@ -3,29 +3,29 @@
 #include <iostream>
 #include "util/streambuf.hpp"
 
-namespace pawn
+namespace pawn {
+
+
+void logprint(std::string log_str)
 {
-  void logprint(std::string const& log_str)
-  {
-	  std::cout << "logprint: " << log_str << std::endl;
-  }
-  static void logprintf_impl(const char * str, ...)
-  {
-	  std::cout << "logprintf: " << str << std::endl;
-  }
+  std::cout << "logprint: " << log_str << std::endl;
+}
+static void logprintf_impl(const char * str, ...)
+{
+  std::cout << "logprintf: " << str << std::endl;
+}
 
-  logprintf_t logprintf = logprintf_impl;
+logprintf_t logprintf = &logprintf_impl;
 
-  class log_t : public util::streambuf
-  {
-  protected:
-    virtual void call()
-    {
-      logprint(buffer);
-    }
-  };
+util::stream<pawnlog_sink> log(0);
 
-  static log_t logbuff;
-  std::ostream log(&logbuff);
+void logger_serverlog(const char * module, const char * msg)
+{
+	char buf[128];
+	int len = snprintf(buf, sizeof(buf) - 1, "<%s>: %s", module, msg);
+	buf[len] = '\0';
+    logprint(buf);
+}
+
 } // namespace pawn {
 

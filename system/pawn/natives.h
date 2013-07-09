@@ -29,10 +29,11 @@ namespace native
         enum {INVALID_OBJECT_ID        = 0xFFFF};
         enum {MAX_GANG_ZONES           = 1024};
         enum {MAX_TEXT_DRAWS           = 2048};
+        enum {MAX_PLAYER_TEXT_DRAWS    = 256};
         enum {MAX_MENUS                = 128};
         enum {MAX_3DTEXT_GLOBAL        = 1024};
         enum {MAX_3DTEXT_PLAYER        = 1024};
-        enum {MAX_PICKUPS              = 2048};
+        enum {MAX_PICKUPS              = 4096};
         enum {INVALID_MENU             = 0xFF};
         enum {INVALID_TEXT_DRAW        = 0xFFFF};
         enum {INVALID_GANG_ZONE        = -1};

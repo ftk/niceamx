@@ -1,6 +1,6 @@
 #include "util/rotation.hpp"
 #include "util/point.hpp"
-#include "util/notify.h"
+//#include "util/notify.h"
 
 #include <cmath>
 
@@ -17,7 +17,7 @@ quaternion operator - (const quaternion& o)
 
 static void quaternion_to_euler(float qx, float qy, float qz, float qw, float& x, float& y, float& z)
 {
-
+	using namespace std;
 	float sqw = qw*qw;
 	float sqx = qx*qx;
 	float sqy = qy*qy;
@@ -34,6 +34,7 @@ static void quaternion_to_euler(float qx, float qy, float qz, float qw, float& x
 }
 static point4d euler_to_quaternion(float theta_z, float theta_y, float theta_x)
 {
+    using namespace std;
 	const float cos_z_2 = cos(0.5f*theta_z);
 	const float cos_y_2 = cos(0.5f*theta_y);
 	const float cos_x_2 = cos(0.5f*theta_x);

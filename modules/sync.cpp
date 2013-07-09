@@ -13,7 +13,7 @@ struct player_timer
     std::function<void (int)> handler;
     int cur_id;
 
-    player_timer(const std::function<void (int)>& handler) : handler(handler), cur_id(-1) {}
+    player_timer(std::function<void (int)> handler) : handler(std::move(handler)), cur_id(-1) {}
 
     void operator()()
     {

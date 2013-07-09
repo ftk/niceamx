@@ -8,9 +8,10 @@
 //#include "cmd.hpp"
 //#include "parsers.hpp"
 #include "num_players.hpp"
+#include "weapons.hpp"
 
 #include "util/point.hpp"
-#include "util/notify.h"
+//#include "util/notify.h"
 #include "util/rotation.hpp"
 #include "util/log.h"
 //
@@ -19,15 +20,20 @@
 #include <cassert>
 #include <vector>
 #include <map>
+#include <cstdlib>
+#include <cstring>
 
 #include <algorithm>
 
 //#include <boost/format.hpp>
 
+#include <boost/algorithm/string/find.hpp>
+
 #include "signals.hpp"
 #include "timers.hpp"
 
 namespace api {
+
 
 // object.hpp
 bool object::show(int playerid)
@@ -173,6 +179,15 @@ void player_info::update()
         sscanf(ip.c_str(), "%u.%u.%u.%u", &a, &b, &c, &d);
         a &= 0xff; b &= 0xff; c &= 0xff; d &= 0xff;
         this->ipv4 = (a << 24) | (b << 16) | (c << 8) | d;
+        color = native::get_player_color(id);
+        if(!color) // random color
+        {
+            color = rand() & 0xffffff; // rgb
+            color |= 0x202020; // brighter
+            color = (color << 8) | 0xff; // rgb -> rgba
+            native::set_player_color(id, color);
+        }
+
     }
     else
     {
@@ -181,6 +196,15 @@ void player_info::update()
         name = "~";
     }
 }
+void player_info::clean()
+{
+}
+
+void player_info::set_color(boost::uint32_t c)
+{
+    native::set_player_color(id, (color = c));
+}
+
 
 std::string player_info::get_ip()
 {
@@ -189,6 +213,141 @@ std::string player_info::get_ip()
 	return std::string(buf);
 }
 
+int players::get_player(const char * name)
+{
+    int candidate = -1;
+    for(int player : playerids)
+    {
+        const auto& pname = info[player].name;
+        //auto it = pname.find(name);
+        auto it = boost::algorithm::ifind_first(pname, name);
+
+        if(boost::begin(it) != pname.end()) // matched
+        {
+            if(candidate == -1)
+            {
+                candidate = player;
+            }
+            else if(boost::begin(it) == pname.begin())
+            {
+                if(boost::end(it) == pname.end())
+                    return player; // exact match
+                candidate = player;
+            }
+        }
+    }
+    if(candidate == -1)
+        throw bad_player();
+    return candidate;
+}
+
+int players::get_player_by_id_or_name(const char * str)
+{
+    char * end;
+    long id = std::strtol(str, &end, 10);
+    return (!*end && valid(id)) ? id : get_player(str);
+}
+
+/* weapons.hpp */
+
+void weapons::setup(int playerid)
+{
+    native::reset_player_weapons(playerid);
+    for(int i = 0; i < SLOTS; i++)
+    {
+        if(id[i])
+            native::give_player_weapon(playerid, id[i], std::max(1, ammo[i]));
+    }
+}
+
+weapons::weapons(int playerid)
+{
+    if(PLAYERBOX->valid(playerid))
+    {
+        for(int i = 0; i < SLOTS; i++)
+        {
+            native::get_player_weapon_data(playerid, i, id[i], ammo[i]);
+        }
+    }
+    else
+    {
+        reset();
+    }
+}
+
+int weapons::get_slot(int weaponid)
+{
+    // binary search
+    if(weaponid >= 25)
+    {
+        if(weaponid >= 35)
+        {
+            if(weaponid > 40)
+            {
+                if(weaponid >= 44)
+                    return 11;
+                else if(weaponid < 46) // [41, 43]
+                    return 9;
+            }
+            else if(weaponid < 40)
+            {
+                if(weaponid == 39)
+                    return 8;
+                else // [35, 39]
+                    return 7;
+
+            }
+            else // == 40
+                return 12;
+        }
+        else // [25,34]
+        {
+            if(weaponid <= 27) // shotguns
+                return 3;
+            else if(weaponid >= 33) // rifle
+                return 6;
+            else if(weaponid == 30 || weaponid == 31)
+                return 5;
+            else // smg 28, 29, 32
+                return 4;
+        }
+    }
+    else // < 25
+    {
+        if(weaponid >= 16)
+        {
+            if(weaponid <= 18)
+                return 8;
+            else if(weaponid >= 22)// [22,24]
+                return 2;
+        }
+        else // < 16
+        {
+            if(weaponid < 10)
+            {
+                if(weaponid >= 2)
+                    return 1;
+                else if(weaponid >= 0)
+                    return 0;
+            }
+            else // [10,15]
+                return 10;
+        }
+    }
+    throw std::runtime_error("wrong weaponid");
+}
+
+bool weapons::rm_player_weapon(int playerid, int slot)
+{
+    if(!PLAYERBOX->valid(playerid))
+        return false;
+    int id, ammo;
+    native::get_player_weapon_data(playerid, slot, id, ammo);
+    if(!ammo || !id)
+        return false;
+    native::give_player_weapon(playerid, id, -ammo);
+    return true;
+}
 
 
 } // namespace api
@@ -244,7 +403,7 @@ INIT
   
   REGISTER_CALLBACK(on_game_mode_init, ([]()
   {
-      int maxplayers = native::get_server_var_as_int("maxplayers");
+      const int maxplayers = native::get_server_var_as_int("maxplayers");
       if(maxplayers > api::NUM_PLAYERS)
       {
           util::log_msg("api/warning",

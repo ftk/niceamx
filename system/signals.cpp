@@ -1,7 +1,7 @@
 #include "timers.hpp"
 #include "signals.hpp"
 
-#include "util/overtimer.hpp"
+//#include "util/overtimer.hpp"
 #include <iostream>
 #include "util/utils.h"
 #include "util/log.h"
@@ -14,7 +14,7 @@
 #endif // MAX_EXEC_TIME
 #endif //MAX_TIMER_EXEC_TIME
 
-#define START() MAKE_OVERTIMER(MAX_TIMER_EXEC_TIME)
+#define START() ((void)0)
 
 namespace signals {
 
@@ -35,7 +35,7 @@ void timers_container_t::process()
     	// http://www.boost.org/doc/libs/1_53_0/doc/html/heap/data_structures.html
     	
     	
-        auto& top = slots.top();
+        auto&& top = slots.top();
         bool once = top.once;
         timer::timeout_t timeout = top.timeout;
         try
@@ -74,5 +74,25 @@ void box_t::clear()
 #include "events.inl"
 #undef SIGNAL
 }
+
+bool box_t::empty() const
+{
+    bool is_empty = true;
+#define SIGNAL(name,...) is_empty = is_empty && this->name.empty();
+#include "events.inl"
+#undef SIGNAL
+    return is_empty;
+}
+
+box_t::box_t()
+{
+    // no inline
+}
+
+box_t::~box_t()
+{
+    // no inline
+}
+
 
 } // namespace

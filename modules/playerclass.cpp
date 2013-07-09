@@ -80,26 +80,23 @@ static api::bitset_players class_selected;
 INIT
 {
     using namespace api::cmdflag;
-    REGISTER_COMMAND("set_spawn", CONFIG, ([](int, const std::string& params)
+    REGISTER_COMMAND("set_spawn", CONFIG, ([](api::cmdinfo_t info)
     {
-        api::parser p("*sffff", params);
-        if(p.error)
-            return false;
+        api::parser_cmd p("fff?f", info);
+
 
         for(int i = 0; i < 4; i++)
-            defspawn[i] = p.get_float(i);
+            defspawn[i] = p.get(i, 0.f);
 
         hexagon = make_hexagon(6, 3.5f);
-
-        return true;
     }));
 
-    REGISTER_COMMAND("add_class", CONFIG, ([](int, const std::string& params)
+    REGISTER_COMMAND("add_class", CONFIG, ([](api::cmdinfo_t info)
     {
-        api::parser p("*sd", params);
-        if(p.error)
-            return false;
-        native::add_player_class(p.get_int(0),
+        api::parser_cmd p("d", info);
+
+
+        native::add_player_class(p.get<int>(0),
                                  defspawn[0],
                                  defspawn[1],
                                  defspawn[2],
@@ -108,22 +105,8 @@ INIT
                                  0, 0,
                                  0, 0,
                                  0, 0);
-        return true;
     }));
-    REGISTER_COMMAND("add_vehicle", CONFIG, ([](int, const std::string& params)
-    {
-        api::parser p("*sdffffdd", params);
-        if(p.error)
-            return false;
-        native::add_static_vehicle(p.get_int(0),
-                                 p.get_float(1),
-                                 p.get_float(2),
-                                 p.get_float(3),
-                                 p.get_float(4),
-                                 p.get_int(5),
-                                 p.get_int(6));
-        return true;
-    }));
+
 
 
     REGISTER_CALLBACK(on_player_request_class, ([](int playerid, int /*classid*/)

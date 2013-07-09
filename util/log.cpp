@@ -8,13 +8,16 @@
 
 //#include <string>
 
+#include "util/utils.h"
+
 
 #ifndef LOG_FILENAME
 #define LOG_FILENAME "logs/%Y_%m_%d.txt"
 #endif
 
+#ifndef MAX_LOGGERS
 #define MAX_LOGGERS 16
-
+#endif
 
 namespace util {
 //
@@ -32,9 +35,16 @@ void log_msg(const char * module, const char * format, ...)
   char buffer[MAX_LOG_LINE];
   va_list args;
   va_start(args, format);
-  int len = vsnprintf(buffer, MAX_LOG_LINE-1, format, args);
-  buffer[len] = '\0';
+  int n = ::vsnprintf(buffer, MAX_LOG_LINE-1, format, args);
   va_end(args);
+  if(n < 0 || static_cast<unsigned>(n) >= MAX_LOG_LINE)
+  {
+      // format error
+      ::snprintf(buffer, MAX_LOG_LINE-1, "%s/formaterror", module);
+      return log_msg_nofmt(buffer, format);
+
+  }
+  buffer[n] = '\0';
   
   return log_msg_nofmt(module, buffer);
 }
@@ -139,7 +149,7 @@ void logger_rotational(const char * module, const char * msg)
 	timeinfo = localtime(&rawtime);
 	
 	char buffer[MAX_LOG_LINE];
-	int len = snprintf(buffer, MAX_LOG_LINE-1, "%02d:%02d:%02d:%08lX:<%s>: ", 
+    int len = ::snprintf(buffer, MAX_LOG_LINE-1, "%02d:%02d:%02d:%08lX:<%s>: ",
 		timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, 
 		(unsigned long)rawtime, module);
 	

@@ -2,9 +2,12 @@
 #define PAWN_MARH_DEBUG
 
 #include <string>
+#include <ostream>
+#include "marh_param.hpp"
 
 namespace pawn
 {
+
 
 template<typename T>
 struct param_to_string
@@ -18,6 +21,14 @@ struct param_to_string
 
 template<>
 struct param_to_string<std::string&>
+{
+    inline static std::string to_string(const std::string&)
+    {
+        return "\"\"";
+    }
+};
+template<>
+struct param_to_string<const std::string&>
 {
     inline static std::string to_string(const std::string& p)
     {

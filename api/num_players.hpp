@@ -21,8 +21,8 @@ enum
 
 // const-size containers
 
-template <typename Value>
-using array_players = std::array<Value, NUM_PLAYERS>;
+template <typename T>
+using array_players = std::array<T, NUM_PLAYERS>;
 
 
 using bitset_players = std::bitset<NUM_PLAYERS>;

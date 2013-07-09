@@ -46,57 +46,58 @@ int vehicle_create(int model, util::point3d pos, float angle, int col1, int col2
 INIT
 {
     using namespace api::cmdflag;
-    REGISTER_COMMAND("max_vehicles", CONFIG, [](int, const std::string& params)
+    REGISTER_COMMAND("max_vehicles", CONFIG, [](api::cmdinfo_t info)
     {
-        vehicle_models::get_instance()->resize(api::parser("*sd", params).get_int(0));
-        return true;
+        vehicle_models::get_instance()->resize(api::parser("d", info).get<int>(0));
     });
 
-    REGISTER_COMMAND("vehicle_info", CONFIG, [](int /*pipe*/, const std::string& params)
+    REGISTER_COMMAND("vehicle_info", CONFIG, [](api::cmdinfo_t info)
     {
         // vehicle_info 400 "Landstalker" 1 1 0 0 ... (colors)
-        api::parser p("*sds?r", params);
-        int modelid = p.get_int(0);
+        api::parser_cmd p("ds?d+", info);
+        int modelid = p.get<int>(0);
         vehicle_model_t& model = vehicle_models::get_instance()->get_model(modelid);
         model.model_id = modelid;
-        model.name = p.get_string(1);
+        model.name = p.get<const char *>(1);
 
         model.colors.clear();
 
         //api::send_pipe_msgf(pipe, "vehicle %03d: %s", modelid, p.get_string(1));
-
-        const char * pstr = p.get_string(2);
-        while(*pstr)
+        
+        for(std::size_t i = 0; i < (p.size()-2)/2; i++)
         {
-            vehicle_color col;
-            char * numstop;
-            col.col1 = strtol(pstr, &numstop, 0);
-            if(*numstop)
-                pstr = numstop + 1;
-            col.col2 = strtol(pstr, &numstop, 0);
-
-            //api::send_pipe_msgf(pipe, "colors %d %d", col.col1, col.col2);
-
-            model.colors.push_back(std::move(col));
-            if(!*numstop)
-                break;
-            pstr = numstop + 1;
+        	vehicle_color col;
+            col.col1 = p.get<int>(2+i*2);
+            col.col2 = p.get<int>(2+i*2+1);
+        	model.colors.push_back(std::move(col));
         }
 
-
-
-        return true;
     });
 
-    /*
-    REGISTER_COMMAND("vehicle_mod", CONFIG, [](int pipe, const std::string& params)
+
+    REGISTER_COMMAND("add_vehicle", CONFIG | RCON | ADMIN, [](api::cmdinfo_t info)
+    {
+        api::parser_cmd p("dffff?ddd", info);
+        int id = vehicle_create(p.get<int>(0), {p.get<float>(1),p.get<float>(2),p.get<float>(3)},
+                       p.get<float>(4), p.get(5, -1),p.get(6, -1),
+                       p.get(7, 120));
+        (void)id;
+        /*
+#ifdef _DEBUG
+        auto& model = vehicle_models::get_instance()->get_model(p.get<int>(0));
+        api::send_pipe_msgf(info.caller, "%d : %s [%d]", id, model.name.c_str(), model.model_id);
+#endif*/
+    });
+
+/*
+    REGISTER_COMMAND("vehicle_mod", CONFIG, [](api::cmdinfo_t info)
     {
         // vehicle_mod 400 1008 "nto_b_l"
-        api::parser p("*sdd?s", params);
-        int modelid = p.get_int(0);
+        api::parser_cmd p("dd?s", info);
+        const int modelid = p.get<int>(0);
         vehicle_model_t& model = vehicle_models::get_instance()->get_model(modelid);
 
-    });*/
-
+    });
+*/
 }
 

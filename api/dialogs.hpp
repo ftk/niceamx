@@ -171,7 +171,7 @@ public:
   }
   
 };
-
+/*
 // to string
 template <typename Iterator, typename T>
 inline std::string join(Iterator first, Iterator last, T ch = '\n')
@@ -187,11 +187,12 @@ inline std::string join(Iterator first, Iterator last, T ch = '\n')
         }
     }
     return result;
-}
+}*/
 /*
  * Usage:
- * std::list<int> list;
- * auto str = api::join(list.begin(), list.end(), ' '); // "1 2 3"
+ * //std::list<int> list;
+ * //auto str = api::join(list.begin(), list.end(), ' '); // "1 2 3"
+ * boost::algorithm::join(list, " ");
  */
 
 }

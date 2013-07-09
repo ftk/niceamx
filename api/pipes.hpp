@@ -4,6 +4,7 @@
 #include "signal.hpp"
 
 #include <string>
+#include <list>
 
 #include "util/config/attribute.h"
 
@@ -25,14 +26,34 @@ namespace pipe
 		// ...
 		RCON = SERVERLOG // using pawn::logprint to answer rcon
 	};
+
+    enum
+    {
+        COLOR_BLACK = 0x000000,
+        COLOR_RED = 0xFF0000,
+        COLOR_GREEN = 0x00FF00,
+        COLOR_BLUE = 0x0000FF,
+        COLOR_WHITE = 0xFFFFFF
+    };
 }
 
 extern signals::signal<int, const std::string&> on_pipe_message;
 
-void send_pipe_msg(int pipe, const std::string& msg);
+bool is_pipe_colored(int pipe);
 
+void send_pipe_msg(int pipe, std::string msg);
 
 void send_pipe_msgf(int pipe, const char * format, ...) __attribute__(( format(printf, 2, 3) ));
+
+template <typename InputIterator>
+void send_pipe_msg(InputIterator first, InputIterator last, const std::string& msg)
+{
+    while(first != last)
+    {
+        send_pipe_msg(*first, msg);
+        ++first;
+    }
+}
 
 
 class pipemsg_sink : public util::line_sink

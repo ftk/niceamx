@@ -12,6 +12,10 @@
 #define WIN32
 #endif
 
+#if defined(WIN32) && !defined(_WIN32_WINNT)
+#define _WIN32_WINNT 0x6000 // win version
+#endif
+
 
 #if defined(_DEBUG) && !defined(DEBUG)
 #define DEBUG

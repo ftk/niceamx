@@ -9,6 +9,11 @@
 
 #define PURE _attribute((const)) // pure function
 #define NORETURN _attribute((noreturn))
-#define INLINE _attribute((always_inline)) inline
+
+#ifdef _MSC_VER
+#define FORCE_INLINE __forceinline
+#else
+#define FORCE_INLINE _attribute((always_inline)) inline
+#endif
 
 #endif
