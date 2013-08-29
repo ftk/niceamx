@@ -75,7 +75,20 @@ struct params_to_string<void>
         return "";
     }
 };*/
+/*
+template<typename... Args>
+inline void enum_params(std::ostream& s, Args... args)
+{
 
+}
+
+template <int param_id, typename Arg1, typename... Args>
+inline std::ostream& operator << (std::ostream& s, const marh_param_t<param_id, Arg1, Args...>& marh)
+{
+    s << marh.name << '(';
+    enum_params(s, args...);
+    s << ')';
+}*/
 
 } // pawn
 

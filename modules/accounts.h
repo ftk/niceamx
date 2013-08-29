@@ -34,7 +34,7 @@ struct player_account_v<1>
 
     void set_password(const char * pw)
     {
-        strncpy(password, pw, util::arrayof(password));
+        util::strncpy(password, pw);
     }
 
     static const unsigned Version = 1;

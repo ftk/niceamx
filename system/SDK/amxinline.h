@@ -50,9 +50,10 @@ inline void amx_set_string(AMX * amx, cell amx_addr, const char * src, std::size
         *(dst_it-1) = 0;
 }
 
-inline void amx_get_string(const AMX * amx, cell amx_addr, char * dst, std::size_t len)
+inline int amx_get_string(const AMX * amx, cell amx_addr, char * dst, std::size_t len)
 {
-    char * dst_it = dst, * dst_end = dst + static_cast<std::ptrdiff_t>(len + 1);
+    char * dst_it = dst;
+    const char * dst_end = dst + static_cast<std::ptrdiff_t>(len + 1);
 
     const cell * src_it = amx_get_addr(amx, amx_addr);
 
@@ -64,6 +65,7 @@ inline void amx_get_string(const AMX * amx, cell amx_addr, char * dst, std::size
     }
     if(dst_it == dst_end)
         *(dst_it-1) = '\0';
+    return(dst_it - dst);
 }
 
 

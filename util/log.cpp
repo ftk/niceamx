@@ -120,7 +120,7 @@ static void rotate_log()
 	// change filename
 	
 	char filename[256];
-	strftime(filename, sizeof(filename), LOG_FILENAME, timeinfo);
+    strftime(filename, arrayof(filename), LOG_FILENAME, timeinfo);
 	logger_file_open(filename);
 	assert(log_file != NULL);
 }
@@ -153,8 +153,8 @@ void logger_rotational(const char * module, const char * msg)
 		timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, 
 		(unsigned long)rawtime, module);
 	
-	strncpy(buffer + len, msg, MAX_LOG_LINE - len - 1);
-	buffer[MAX_LOG_LINE-1] = '\0';
+    util::strncpy(buffer + len, msg, MAX_LOG_LINE - len);
+    //buffer[MAX_LOG_LINE-1] = '\0';
 	//log_line(buffer);
 	logger_file(buffer);
 }

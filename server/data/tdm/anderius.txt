@@ -1,0 +1,6 @@
+tdm_add_team 00FF00FF
+tdm_add_team 0000FFFF
+
+tdm_weapons 24 500 5 1000 29 100
+
+execfile data/tdm/anderius_spawns.txt

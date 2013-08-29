@@ -1,5 +1,6 @@
 #include "api/cmd2.hpp"
 #include "api/pipes.hpp"
+#include "api/playerpool.hpp"
 #include "signals.hpp"
 #include "pawn/natives.h"
 
@@ -13,7 +14,9 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/utility/string_ref.hpp>
 
+
 namespace api {
+
 
 
 /*
@@ -117,6 +120,8 @@ static void player_cmdhandler(int playerid, const std::string& cmdline)
 	if(native::is_player_admin(playerid))
 		flags |= cmdflag::ADMIN;
 
+    util::log_msg("cmd/player", "[%d] %s : %u %s", playerid,
+                  PLAYERBOX->get_info(playerid).name.c_str(), flags, cmdline.c_str());
     try
     {
         bool result = INVOKE_COMMANDS(playerid, flags, cmd);
@@ -217,6 +222,28 @@ static void modify_cmdflags(cmdinfo_t info)
     api::send_pipe_msgf(info.caller, "Flags %s %u", cmdname, flags);
 }
 
+
+static void cmd_help(cmdinfo_t info)
+{
+    parser_cmd p("?s", info);
+    if(p.empty())
+    {
+        for(auto it : *COMMANDBOX)
+        {
+            const command_t& cmd = it.second;
+            if(info.flags & cmd.flags && !(cmd.flags & cmdflag::HIDDEN))
+            {
+                api::send_pipe_msg(info.caller, cmd.name);
+            }
+        }
+    }
+    else
+    {
+        INVOKE_COMMANDS(info.caller, info.flags, p.get<std::string>(0) + " help");
+    }
+}
+
+
 INIT
 {
 	REGISTER_CALLBACK(on_player_command_text, &player_cmdhandler);
@@ -263,6 +290,8 @@ INIT
         if(!INVOKE_COMMANDS(info.caller, info.flags, p.get<const char *>(0)))
             INVOKE_COMMANDS(info.caller, info.flags, p.get<const char *>(1));
     }));
+
+    REGISTER_COMMAND("help", cmdflag::ALL, &cmd_help);
 
 }
 

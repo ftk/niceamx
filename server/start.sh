@@ -1,5 +1,5 @@
 cd ../build
-make -j 8 install
+make CXX='g++-4.8' -j 8 install
 status=$?
 cd ../server
 cp cfgrelease.txt server.cfg

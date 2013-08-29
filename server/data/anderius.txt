@@ -1,0 +1,15 @@
+echo anderius!
+
+set_spawn 1921.7332 1213.0 31.19 10.0
+
+
+gvote_clear
+
+execfile data/anderius/classes.txt
+
+
+max_vehicles 612
+execfile data/anderius/vehicles_colors.txt
+execfile data/anderius/cars_random.txt
+
+execfile data/anderius/vehicle_spawns.txt

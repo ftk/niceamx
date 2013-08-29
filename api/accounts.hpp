@@ -74,14 +74,17 @@ public:
     void open(const char * filename)
     {
         close();
-        db = fopen(filename, "wr+");
+        db = fopen(filename, "rb+");
         if(!db)
         {
             util::log_msg("api/accounts/db", "cant open %s, creating...", filename);
             create(filename);
-            db = fopen(filename, "wr+");
-            assert(db);
+            db = fopen(filename, "rb+");
         }
+        //else
+        //	fclose(db);
+
+        assert(db);
     }
 
 	template <typename Account>
@@ -134,6 +137,8 @@ private:
     std::string db_path;
 
     std::map<util::hash_t, offset_t> header;
+    
+    bool is_opened = false;
 
 private:
 
@@ -316,28 +321,51 @@ private:
 
 public:
     // ctor
+    accounts_manager() = default;
+    
     accounts_manager(std::string header_path, std::string db_path) :
         header_path(std::move(header_path)), db_path(std::move(db_path))
     {
-        load_header();
-        loader.open(db_path.c_str());
+    	if(!header_path.empty() && !db_path.empty())
+    	{
+	        load_header();
+	        loader.open(db_path.c_str());
+	        is_opened = true;
+	    }
     }
 
     // dtor
     ~accounts_manager()
     {
-        save_header();
-        loader.close();
+    	if(is_opened)
+    	{
+	        save_header();
+	        loader.close();
+	    }
     }
 
-    void reopen(std::string header_path, std::string db_path)
+    void reopen(std::string header_path_, std::string db_path_)
     {
-        save_header();
-        loader.close();
-        this->header_path = std::move(header_path);
-        this->db_path = std::move(db_path);
+    	if(is_opened)
+    	{
+	        save_header();
+	        loader.close();
+	    }
+        this->header_path = std::move(header_path_);
+        this->db_path = std::move(db_path_);
         load_header();
         loader.open(db_path.c_str());
+        is_opened = true;
+    }
+
+    void flush()
+    {
+        if(is_opened)
+        {
+            save_header();
+            loader.close();
+            loader.open(db_path.c_str());
+        }
     }
 
 };

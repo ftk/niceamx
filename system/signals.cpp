@@ -71,15 +71,19 @@ void timers_container_t::process()
 void box_t::clear()
 {
 #define SIGNAL(name,...) this->name.clear();
+#define SIGNAL0(name) SIGNAL(name,)
 #include "events.inl"
+#undef SIGNAL0
 #undef SIGNAL
 }
 
 bool box_t::empty() const
 {
-    bool is_empty = true;
+    bool is_empty = true; 
 #define SIGNAL(name,...) is_empty = is_empty && this->name.empty();
+#define SIGNAL0(name) SIGNAL(name,)
 #include "events.inl"
+#undef SIGNAL0
 #undef SIGNAL
     return is_empty;
 }
@@ -95,4 +99,39 @@ box_t::~box_t()
 }
 
 
+
+
 } // namespace
+
+#ifdef SIGNALS_EXPLICIT_INST
+// HACK
+
+// explicit template instantiation
+#define SIGNAL(name,...) \
+    template class std::function<void(__VA_ARGS__)>; \
+    template class \
+    signals::basic_priority_signal<std::function<void(__VA_ARGS__)>, __VA_ARGS__ >;
+#define SIGNAL0(name) /**/
+
+template class std::function<void()>;
+template class signals::basic_priority_signal<std::function<void()> >;
+template class signals::basic_signal<void (*)()>;
+
+//#include "events.inl" // duplicate explicit instantiation
+SIGNAL(i, int)
+SIGNAL(ii, int, int)
+SIGNAL(iii, int, int, int)
+SIGNAL(is, int, std::string&)
+SIGNAL(ics, int, const std::string&)
+SIGNAL(cs, const std::string&)
+SIGNAL(iiii, int, int, int, int)
+SIGNAL(cscsi,  const std::string&, const std::string&, int)
+SIGNAL(iiiics, int, int, int, int, const std::string&)
+SIGNAL(iifi, int, int, float, int)
+SIGNAL(ifff, int, float, float, float)
+
+#undef SIGNAL
+#undef SIGNAL0
+
+#endif
+

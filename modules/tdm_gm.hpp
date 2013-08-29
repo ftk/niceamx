@@ -85,7 +85,7 @@ public:
         native::reset_player_money(playerid);
     }
 
-    void join(int playerid)
+    void join(int playerid) override
     {
         join_gm(playerid);
 
@@ -98,7 +98,7 @@ public:
         //setup(playerid);
     }
 
-    void part(int playerid)
+    void part(int playerid) override
     {
         player_team(playerid).players--;
         players[playerid].teamid = -1;

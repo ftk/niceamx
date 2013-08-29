@@ -38,7 +38,7 @@ static void logger_redirect(const char * module, const char * msg)
 
     boost::string_ref module_s(module), msg_s(msg);
 
-    auto npos = boost::string_ref::npos;
+    const auto npos = boost::string_ref::npos;
 
     std::string fmt_msg;
 

@@ -10,9 +10,9 @@
 #include <cstring>
 
 
-static std::string default_hdr = "data/accounts_hdr.bin",
+static const std::string default_hdr = "data/accounts_hdr.bin",
     default_db = "data/accounts_db.bin";
-static api::accounts_manager<player_account> accounts(default_hdr, default_db);
+static api::accounts_manager<player_account> accounts;//(default_hdr, default_db);
 
 bool account_registered(const std::string& name)
 {
@@ -66,16 +66,21 @@ INIT
     CONFIGBOX->set("accounts_hdr", default_hdr);
     CONFIGBOX->set("accounts_db", default_db);
 
-    REGISTER_CALLBACK(on_game_mode_init, 1000, []()
+    REGISTER_CALLBACK(on_game_mode_init, []()
     {
-        if(CONFIGBOX->get("accounts_hdr") != default_hdr ||
-                CONFIGBOX->get("accounts_db") != default_db)
-        {
-            accounts.reopen(CONFIGBOX->get("accounts_hdr"),
-                            CONFIGBOX->get("accounts_db"));
-        }
-    });
+        accounts.reopen(CONFIGBOX->get("accounts_hdr"),
+                        CONFIGBOX->get("accounts_db"));
 
+    });
+    REGISTER_CALLBACK(on_player_disconnect, [](int /*id*/, int)
+    {
+    	if(PLAYERBOX->size() == 1)
+    	{
+    		// last player
+    		// sync
+    		accounts.flush();
+    	}
+    });
 }
 
 

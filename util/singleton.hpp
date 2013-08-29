@@ -56,6 +56,11 @@ public:
 	inline static void rm_instance()
 	{
 	}
+    inline static T& i()
+    {
+        return *get_instance();
+    }
+
 protected:
     singleton() {}
     virtual ~singleton() {}

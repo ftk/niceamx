@@ -15,27 +15,28 @@
 #include <boost/optional.hpp>
 #include <boost/utility/string_ref.hpp>
 
+
 namespace api {
 //
 
 namespace cmdflag
 {
-    enum
+    enum : unsigned int
     {
-        NUL = 0u,
-        SYSTEM = 1u,
-        CONFIG = 2u,
-        RCON = 4u,
-        HIDDEN = 8u,
+        NUL = 0,
+        SYSTEM = 1,
+        CONFIG = 2,
+        RCON = 4,
+        HIDDEN = 8,
         // ...
-        PLAYER = 256u,
-        LVL1 = 512u,
-        LVL2 = 1024u,
-        LVL3 = 2048u,
-        LVL4 = 4096u,
-        LVL5 = 8192u,
+        PLAYER = 256,
+        LVL1 = 512,
+        LVL2 = 1024,
+        LVL3 = 2048,
+        LVL4 = 4096,
+        LVL5 = 8192,
 
-        ADMIN = 16384u,
+        ADMIN = 16384,
         ALL = 0xffffffffu & ~HIDDEN
     };
 } //
@@ -98,6 +99,7 @@ struct command_t
 };
 
 
+
 class commands : public util::singleton<commands>
 {
   // singleton
@@ -118,11 +120,11 @@ public:
       //cmds.emplace(hash, cmd);
   }
 
-  /*template <typename... Args>
+  template <typename... Args>
   inline void emplace(Args&&... args)
   {
-      cmds.emplace(args...);
-  }*/
+      cmds.emplace(std::forward<Args>(args)...);
+  }
 
   bool execute_line(int pipe, unsigned flags, const std::string &line);
   
@@ -134,8 +136,21 @@ public:
 
   std::size_t count(const std::string& name)
   {
-      auto iter_pair = cmds.equal_range(cmdhash(name));
-      return std::distance(iter_pair.first, iter_pair.second);
+      //auto iter_pair = cmds.equal_range(cmdhash(name));
+      //return std::distance(iter_pair.first, iter_pair.second);
+      return cmds.count(cmdhash(name));
+  }
+
+  //iterator
+public:
+  typedef commands_t::const_iterator iterator;
+  typedef commands_t::const_iterator const_iterator;
+  const_iterator begin() const { return cmds.begin(); }
+  const_iterator end() const { return cmds.end(); }
+
+  std::pair<const_iterator, const_iterator> find(const std::string& name) const
+  {
+      return cmds.equal_range(cmdhash(name));
   }
   
 };
@@ -262,8 +277,7 @@ public:
 
     bool parse(const char * format, const char * params, std::size_t offset = 0u)
     {
-        std::strncpy(str, params + offset, MAX_STRING - 1);
-        str[MAX_STRING - 1] = '\0';
+        util::strncpy(str, params + offset);
         return parse(format, str);
     }
 
@@ -375,7 +389,8 @@ public:
 
 
 
-} //
+} //api
+
 
 /* */
 #define COMMANDBOX (api::commands::get_instance())

@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cstdio>
 #include <cstdarg>
+#include <cassert>
 //#include <time.h>
 
 #ifdef WIN32
@@ -176,7 +177,15 @@ int snprintf(std::string& out, std::size_t size, const char * format, ...)
     return n;
 }*/
 
-
-
+void strncpy(char * dest, const char * source, std::size_t size)
+{
+    assert(size);
+    while(--size && *source)
+    {
+        *(dest++) = *(source++);
+    }
+    *dest = '\0';
 }
+
+} // util
 

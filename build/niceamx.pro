@@ -36,7 +36,7 @@ INCLUDEPATH += ../system
 
 INCLUDEPATH += ../../boost-trunk/
 
-QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -std=c++11 -Wno-unused-local-typedefs
 QMAKE_LFLAGS_PLUGIN += -Wl,--enable-stdcall-fixup -Wl,--kill-at
 
 DEF_FILE = win/plugin.def

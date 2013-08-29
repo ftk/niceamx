@@ -32,6 +32,8 @@ public:
         //base::format[param_id] = marh_param_t<param_id, Arg1>::format;
     }
 	marh_params_t(const std::string& name) : base(name) {}
+
+    //using base::marh_params_t;
 	
 	inline int call(Arg1 a1, Args... args)
 	{
@@ -64,12 +66,15 @@ private:
 	
     typedef marh_params_t<param_id + 1, void> base;
 public:
+
     marh_params_t(const std::string& name, marh_collection_t& marh_collection) : base(name, marh_collection)
     {
         //base::format[param_id] = marh_param_t<param_id, ArgLast>::format;
     }
 	marh_params_t(const std::string& name) : base(name) {}
-	
+
+    //using base::marh_params_t;
+
 	inline int call(ArgLast arg)
 	{
 		int result;

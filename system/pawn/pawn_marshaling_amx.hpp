@@ -23,8 +23,10 @@ namespace pawn {
     };
 
     class marh_amx_t {
+    public:
+        const std::string name;
+
     protected:
-    	std::string const name;
 
         AMX* amx;
         AMX_NATIVE fn;

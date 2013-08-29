@@ -225,14 +225,15 @@ public:
 
 // functor
 
+
 template <typename ... Args>
 using signal = basic_priority_signal<std::function<void (Args...)>, Args...>;
 
 /*
 template <typename ... Args>
 class signal : public basic_signal<std::function<void (Args...)>, Args...>
-{};*/
-
+{};
+*/
 
 // function pointer
 

@@ -2,13 +2,16 @@
 #ifndef SIGNAL
 #error SIGNAL(name,args...) is not defined
 #endif
+#ifndef SIGNAL0
+#error SIGNAL0(name) is not defined
+#endif
 //#define SIGNAL(name,...) signals::signal<__VA_ARGS__> name;
 
 
-SIGNAL(on_game_mode_init,)
-SIGNAL(on_game_mode_exit,)
-SIGNAL(on_filter_script_init,)
-SIGNAL(on_filter_script_exit,)
+SIGNAL0(on_game_mode_init)
+SIGNAL0(on_game_mode_exit)
+SIGNAL0(on_filter_script_init)
+SIGNAL0(on_filter_script_exit)
 SIGNAL(on_player_connect, int)
 SIGNAL(on_player_disconnect, int, int)
 SIGNAL(on_player_spawn, int)

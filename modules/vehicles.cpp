@@ -10,6 +10,7 @@
 #include <cstdlib>
 
 #include "util/point.hpp"
+#include "util/log.h"
 
 
 vehicle_color vehicle_model_t::get_random_color()
@@ -48,7 +49,7 @@ INIT
     using namespace api::cmdflag;
     REGISTER_COMMAND("max_vehicles", CONFIG, [](api::cmdinfo_t info)
     {
-        vehicle_models::get_instance()->resize(api::parser("d", info).get<int>(0));
+        vehicle_models::get_instance()->resize(api::parser_cmd("d", info).get<int>(0));
     });
 
     REGISTER_COMMAND("vehicle_info", CONFIG, [](api::cmdinfo_t info)
@@ -56,6 +57,7 @@ INIT
         // vehicle_info 400 "Landstalker" 1 1 0 0 ... (colors)
         api::parser_cmd p("ds?d+", info);
         int modelid = p.get<int>(0);
+        
         vehicle_model_t& model = vehicle_models::get_instance()->get_model(modelid);
         model.model_id = modelid;
         model.name = p.get<const char *>(1);
@@ -78,15 +80,27 @@ INIT
     REGISTER_COMMAND("add_vehicle", CONFIG | RCON | ADMIN, [](api::cmdinfo_t info)
     {
         api::parser_cmd p("dffff?ddd", info);
-        int id = vehicle_create(p.get<int>(0), {p.get<float>(1),p.get<float>(2),p.get<float>(3)},
+        int modelid;
+        if(p.get<boost::string_ref>(0) == "vcc")
+            modelid = vehicle_models::i().get_random_car();
+        else
+            modelid = p.get<int>(0);
+
+        int id = vehicle_create(modelid, {p.get<float>(1),p.get<float>(2),p.get<float>(3)},
                        p.get<float>(4), p.get(5, -1),p.get(6, -1),
                        p.get(7, 120));
-        (void)id;
-        /*
-#ifdef _DEBUG
-        auto& model = vehicle_models::get_instance()->get_model(p.get<int>(0));
-        api::send_pipe_msgf(info.caller, "%d : %s [%d]", id, model.name.c_str(), model.model_id);
-#endif*/
+        if(!id)
+        {
+            auto& model = vehicle_models::get_instance()->get_model(p.get<int>(0));
+            util::log_msg("vehicles/add_vehicle", "cant create vehicle %d [%s]",
+                          model.model_id, model.name.c_str());
+        }
+
+    });
+    REGISTER_COMMAND("add_random_car", CONFIG | RCON | ADMIN, [](api::cmdinfo_t info)
+    {
+        api::parser_cmd p("d", info);
+        vehicle_models::i().add_random_car(p.get<int>(0));
     });
 
 /*

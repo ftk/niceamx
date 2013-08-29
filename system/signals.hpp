@@ -23,7 +23,25 @@
 #include <string>
 
 
+//#define SIGNALS_EXPLICIT_INST
+#ifdef SIGNALS_EXPLICIT_INST
 
+// not necessary - for faster builds
+//extern template class signals::basic_priority_signal<std::function<void()> >;
+extern template class signals::basic_signal<void (*)()>;
+#define SIGNAL(name,...) \
+    extern template class std::function<void(__VA_ARGS__)>; \
+    extern template class \
+    signals::basic_priority_signal<std::function<void(__VA_ARGS__)>, __VA_ARGS__ >;
+#define SIGNAL0(name) \
+    extern template class std::function<void()>; \
+    extern template class \
+    signals::basic_priority_signal<std::function<void()> >;
+#include "events.inl"
+#undef SIGNAL
+#undef SIGNAL0
+
+#endif
 
 
 namespace signals
@@ -40,9 +58,9 @@ namespace signals
 
     public:
     #define SIGNAL(name,...) signals::signal<__VA_ARGS__> name;
-
+    #define SIGNAL0(name) signals::signal<> name;
     #include "events.inl"
-
+    #undef SIGNAL0
     #undef SIGNAL
 
     public:
@@ -58,7 +76,12 @@ namespace signals
         bool empty() const;
     };
 
+
+
+
 }
+
+
 
 
 #define MAINBOX (signals::box_t::get_instance())

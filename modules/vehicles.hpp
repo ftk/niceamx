@@ -10,6 +10,8 @@
 
 #include "api/location.hpp"
 
+#include <boost/container/flat_set.hpp>
+
 
 struct vehicle_color
 {
@@ -36,7 +38,25 @@ class vehicle_models : public util::singleton<vehicle_models>
     const int modelid_offset = 400;
     std::vector<vehicle_model_t> models;
 
+    boost::container::flat_set<int> random_car; //vcc
+
 public:
+
+    int get_random_car() const
+    {
+        if(random_car.empty())
+            //throw std::runtime_error("cannot select random car");
+            return modelid_offset; // 400
+
+        unsigned idx = rand() % random_car.size();
+        auto it = random_car.begin();
+        //std::advance(it, idx);
+        return *(it + idx);
+    }
+    void add_random_car(int model)
+    {
+        random_car.insert(model);
+    }
 
     const vehicle_model_t& get_model(int modelid) const
     {

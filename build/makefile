@@ -17,7 +17,7 @@ DEFINES =
 CPPFLAGS = -std=c++0x
 CXXFLAGS = -Wall -pipe -m32
 LDFLAGS = -Wall -pipe -m32
-LIBS =
+LIBS = -lrt
 BOOST_LIBS = 
 
 PREFIX = ../server/plugins

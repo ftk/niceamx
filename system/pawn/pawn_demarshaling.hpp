@@ -77,7 +77,10 @@ namespace pawn {
             //amx_GetString(buff, cstr, 0, sizeof(buff)/sizeof(buff[0]));
             amx_get_string(amx, params[param_id + 1], buff, util::arrayof(buff));
             val = std::string(buff);
-            
+            //val.resize(129);
+            //int len = amx_get_string(amx, params[param_id + 1], &(val[0]), 130);
+            //val.resize(len-1);
+
         }
         const std::string& get() const
         {

@@ -148,7 +148,7 @@ public:
 		}
 		*pbuf = '\0';
 		val = buff;
-        amx_Release(amx, params_t[param_id + 1]);
+        amx_release(amx, params_t[param_id + 1]);
     }
     static const char format = 'S';
 };

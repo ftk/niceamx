@@ -143,11 +143,11 @@ public:
   {
   	return V;
   }
-  
+  /*
   const std::vector<vertex>& adj_list() const
   {
     return list;
-  }
+  }*/
   
   friend class fordbellman;
 };

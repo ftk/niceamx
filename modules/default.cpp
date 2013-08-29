@@ -21,7 +21,7 @@ static api::array_players<int> animation_idx;
 
 INIT
 {
-  REGISTER_CALLBACK(on_game_mode_init, 100, []()
+  REGISTER_CALLBACK(on_game_mode_init, -100, []()
   {
     native::set_game_mode_text(__DATE__ " " __TIME__ " " TYPE);
     /*
@@ -41,7 +41,7 @@ INIT
     native::set_player_camera_pos(id, 0.f, 10.f, 10.f);
     native::set_player_camera_look_at(id, 0.f, 0.f, 10.f);
   });*/
-  REGISTER_CALLBACK(on_player_spawn, [](int id)
+  REGISTER_CALLBACK(on_player_spawn, 10, [](int id)
   {
     native::set_camera_behind_player(id);
   });

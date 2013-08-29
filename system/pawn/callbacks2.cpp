@@ -19,12 +19,32 @@ NATIVE_DECL(GameModeInit)
 {
     pawn::gamemode = amx;
     pawn::natives_init(amx);
-    return CALL_SIGNAL(on_game_mode_init);
+    try
+    {
+    	return CALL_SIGNAL(on_game_mode_init);
+    }
+    catch(std::exception& e) 
+    {
+	    std::cerr << "Exception while processing event On" << 
+	    	"GameModeInit" << ": " << e.what() << std::endl;
+        util::log_msg("callback/exception", "On%s : %s", "GameModeInit", e.what());
+    }
+    return 0;
 }
 
 NATIVE_DECL(GameModeExit)
 {
-    cell R = CALL_SIGNAL(on_game_mode_exit);
+	cell R(0);
+    try
+    {
+    	R = CALL_SIGNAL(on_game_mode_exit);
+    }
+    catch(std::exception& e) 
+    {
+	    std::cerr << "Exception while processing event On" << 
+	    	"GameModeExit" << ": " << e.what() << std::endl;
+        util::log_msg("callback/exception", "On%s : %s", "GameModeExit", e.what());
+    }
     pawn::gamemode = NULL;
     return R;
 }
@@ -38,8 +58,9 @@ NATIVE_DECL(GameModeExit)
     } \
     catch(std::exception& e) { \
     std::cerr << "Exception while processing event On" << \
-    BOOST_PP_STRINGIZE(sampname) << ": " << e.what(); \
-    util::log_msg_nofmt("callback/exception", e.what()); \
+    BOOST_PP_STRINGIZE(sampname) << ": " << e.what() << std::endl; \
+    util::log_msg("callback/exception", "On%s : %s", \
+    BOOST_PP_STRINGIZE(sampname), e.what()); \
     } \
     return 0; \
     } \
